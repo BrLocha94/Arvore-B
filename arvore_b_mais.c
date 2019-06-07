@@ -4,6 +4,8 @@
 
 #include <limits.h>
 
+#include "metadados.h"
+#include "lista_nos_folhas.h"
 #include "arvore_b_mais.h"
 #include "lista_pizzas.h"
 
@@ -12,16 +14,22 @@ int busca(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, char
 {
 	//TODO: Inserir aqui o codigo do algoritmo
 	
-	//VAI OLHAR O ARQUIVO DE METADADOS
-	//CASO ELE SEJA VAZIO, RETORNA FALSE
+	FILE *fm = fopen(nome_arquivo_metadados, 'r');
+	//FILE *fi = fopen(nome_arquivo_indice, 'r');
+	//FILE *fd = fopen(nome_arquivo_dados, 'r');
 	
-	//CASO ELE SEJA FOLHA (NÃO TEM PONTEIROS PARA O PROXIMO INDICE), LE O ARQUIVO DADOS E PROCURA
-    //SE ENCONTRAR RETORNA TRUE
+	TMetadados *metadados = le_metadados(fm);
 
-	//CASO POSSUA INDICE, VAI PROCURAR NO ARQUIVO INDICE O NUMERO OU O INTERVALO NO QUAL ELE SE ENCONTRA
-	//A PARTIR DISSO, OLHA NO ARQUIVO DE DADOS E PROCURA
-	//CASO ACHE, RETORNA TRUE
-	//SE CHEGAR NO FINAL DO ARQUIVO DE DADOS, RETORNA FALSE
+	if(metadados->raiz_folha == 1){
+		TListaNosFolhas * nos_folhas = le_nos_folhas(metadados->d, nome_arquivo_dados);
+
+		int i;
+		for(i = 0; i < nos_folhas->lista[0]->m; i++){
+            
+			if(nos_folhas)
+
+		}
+	}
 	
     return INT_MAX;
 }
