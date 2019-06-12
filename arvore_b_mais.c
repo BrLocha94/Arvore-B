@@ -34,6 +34,7 @@ int busca(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, char
 				return(metadados->pont_raiz);
 			}
 		}
+		printf("\n SAIU \n");
 	}
 	//CASO CONTRARIO, DEVE-SE CHECAR PRIMEIRO O ARQUIVO DE INDICES PARA ENTÃO OLHAR OS DADOS
 	else{
