@@ -31,6 +31,7 @@ int busca(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, char
 			
 			//CASO A PIZZA PROCURADA SEJA ENCONTRADA, RETORNA O NO QUE A POSSUI
 			if(noFolha->pizzas[i]->cod == cod){
+				printf(%d + 'METADADOS\n', metadados->pont_raiz);
 				return(metadados->pont_raiz);
 			}
 		}
@@ -98,9 +99,11 @@ int busca(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, char
 			
 			//CASO A PIZZA PROCURADA SEJA ENCONTRADA, RETORNA O NO QUE A POSSUI
 			if(noFolha->pizzas[i]->cod == cod){
+				printf(%d + 'FOLHA\n', seek);
 				return(seek);
 			}
 		}
+		
 	}
 
 	//CASO NÃO SEJA ENCONTRADA A INFORMAÇÃO PROCURADA, RETORNA-SE O INT MAX
