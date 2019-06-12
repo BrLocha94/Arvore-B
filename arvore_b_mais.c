@@ -12,12 +12,12 @@
 int busca(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, char *nome_arquivo_dados, int d)
 {
 	//ABRE OS ARQUIVOS
-	FILE *fm = fopen(nome_arquivo_metadados, "r");
+	//FILE *fm = fopen(nome_arquivo_metadados, "r");
 	FILE *fi = fopen(nome_arquivo_indice, "r");
-	FILE *fd = fopen(nome_arquivo_dados, "r");
+	//FILE *fd = fopen(nome_arquivo_dados, "r");
 	
 	//RECEBE O METADADOS USANDO O ARQUIVO DE DADOS
-	TMetadados *metadados = le_metadados(fm);
+	TMetadados *metadados = le_arquivo_metadados(nome_arquivo_metadados);
 
 	//CHECA SE A RAIZ É FOLHA, CASO SEJA NÃO EXISTE ARQUIVO DE INDICE
 	if(metadados->raiz_folha == 1){
