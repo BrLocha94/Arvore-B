@@ -21,7 +21,9 @@ int busca(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, char
 
 	//CHECA SE A RAIZ É FOLHA, CASO SEJA NÃO EXISTE ARQUIVO DE INDICE
 	if(metadados->raiz_folha == 1){
-
+		
+		return metadados->pont_raiz;
+		/*
 		//LEVA O PONTEIRO DO ARQUIVO AO LOCAL EXATO DA LEITURA
 		fseek(fd, metadados->pont_raiz, SEEK_SET);
 		
@@ -34,6 +36,7 @@ int busca(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, char
 				return(metadados->pont_raiz);
 			}
 		}
+		*/
 		
 	}
 	//CASO CONTRARIO, DEVE-SE CHECAR PRIMEIRO O ARQUIVO DE INDICES PARA ENTÃO OLHAR OS DADOS
@@ -58,11 +61,12 @@ int busca(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, char
 
 					//SE O NO INTERNO FOR FOLHA, PREPARAMOS O ARQUIVO DE DADOS E TERMINAMOS O LOOP 
 					if(noInterno->aponta_folha == 1){
-						fseek(fd, noInterno->p[i], SEEK_SET);
-						loop = 1;
-						seek = noInterno->p[i];
-						printf("\n SEEK %i \n", seek);
-						break;
+						return noInterno->p[i];
+						//fseek(fd, noInterno->p[i], SEEK_SET);
+						//loop = 1;
+						//seek = noInterno->p[i];
+						//printf("\n SEEK %i \n", seek);
+						//break;
 					}
 					//CASO CONTRARIO, O ARQUIVO DE INDICE DEVE SER CHECADO NOVAMENTE
 					else{
@@ -78,11 +82,12 @@ int busca(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, char
 
 					//SE O NO INTERNO FOR FOLHA, PREPARAMOS O ARQUIVO DE DADOS E TERMINAMOS O LOOP 
 					if(noInterno->aponta_folha == 1){
-						fseek(fd, noInterno->p[m], SEEK_SET);
-						loop = 1;
-						seek = noInterno->p[m];
-						printf("\n SEEK %i \n", seek);
-						break;
+						return noInterno->p[i];
+						//fseek(fd, noInterno->p[m], SEEK_SET);
+						//loop = 1;
+						//seek = noInterno->p[m];
+						//printf("\n SEEK %i \n", seek);
+						//break;
 					}
 					//CASO CONTRARIO, O ARQUIVO DE INDICE DEVE SER CHECADO NOVAMENTE
 					else{
@@ -93,7 +98,8 @@ int busca(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, char
 				}
 			}
 		}
-
+		
+		/*
 		//RECEBE O STRUCT NO_FOLHA COM TODAS AS INFORMAÇÕES QUE DEVEM SER CHECADAS
 		TNoFolha *noFolha = le_no_folha(d, fd);
 		for(int i = 0; i < noFolha->m; i++){
@@ -103,7 +109,7 @@ int busca(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, char
 				return(seek);
 			}
 		}
-		
+		*/
 	}
 
 	//CASO NÃO SEJA ENCONTRADA A INFORMAÇÃO PROCURADA, RETORNA-SE O INT MAX
