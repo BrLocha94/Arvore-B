@@ -85,7 +85,7 @@ int busca(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, char
 
 					//SE O NO INTERNO FOR FOLHA, PREPARAMOS O ARQUIVO DE DADOS E TERMINAMOS O LOOP 
 					if(noInterno->aponta_folha == 1){
-						return noInterno->p[i];
+						return noInterno->p[noInterno->m];
 						//fseek(fd, noInterno->p[m], SEEK_SET);
 						//loop = 1;
 						//seek = noInterno->p[m];
