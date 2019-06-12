@@ -17,7 +17,7 @@ int busca(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, char
 	//FILE *fd = fopen(nome_arquivo_dados, "r");
 	
 	//RECEBE O METADADOS USANDO O ARQUIVO DE DADOS
-	TMetadados *metadados = le_arquivo_metadados(nome_arquivo_metadados);
+	TMetadados *metadados = le_arq_metadados(nome_arquivo_metadados);
 
 	//CHECA SE A RAIZ É FOLHA, CASO SEJA NÃO EXISTE ARQUIVO DE INDICE
 	if(metadados->raiz_folha == 1){
@@ -71,10 +71,10 @@ int busca(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, char
 					//CASO CONTRARIO, O ARQUIVO DE INDICE DEVE SER CHECADO NOVAMENTE
 					else{
 						fseek(fi, noInterno->p[i], SEEK_SET);
-						printf("\n PONT NO INTERNO %d \n", noInterno->p[i]);
-						printf("\n PONT PAI ANTIGO NO INTERNO %d \n", noInterno->pont_pai);
+						//printf("\n PONT NO INTERNO %d \n", noInterno->p[i]);
+						//printf("\n PONT PAI ANTIGO NO INTERNO %d \n", noInterno->pont_pai);
 						noInterno = le_no_interno(d, fi);
-						printf("\n PONT PAI NOVO NO INTERNO %d \n", noInterno->pont_pai);
+						//printf("\n PONT PAI NOVO NO INTERNO %d \n", noInterno->pont_pai);
 						break;
 					}
 				}
@@ -95,10 +95,10 @@ int busca(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, char
 					//CASO CONTRARIO, O ARQUIVO DE INDICE DEVE SER CHECADO NOVAMENTE
 					else{
 						fseek(fi, noInterno->p[noInterno->m], SEEK_SET);
-						printf("\n PONT NO INTERNO %d \n", noInterno->p[i]);
-						printf("\n PONT PAI ANTIGO NO INTERNO %d \n", noInterno->pont_pai);
+						//printf("\n PONT NO INTERNO %d \n", noInterno->p[i]);
+						//printf("\n PONT PAI ANTIGO NO INTERNO %d \n", noInterno->pont_pai);
 						noInterno = le_no_interno(d, fi);
-						printf("\n PONT PAI NOVO NO INTERNO %d \n", noInterno->pont_pai);
+						//printf("\n PONT PAI NOVO NO INTERNO %d \n", noInterno->pont_pai);
 						break;
 					}
 				}
