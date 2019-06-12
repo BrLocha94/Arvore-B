@@ -69,7 +69,7 @@ int busca(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, char
 
 					//SE CHEGARMOS A ULTIMA CHECAGEM DO FOR, QUER DIZER QUE OLHAMOS TODOS OS PONTEIROS DA ESQUERDA
 					//SENDO ASSIM, DEVE-SE PASSAR O ULTIMO PONTEIRO, OU SEJA, O PONTEIRO M(NESSE CASO I+1)
-					if(i == (m-1)){
+					if(i == (noInterno->m -1)){
 
 						//SE O NO INTERNO FOR FOLHA, PREPARAMOS O ARQUIVO DE DADOS E TERMINAMOS O LOOP 
 						if(noInterno->aponta_folha == 1){
