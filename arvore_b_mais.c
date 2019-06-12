@@ -3,11 +3,9 @@
 #endif
 
 #include <limits.h>
-
+#include "no_folha.h"
 #include "metadados.h"
-#include "lista_nos_folhas.h"
 #include "arvore_b_mais.h"
-#include "lista_pizzas.h"
 
 
 int busca(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, char *nome_arquivo_dados, int d)
@@ -15,22 +13,27 @@ int busca(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, char
 	//TODO: Inserir aqui o codigo do algoritmo
 	
 	FILE *fm = fopen(nome_arquivo_metadados, 'r');
-	//FILE *fi = fopen(nome_arquivo_indice, 'r');
-	//FILE *fd = fopen(nome_arquivo_dados, 'r');
+	FILE *fi = fopen(nome_arquivo_indice, 'r');
+	FILE *fd = fopen(nome_arquivo_dados, 'r');
 	
 	TMetadados *metadados = le_metadados(fm);
 
 	if(metadados->raiz_folha == 1){
-		TListaNosFolhas * nos_folhas = le_nos_folhas(metadados->d, nome_arquivo_dados);
+		fseek(fd, metadados->pont_raiz, SEEK_SET);
+		
+		TNoFolha *noFolha = le_no_folha(d, fd);
 
-		int i;
-		for(i = 0; i < nos_folhas->lista[0]->m; i++){
-            
-			if(nos_folhas)
-
+		for(int i = 0; i < noFolha->m; i++){
+			if(noFolha->pizzas[i]->cod == cod){
+				return(metadados->pont_raiz);
+			}
 		}
 	}
+	else{
+		/* code */
+	}
 	
+
     return INT_MAX;
 }
 
