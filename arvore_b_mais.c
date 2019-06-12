@@ -71,7 +71,10 @@ int busca(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, char
 					//CASO CONTRARIO, O ARQUIVO DE INDICE DEVE SER CHECADO NOVAMENTE
 					else{
 						fseek(fi, noInterno->p[i], SEEK_SET);
+						printf("\n PONT NO INTERNO %d \n", noInterno->p[i]);
+						printf("\n PONT PAI ANTIGO NO INTERNO %d \n", noInterno->pont_pai);
 						noInterno = le_no_interno(d, fi);
+						printf("\n PONT PAI NOVO NO INTERNO %d \n", noInterno->pont_pai);
 						break;
 					}
 				}
@@ -91,8 +94,11 @@ int busca(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, char
 					}
 					//CASO CONTRARIO, O ARQUIVO DE INDICE DEVE SER CHECADO NOVAMENTE
 					else{
-						fseek(fi, noInterno->p[m], SEEK_SET);
+						fseek(fi, noInterno->p[noInterno->m], SEEK_SET);
+						printf("\n PONT NO INTERNO %d \n", noInterno->p[i]);
+						printf("\n PONT PAI ANTIGO NO INTERNO %d \n", noInterno->pont_pai);
 						noInterno = le_no_interno(d, fi);
+						printf("\n PONT PAI NOVO NO INTERNO %d \n", noInterno->pont_pai);
 						break;
 					}
 				}
@@ -113,7 +119,7 @@ int busca(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, char
 	}
 
 	//CASO NÃO SEJA ENCONTRADA A INFORMAÇÃO PROCURADA, RETORNA-SE O INT MAX
-	return 0;
+	return INT_MAX;
 }
 
 int insere(int cod, char *nome, char *descricao, float preco, char *nome_arquivo_metadados, char *nome_arquivo_indice, char *nome_arquivo_dados, int d)
