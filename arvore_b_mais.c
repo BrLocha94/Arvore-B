@@ -34,7 +34,7 @@ int busca(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, char
 				return(metadados->pont_raiz);
 			}
 		}
-		printf("\n SAIU \n");
+		
 	}
 	//CASO CONTRARIO, DEVE-SE CHECAR PRIMEIRO O ARQUIVO DE INDICES PARA ENTÃO OLHAR OS DADOS
 	else{
@@ -61,6 +61,7 @@ int busca(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, char
 						fseek(fd, noInterno->p[i], SEEK_SET);
 						loop = 1;
 						seek = noInterno->p[i];
+						printf("\n SEEK %i \n", seek);
 						break;
 					}
 					//CASO CONTRARIO, O ARQUIVO DE INDICE DEVE SER CHECADO NOVAMENTE
@@ -77,14 +78,15 @@ int busca(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, char
 
 					//SE O NO INTERNO FOR FOLHA, PREPARAMOS O ARQUIVO DE DADOS E TERMINAMOS O LOOP 
 					if(noInterno->aponta_folha == 1){
-						fseek(fd, noInterno->p[i + 1], SEEK_SET);
+						fseek(fd, noInterno->p[m], SEEK_SET);
 						loop = 1;
-						seek = noInterno->p[i];
+						seek = noInterno->p[m];
+						printf("\n SEEK %i \n", seek);
 						break;
 					}
 					//CASO CONTRARIO, O ARQUIVO DE INDICE DEVE SER CHECADO NOVAMENTE
 					else{
-						fseek(fi, noInterno->p[i + 1], SEEK_SET);
+						fseek(fi, noInterno->p[m], SEEK_SET);
 						noInterno = le_no_interno(d, fi);
 						break;
 					}
