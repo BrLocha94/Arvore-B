@@ -94,18 +94,45 @@ int busca(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, char
 			
 			//CASO A PIZZA PROCURADA SEJA ENCONTRADA, RETORNA O NO QUE A POSSUI
 			if(noFolha->pizzas[i]->cod == cod){
-				return(metadados->pont_raiz);
+				return(noFolha);
 			}
 		}
 	}
 
 	//CASO NÃO SEJA ENCONTRADA A INFORMAÇÃO PROCURADA, RETORNA-SE O INT MAX
-	return INT_MAX;
+	return 0;
 }
 
 int insere(int cod, char *nome, char *descricao, float preco, char *nome_arquivo_metadados, char *nome_arquivo_indice, char *nome_arquivo_dados, int d)
 {
-	//TODO: Inserir aqui o codigo do algoritmo de insercao
+	//ABRE OS ARQUIVOS
+	FILE *fm = fopen(nome_arquivo_metadados, 'r');
+	FILE *fi = fopen(nome_arquivo_indice, 'r');
+	FILE *fd = fopen(nome_arquivo_dados, 'r');
+	
+	//RECEBE O METADADOS USANDO O ARQUIVO DE DADOS
+	TMetadados *metadados = le_metadados(fm);
+	
+	//CHECA SE A RAIZ É FOLHA, CASO SEJA NÃO EXISTE ARQUIVO DE INDICE
+	if(metadados->raiz_folha == 1){
+	
+	
+	
+	
+	
+	
+	
+	}
+	else{
+	
+	
+	
+	
+	
+	
+	
+	}
+	
     return INT_MAX;
 }
 
