@@ -31,7 +31,6 @@ int busca(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, char
 			
 			//CASO A PIZZA PROCURADA SEJA ENCONTRADA, RETORNA O NO QUE A POSSUI
 			if(noFolha->pizzas[i]->cod == cod){
-				printf(%d + 'METADADOS\n', metadados->pont_raiz);
 				return(metadados->pont_raiz);
 			}
 		}
@@ -45,7 +44,6 @@ int busca(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, char
 		int loop = 0;
 		//RECEBE O STRUCT DO NO INTERNO COM AS INFORMAÇÕES A SEREM CHECADAS
 		TNoInterno * noInterno = le_no_interno(d, fi);
-		
 		int seek;
 
 		while(loop == 0){
@@ -70,24 +68,24 @@ int busca(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, char
 						noInterno = le_no_interno(d, fi);
 						break;
 					}
+				}
 
-					//SE CHEGARMOS A ULTIMA CHECAGEM DO FOR, QUER DIZER QUE OLHAMOS TODOS OS PONTEIROS DA ESQUERDA
-					//SENDO ASSIM, DEVE-SE PASSAR O ULTIMO PONTEIRO, OU SEJA, O PONTEIRO M(NESSE CASO I+1)
-					if(i == (noInterno->m -1)){
+				//SE CHEGARMOS A ULTIMA CHECAGEM DO FOR, QUER DIZER QUE OLHAMOS TODOS OS PONTEIROS DA ESQUERDA
+				//SENDO ASSIM, DEVE-SE PASSAR O ULTIMO PONTEIRO, OU SEJA, O PONTEIRO M(NESSE CASO I+1)
+				if(i == (noInterno->m -1)){
 
-						//SE O NO INTERNO FOR FOLHA, PREPARAMOS O ARQUIVO DE DADOS E TERMINAMOS O LOOP 
-						if(noInterno->aponta_folha == 1){
-							fseek(fd, noInterno->p[i + 1], SEEK_SET);
-							loop = 1;
-							seek = noInterno->p[i];
-							break;
-						}
-						//CASO CONTRARIO, O ARQUIVO DE INDICE DEVE SER CHECADO NOVAMENTE
-						else{
-							fseek(fi, noInterno->p[i + 1], SEEK_SET);
-							noInterno = le_no_interno(d, fi);
-							break;
-						}
+					//SE O NO INTERNO FOR FOLHA, PREPARAMOS O ARQUIVO DE DADOS E TERMINAMOS O LOOP 
+					if(noInterno->aponta_folha == 1){
+						fseek(fd, noInterno->p[i + 1], SEEK_SET);
+						loop = 1;
+						seek = noInterno->p[i];
+						break;
+					}
+					//CASO CONTRARIO, O ARQUIVO DE INDICE DEVE SER CHECADO NOVAMENTE
+					else{
+						fseek(fi, noInterno->p[i + 1], SEEK_SET);
+						noInterno = le_no_interno(d, fi);
+						break;
 					}
 				}
 			}
@@ -99,7 +97,6 @@ int busca(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, char
 			
 			//CASO A PIZZA PROCURADA SEJA ENCONTRADA, RETORNA O NO QUE A POSSUI
 			if(noFolha->pizzas[i]->cod == cod){
-				printf(%d + 'FOLHA\n', seek);
 				return(seek);
 			}
 		}
