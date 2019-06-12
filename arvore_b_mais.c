@@ -12,9 +12,9 @@
 int busca(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, char *nome_arquivo_dados, int d)
 {
 	//ABRE OS ARQUIVOS
-	FILE *fm = fopen(nome_arquivo_metadados, 'r');
-	FILE *fi = fopen(nome_arquivo_indice, 'r');
-	FILE *fd = fopen(nome_arquivo_dados, 'r');
+	FILE *fm = fopen(nome_arquivo_metadados, "r");
+	FILE *fi = fopen(nome_arquivo_indice, "r");
+	FILE *fd = fopen(nome_arquivo_dados, "r");
 	
 	//RECEBE O METADADOS USANDO O ARQUIVO DE DADOS
 	TMetadados *metadados = le_metadados(fm);
@@ -44,6 +44,8 @@ int busca(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, char
 		int loop = 0;
 		//RECEBE O STRUCT DO NO INTERNO COM AS INFORMAÇÕES A SEREM CHECADAS
 		TNoInterno * noInterno = le_no_interno(d, fi);
+		
+		int seek;
 
 		while(loop == 0){
 			
@@ -58,6 +60,7 @@ int busca(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, char
 					if(noInterno->aponta_folha == 1){
 						fseek(fd, noInterno->p[i], SEEK_SET);
 						loop = 1;
+						seek = noInterno->p[i];
 						break;
 					}
 					//CASO CONTRARIO, O ARQUIVO DE INDICE DEVE SER CHECADO NOVAMENTE
@@ -75,6 +78,7 @@ int busca(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, char
 						if(noInterno->aponta_folha == 1){
 							fseek(fd, noInterno->p[i + 1], SEEK_SET);
 							loop = 1;
+							seek = noInterno->p[i];
 							break;
 						}
 						//CASO CONTRARIO, O ARQUIVO DE INDICE DEVE SER CHECADO NOVAMENTE
@@ -94,7 +98,7 @@ int busca(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, char
 			
 			//CASO A PIZZA PROCURADA SEJA ENCONTRADA, RETORNA O NO QUE A POSSUI
 			if(noFolha->pizzas[i]->cod == cod){
-				return(noFolha);
+				return(seek);
 			}
 		}
 	}
