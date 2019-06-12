@@ -11,44 +11,26 @@
 
 int busca(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, char *nome_arquivo_dados, int d)
 {
-	//ABRE OS ARQUIVOS
-	//FILE *fm = fopen(nome_arquivo_metadados, "r");
+	//ABRE O ARQUIVO DE INDICE
 	FILE *fi = fopen(nome_arquivo_indice, "r");
-	//FILE *fd = fopen(nome_arquivo_dados, "r");
 	
-	//RECEBE O METADADOS USANDO O ARQUIVO DE DADOS
+	//RECEBE O METADADOS
 	TMetadados *metadados = le_arq_metadados(nome_arquivo_metadados);
 
-	//CHECA SE A RAIZ É FOLHA, CASO SEJA NÃO EXISTE ARQUIVO DE INDICE
+	//CHECA SE A RAIZ É FOLHA, CASO SEJA NÃO EXISTE ARQUIVO DE INDICE, LOGO, DEVE-SE RETORNAR O PONTEIRO DA RAIZ
 	if(metadados->raiz_folha == 1){
-		
 		return metadados->pont_raiz;
-		/*
-		//LEVA O PONTEIRO DO ARQUIVO AO LOCAL EXATO DA LEITURA
-		fseek(fd, metadados->pont_raiz, SEEK_SET);
-		
-		//RECEBE O STRUCT NO_FOLHA COM TODAS AS INFORMAÇÕES QUE DEVEM SER CHECADAS
-		TNoFolha *noFolha = le_no_folha(d, fd);
-		for(int i = 0; i < noFolha->m; i++){
-			
-			//CASO A PIZZA PROCURADA SEJA ENCONTRADA, RETORNA O NO QUE A POSSUI
-			if(noFolha->pizzas[i]->cod == cod){
-				return(metadados->pont_raiz);
-			}
-		}
-		*/
-		
 	}
-	//CASO CONTRARIO, DEVE-SE CHECAR PRIMEIRO O ARQUIVO DE INDICES PARA ENTÃO OLHAR OS DADOS
+	//CASO CONTRARIO, DEVE-SE PROCURAR NO ARQUIVO DE INDICE O DADO
 	else{
 		
 		//PRIMEIRO LEVA-SE O CURSOR DO ARQUIVO DE INDICE AO LOCAL DE INICIO
 		//PARA A LEITURA DOS INDICES ATÉ ACHAR A FOLHA, UM LOOP É NECESSARIO
 		fseek(fi, metadados->pont_raiz, SEEK_SET);
 		int loop = 0;
+		
 		//RECEBE O STRUCT DO NO INTERNO COM AS INFORMAÇÕES A SEREM CHECADAS
 		TNoInterno * noInterno = le_no_interno(d, fi);
-		int seek;
 
 		while(loop == 0){
 			
@@ -62,60 +44,32 @@ int busca(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, char
 					//SE O NO INTERNO FOR FOLHA, PREPARAMOS O ARQUIVO DE DADOS E TERMINAMOS O LOOP 
 					if(noInterno->aponta_folha == 1){
 						return noInterno->p[i];
-						//fseek(fd, noInterno->p[i], SEEK_SET);
-						//loop = 1;
-						//seek = noInterno->p[i];
-						//printf("\n SEEK %i \n", seek);
-						//break;
 					}
 					//CASO CONTRARIO, O ARQUIVO DE INDICE DEVE SER CHECADO NOVAMENTE
 					else{
 						fseek(fi, noInterno->p[i], SEEK_SET);
-						//printf("\n PONT NO INTERNO %d \n", noInterno->p[i]);
-						//printf("\n PONT PAI ANTIGO NO INTERNO %d \n", noInterno->pont_pai);
 						noInterno = le_no_interno(d, fi);
-						//printf("\n PONT PAI NOVO NO INTERNO %d \n", noInterno->pont_pai);
 						break;
 					}
 				}
 
 				//SE CHEGARMOS A ULTIMA CHECAGEM DO FOR, QUER DIZER QUE OLHAMOS TODOS OS PONTEIROS DA ESQUERDA
-				//SENDO ASSIM, DEVE-SE PASSAR O ULTIMO PONTEIRO, OU SEJA, O PONTEIRO M(NESSE CASO I+1)
+				//SENDO ASSIM, DEVE-SE PASSAR O ULTIMO PONTEIRO, OU SEJA, O PONTEIRO M
 				if(i == (noInterno->m -1)){
 
 					//SE O NO INTERNO FOR FOLHA, PREPARAMOS O ARQUIVO DE DADOS E TERMINAMOS O LOOP 
 					if(noInterno->aponta_folha == 1){
 						return noInterno->p[noInterno->m];
-						//fseek(fd, noInterno->p[m], SEEK_SET);
-						//loop = 1;
-						//seek = noInterno->p[m];
-						//printf("\n SEEK %i \n", seek);
-						//break;
 					}
 					//CASO CONTRARIO, O ARQUIVO DE INDICE DEVE SER CHECADO NOVAMENTE
 					else{
 						fseek(fi, noInterno->p[noInterno->m], SEEK_SET);
-						//printf("\n PONT NO INTERNO %d \n", noInterno->p[i]);
-						//printf("\n PONT PAI ANTIGO NO INTERNO %d \n", noInterno->pont_pai);
 						noInterno = le_no_interno(d, fi);
-						//printf("\n PONT PAI NOVO NO INTERNO %d \n", noInterno->pont_pai);
 						break;
 					}
 				}
 			}
 		}
-		
-		/*
-		//RECEBE O STRUCT NO_FOLHA COM TODAS AS INFORMAÇÕES QUE DEVEM SER CHECADAS
-		TNoFolha *noFolha = le_no_folha(d, fd);
-		for(int i = 0; i < noFolha->m; i++){
-			
-			//CASO A PIZZA PROCURADA SEJA ENCONTRADA, RETORNA O NO QUE A POSSUI
-			if(noFolha->pizzas[i]->cod == cod){
-				return(seek);
-			}
-		}
-		*/
 	}
 
 	//CASO NÃO SEJA ENCONTRADA A INFORMAÇÃO PROCURADA, RETORNA-SE O INT MAX
