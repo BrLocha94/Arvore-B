@@ -5,6 +5,7 @@
 #include <limits.h>
 #include "no_interno.h"
 #include "no_folha.h"
+#include "pizza.h"
 #include "metadados.h"
 #include "arvore_b_mais.h"
 
@@ -12,7 +13,7 @@
 int busca(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, char *nome_arquivo_dados, int d)
 {
 	//ABRE O ARQUIVO DE INDICE
-	FILE *fi = fopen(nome_arquivo_indice, "r");
+	FILE * fi = fopen(nome_arquivo_indice, "r");
 	
 	//RECEBE O METADADOS
 	TMetadados *metadados = le_arq_metadados(nome_arquivo_metadados);
@@ -78,23 +79,38 @@ int busca(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, char
 
 int insere(int cod, char *nome, char *descricao, float preco, char *nome_arquivo_metadados, char *nome_arquivo_indice, char *nome_arquivo_dados, int d)
 {
-	//ABRE OS ARQUIVOS
-	FILE *fm = fopen(nome_arquivo_metadados, 'r');
-	FILE *fi = fopen(nome_arquivo_indice, 'r');
-	FILE *fd = fopen(nome_arquivo_dados, 'r');
-	
-	//RECEBE O METADADOS USANDO O ARQUIVO DE DADOS
-	TMetadados *metadados = le_metadados(fm);
-	
+	//ABRE O ARQUIVO DE INDICE
+	FILE * fi = fopen(nome_arquivo_indice, "rw");
+	FILE * fd = fopen(nome_arquivo_indice, "rw");
+	    
+	TPizza * newPizza = pizza(cod, nome, descricao, preco);
+	    
+	//RECEBE O METADADOS
+	TMetadados *metadados = le_arq_metadados(nome_arquivo_metadados);
+	    
 	//CHECA SE A RAIZ É FOLHA, CASO SEJA NÃO EXISTE ARQUIVO DE INDICE
 	if(metadados->raiz_folha == 1){
-	
-	
-	
-	
-	
-	
-	
+		
+		//USA O SEEK PARA SETAR O ARQUIVO
+		fseek(fd, metadados->pont_raiz, SEEK_SET);
+		//RECEBE O STRUCT DO NO INTERNO COM AS INFORMAÇÕES A SEREM CHECADAS
+		TNoFolha * noFolha = le_no_interno(d, fd);
+		
+		//CASO TENHA UM ESPAÇO VAZIO NO NÓ PARA INSERÇÃO, ADICIONA A PIZZA E AUMENTA O N DE CHAVES(M)
+		if(noFolha->m < (2 * d)){
+			noFolha->m = newPizza;
+			noFolha->m = m + 1;
+			
+			//USA O SEEK PARA SETAR O ARQUIVO, SALVA, E RETORNA O PONTEIRO PARA A PIZZA
+			fseek(fd, metadados->pont_raiz, SEEK_SET);
+			salva_no_folha(d, noFolha, fd);
+			return(noFolha->m);
+		}
+		//CASO NÃO SEJA POSSIVEL INSERIR NO NÓ, DEVE-SE ALTERAR A ESTRUTURA DA ARVORE
+		else{
+		
+		
+		}
 	}
 	else{
 	
@@ -106,7 +122,8 @@ int insere(int cod, char *nome, char *descricao, float preco, char *nome_arquivo
 	
 	}
 	
-    return INT_MAX;
+    //CASO NÃO SEJA ENCONTRADA A INFORMAÇÃO PROCURADA, RETORNA-SE O INT MAX
+	return INT_MAX;
 }
 
 int exclui(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, char *nome_arquivo_dados, int d)
