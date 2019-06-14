@@ -128,7 +128,7 @@ int insere(int cod, char *nome, char *descricao, float preco, char *nome_arquivo
 			//     ANDAR ATÉ A PIZZA DESEJADA (TAMANHO_NO_FOLHA)
 			return (metadados->pont_raiz);
 		}
-		//CASO NÃO SEJA POSSIVEL INSERIR NO NÓ, DEVE-SE ALTERAR A ESTRUTURA DA ARVORE
+		//CASO NÃO TENHA ESPAÇO VAZIO PARA INSERIR O NÓ, DEVE-SE ALTERAR A ESTRUTURA DA ARVORE
 		else{
 			
 		
