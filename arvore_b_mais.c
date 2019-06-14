@@ -96,15 +96,34 @@ int insere(int cod, char *nome, char *descricao, float preco, char *nome_arquivo
 		//RECEBE O STRUCT DO NO INTERNO COM AS INFORMAÇÕES A SEREM CHECADAS
 		TNoFolha * noFolha = le_no_interno(d, fd);
 		
-		//CASO TENHA UM ESPAÇO VAZIO NO NÓ PARA INSERÇÃO, ADICIONA A PIZZA E AUMENTA O N DE CHAVES(M)
+		//CASO TENHA UM ESPAÇO VAZIO NO NÓ PARA INSERÇÃO, ADICIONA A PIZZA NO LUGAR CORRETO E AUMENTA O N DE CHAVES(M)
 		if(noFolha->m < (2 * d)){
-			noFolha->m = newPizza;
+			
+			//CRIA PONTEIROS PARA AUXILIAREM AS TROCAS
+			TPizza * aux = newPizza;
+			TPizza * aux_2 = null;
+			
+			//PERCORRE A LISTA ORIGINAL DE PIZZAS
+			for(int i = 0; i < noFolha->m; i++){
+				
+				//REALIZA UM SORT DE MODO QUE A NOVA PIZZA SEJA INSERIDA NO LOCAL CORRETO (N-1 < N < N+1)
+				if(noFolha->pizzas[i]->cod > aux->cod){
+					aux_2 = noFolha->pizzas[i];
+					noFolha->pizzas[i] = aux;
+					aux = aux_2;
+				}
+			}
+			//ADICIONA A PIZZA DE MAIOR CÓDIGO POR ULTIMO
+			noFolha->pizzas[m] = aux;
 			noFolha->m = m + 1;
 			
 			//USA O SEEK PARA SETAR O ARQUIVO, SALVA, E RETORNA O PONTEIRO PARA A PIZZA
 			fseek(fd, metadados->pont_raiz, SEEK_SET);
 			salva_no_folha(d, noFolha, fd);
-			return(noFolha->m);
+			
+			//PARA SE CHEGAR NA PIZZA DEVE-SE IR ATÉ O INICIO DO NÓ (METADADOS->PONT_RAIZ NO CASO), E (+)
+			//     ANDAR ATÉ A PIZZA DESEJADA (TAMANHO_NO_FOLHA)
+			return (metadados->pont_raiz + tamanho_no_folha(m));
 		}
 		//CASO NÃO SEJA POSSIVEL INSERIR NO NÓ, DEVE-SE ALTERAR A ESTRUTURA DA ARVORE
 		else{
