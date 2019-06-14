@@ -106,6 +106,9 @@ int insere(int cod, char *nome, char *descricao, float preco, char *nome_arquivo
 			//PERCORRE A LISTA ORIGINAL DE PIZZAS
 			for(int i = 0; i < noFolha->m; i++){
 				
+				//CASO O NO JÁ EXISTA, RETORNAR ERRO (-1)
+				if(noFolha->pizzas[i]->cod == cod) return -1;
+				
 				//REALIZA UM SORT DE MODO QUE A NOVA PIZZA SEJA INSERIDA NO LOCAL CORRETO (N-1 < N < N+1)
 				if(noFolha->pizzas[i]->cod > aux->cod){
 					aux_2 = noFolha->pizzas[i];
@@ -127,7 +130,7 @@ int insere(int cod, char *nome, char *descricao, float preco, char *nome_arquivo
 		}
 		//CASO NÃO SEJA POSSIVEL INSERIR NO NÓ, DEVE-SE ALTERAR A ESTRUTURA DA ARVORE
 		else{
-		
+			
 		
 		}
 	}
