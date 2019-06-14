@@ -13,7 +13,7 @@
 int busca(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, char *nome_arquivo_dados, int d)
 {
 	//ABRE O ARQUIVO DE INDICE
-	FILE * fi = fopen(nome_arquivo_indice, "r");
+	FILE * fi = fopen(nome_arquivo_indice, "rb");
 	
 	//RECEBE O METADADOS
 	TMetadados *metadados = le_arq_metadados(nome_arquivo_metadados);
@@ -77,14 +77,51 @@ int busca(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, char
 	return INT_MAX;
 }
 
+
 int insere(int cod, char *nome, char *descricao, float preco, char *nome_arquivo_metadados, char *nome_arquivo_indice, char *nome_arquivo_dados, int d)
 {
+	
+//chamar a busca e pega o que ela retorna, se o nó estiver inserido erro na inserção, senão inserção válida !!!
+//fseek na posição retornada pela busca e verificação se é válida ou não a inserção
+//fseek de novo para salvar o novo item
 	//ABRE O ARQUIVO DE INDICE
-	FILE * fi = fopen(nome_arquivo_indice, "rw");
-	FILE * fd = fopen(nome_arquivo_indice, "rw");
+	FILE * fi = fopen(nome_arquivo_indice, "rb+");
+	FILE * fd = fopen(nome_arquivo_dados, "rb+");
 	    
-	TPizza * newPizza = pizza(cod, nome, descricao, preco);
-	    
+	TPizza *newPizza = pizza(cod, nome, descricao, preco);
+
+	int buscaNo = busca(cod, nome_arquivo_metadados, nome_arquivo_indice, nome_arquivo_dados, d);
+
+	fseek(fd, buscaNo, SEEK_SET);
+
+	TNoFolha *noFolha = le_no_folha(d, fd);
+
+	if(noFolha->m < (2 * d)){
+		TPizza *aux = newPizza;
+		TPizza *aux_2 = NULL;
+
+		for(int i = 0; i < noFolha->m; i++){
+			
+			if(noFolha->pizzas[i]->cod == cod){
+				return -1;
+			}
+			
+			if(noFolha->pizzas[i]->cod > aux->cod){
+				aux_2 = noFolha->pizzas[i];
+				noFolha->pizzas[i] = aux;
+				aux = aux_2;
+			}
+		}
+		noFolha->pizzas[noFolha->m] = aux;
+		noFolha->m++;
+
+		fseek(fd, buscaNo, SEEK_SET);
+		salva_no_folha(d, noFolha, fd);
+		
+		return buscaNo;
+	}
+	
+	/* 
 	//RECEBE O METADADOS
 	TMetadados *metadados = le_arq_metadados(nome_arquivo_metadados);
 	    
@@ -118,7 +155,7 @@ int insere(int cod, char *nome, char *descricao, float preco, char *nome_arquivo
 			}
 			//ADICIONA A PIZZA DE MAIOR CÓDIGO POR ULTIMO
 			noFolha->pizzas[noFolha->m] = aux;
-			noFolha->m = m + 1;
+			noFolha->m++;
 			
 			//USA O SEEK PARA SETAR O ARQUIVO, SALVA, E RETORNA O PONTEIRO PARA A PIZZA
 			fseek(fd, metadados->pont_raiz, SEEK_SET);
@@ -142,7 +179,7 @@ int insere(int cod, char *nome, char *descricao, float preco, char *nome_arquivo
 	
 	
 	
-	}
+	}*/
 	
     //CASO NÃO SEJA ENCONTRADA A INFORMAÇÃO PROCURADA, RETORNA-SE O INT MAX
 	return INT_MAX;
