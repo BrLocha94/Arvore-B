@@ -155,11 +155,16 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 		fclose(fd);
 		
 		free(aux);
+		free(noFolha);
+		free(noFolha_aux);
 		
 		return buscaNo;
 	}
 	else{
-	
+		
+		//DA O SEEK NO ARQUIVO DE INDICE ATÉ O CORRESPONDENTE
+		fseek(fi, noFolha->pont_pai, SEEK_SET);
+		
 		TPizza *aux = pizza(cod, nome, categoria, preco);
 		
 		//CRIAR NOVO NÓ FOLHA VAZIO
@@ -208,8 +213,11 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 		for(int i = d; i < (2*d + 1); i++){
 			
 			novo_noFolha->pizzas[i - d] = pizza(noFolha->pizzas[i]->cod, noFolha->pizzas[i]->nome, noFolha->pizzas[i]->categoria, noFolha->pizzas[i]->preco);
-			noFolha->pizza[i] = pizza(-1, "", "", 0);;
+			noFolha->pizza[i] = pizza(-1, "", "", 0);
 		}
+		
+		noFolha->m = d;
+		novo_noFolha->m = d + 1;
 		
 		//MODIFICAR O ARQUIVO DE INDICE PARA TER UM PONTEIRO AO novo_noFolha
 		//   lembrete: O NOVO NO FOLHA FICARA NECESSÁRIAMENTE APOS O ANTIGO NO ARQUIVO
@@ -233,15 +241,57 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 			noInterno->chaves[m] = chave;
 			noInterno->m ++;
 			noInterno->p[m + 1] = tamanho_no_folha(d) * (m + 1); 
+			
+			//SALVAR ARQUIVO DE INDICE
+			fseek(fi, noFolha->pont_pai, SEEK_SET);
+			salva_no_interno(d, noInterno, fi);
+			//FECHAR ARQUIVO DE INDICE
+			fclose(fi);
+			
+			novo_noFolha->pont_pai = noFolha->pont_pai;
+			novo_noFolha->pont_prox = noFolha->pont_prox + tamanho_no_folha(d);
+			
+			//SALVAR ARQUIVO DE DADOS
+			fseek(fd, buscaNo, SEEK_SET);
+			salva_no_folha(d, noFolha, fd);
+			
+			fseek(fd, noFolha->pont_prox, SEEK_SET);
+			TNoFolha * aux_folha = le_no_folha(d, fd);
+			
+			fseek(fd, noFolha->pont_prox, SEEK_SET);
+			salva_no_folha(d, novo_noFolha, fd);
+			
+			TNoFolha * aux_folha_02; int loop = 0;
+			
+			while(fseek(fd, noFolha->pont_prox->pont_prox + (loop * tamanho_no_folha(d)), SEEK_SET) == 0){
+				
+				aux_folha_02 = le_no_folha(d, fd);
+				fseek(fd, noFolha->pont_prox->pont_prox + (loop * tamanho_no_folha(d)), SEEK_SET);
+				salva_no_folha(d, aux_folha, fd);
+				
+				free(aux_folha);
+				aux_folha = aux_folha_02;
+				
+				loop ++;
+			}
+			
+			salva_no_folha(d, aux_folha, fd);
+			
+			//FECHAR ARQUIVO DE DADOS
+			fclose(fd);
+			
+			free(aux_folha);
+			free(noFolha);
+			free(novo_noFolha);
+		}
+		//CASO CONTRARIO, FAZER O PARTICIONAMENTO TOMANDO CUIDADO COM A PROPAGAÇÃO
+		else{
+		
+		
+		
 		}
 		
-		//CASO CONTRARIO, FAZER O PARTICIONAMENTO TOMANDO CUIDADO COM A PROPAGAÇÃO
-		
-		//SALVAR ARQUIVO DE INDICE
-		//FECHAR ARQUIVO DE INDICE
-		
-		//SALVAR ARQUIVO DE DADOS
-		//FECHAR ARQUIVO DE DADOS
+		return (buscaNo + tamanho_no_folha(d));
 	}
 	
     //CASO NÃO SEJA ENCONTRADA A INFORMAÇÃO PROCURADA, RETORNA-SE O INT MAX
