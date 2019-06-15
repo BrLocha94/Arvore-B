@@ -155,6 +155,9 @@ int insere(int cod, char *nome, char *descricao, float preco, char *nome_arquivo
 		noFolha->pizzas[noFolha->m] = aux;
 		noFolha->m++;
 		
+		printf("\n NO FOLHA DEPOIS:      ");
+		imprime_no_folha(d, noFolha);
+		
 		TNoFolha * noFolha_aux = no_folha(d, noFolha->m, noFolha->pont_pai, noFolha->pont_prox);
 		for(int i = 0; i < noFolha->m; i++){
 			
@@ -166,17 +169,8 @@ int insere(int cod, char *nome, char *descricao, float preco, char *nome_arquivo
 			//noFolha_aux->pizzas[i]->preco = aux->preco;
 		}
 		
-		printf("\n NOVO NO FOLHA :      ");
-			imprime_no_folha(d, noFolha_aux);
-		
 		fseek(fd, buscaNo, SEEK_SET);
 		salva_no_folha(d, noFolha, fd);
-		
-		printf("\n NOVO NO FOLHA APOS O SALVA:      ");
-			imprime_no_folha(d, noFolha);
-		
-		printf("\n LISTA DOS NOS FOLHAS:      ");
-		imprime_nos_folhas(d, le_nos_folhas(d, nome_arquivo_dados));
 		
 		free(aux);
 		
