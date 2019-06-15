@@ -3,6 +3,7 @@
 #endif
  
 #include <limits.h>
+#include <string.h>
 #include "no_interno.h"
 #include "no_folha.h"
 #include "pizza.h"
@@ -112,20 +113,26 @@ int insere(int cod, char *nome, char *descricao, float preco, char *nome_arquivo
 				
 				//TROCA O VALOR DO AUX PELO DA PIZZA MAIOR
 				aux->cod = noFolha->pizzas[i]->cod;
-				aux->nome = noFolha->pizzas[i]->nome;
-				aux->descricao = noFolha->pizzas[i]->descricao;
+				//aux->nome = noFolha->pizzas[i]->nome;
+				strcpy(aux->nome, noFolha->pizzas[i]->nome);
+				//aux->descricao = noFolha->pizzas[i]->descricao;
+				strcpy(aux->descricao, noFolha->pizzas[i]->descricao);
 				aux->preco = noFolha->pizzas[i]->preco;
 				
 				//TROCA O VALOR DA PIZZA PELA QUE DEVE SER INSERIDA
 				noFolha->pizzas[i]->cod = aux_2->cod;
-				noFolha->pizzas[i]->nome = aux_2->nome;
-				noFolha->pizzas[i]->descricao = aux_2->descricao;
+				//noFolha->pizzas[i]->nome = aux_2->nome;
+				strcpy(noFolha->pizzas[i]->nome, aux_2->nome);
+				//noFolha->pizzas[i]->descricao = aux_2->descricao;
+				strcpy(noFolha->pizzas[i]->descricao, aux_2->descricao);
 				noFolha->pizzas[i]->preco = aux_2->preco;
 				
 				//ACERTA O AUX 2 
 				aux_2->cod = aux->cod;
-				aux_2->nome = aux->nome;
-				aux_2->descricao = aux->descricao;
+				//aux_2->nome = aux->nome;
+				strcpy(aux_2->nome, aux->nome);
+				//aux_2->descricao = aux->descricao;
+				strcpy(aux_2->nome, aux->nome);
 				aux_2->preco = aux->preco;
 			}
 		}
