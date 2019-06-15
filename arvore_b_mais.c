@@ -88,7 +88,7 @@ int insere(int cod, char *nome, char *descricao, float preco, char *nome_arquivo
 	FILE * fi = fopen(nome_arquivo_indice, "rb+");
 	FILE * fd = fopen(nome_arquivo_dados, "rb+");
 	    
-	TPizza *newPizza = pizza(cod, nome, descricao, preco);
+	//TPizza *newPizza = pizza(cod, nome, descricao, preco);
 
 	int buscaNo = busca(cod, nome_arquivo_metadados, nome_arquivo_indice, nome_arquivo_dados, d);
 
@@ -97,19 +97,36 @@ int insere(int cod, char *nome, char *descricao, float preco, char *nome_arquivo
 	TNoFolha *noFolha = le_no_folha(d, fd);
 
 	if(noFolha->m < (2 * d)){
-		TPizza *aux = newPizza;
-		TPizza *aux_2 = NULL;
+		TPizza *aux = pizza(cod, nome, descricao, preco);
+		TPizza *aux_2 = pizza(cod, nome, descricao, preco);
 
 		for(int i = 0; i < noFolha->m; i++){
 			
+			//CASO O NÓ JÁ EXISTA NA ARVORE
 			if(noFolha->pizzas[i]->cod == cod){
 				return -1;
 			}
 			
+			//CASO CONTRÁRIO, INSERE NO DEVIDO LOCAL
 			if(noFolha->pizzas[i]->cod > aux->cod){
-				aux_2 = noFolha->pizzas[i];
-				noFolha->pizzas[i] = aux;
-				aux = aux_2;
+				
+				//TROCA O VALOR DO AUX PELO DA PIZZA MAIOR
+				aux->cod = noFolha->pizzas[i]->cod;
+				aux->nome = noFolha->pizzas[i]->nome;
+				aux->descricao = noFolha->pizzas[i]->descricao;
+				aux->preco = noFolha->pizzas[i]->preco;
+				
+				//TROCA O VALOR DA PIZZA PELA QUE DEVE SER INSERIDA
+				noFolha->pizzas[i]->cod = aux_2->cod;
+				noFolha->pizzas[i]->nome = aux_2->nome;
+				noFolha->pizzas[i]->descricao = aux_2->descricao;
+				noFolha->pizzas[i]->preco = aux_2->preco;
+				
+				//ACERTA O AUX 2 
+				aux_2->cod = aux->cod;
+				aux_2->nome = aux->nome;
+				aux_2->descricao = aux->descricao;
+				aux_2->preco = aux->preco;
 			}
 		}
 		noFolha->pizzas[noFolha->m] = aux;
@@ -118,68 +135,17 @@ int insere(int cod, char *nome, char *descricao, float preco, char *nome_arquivo
 		fseek(fd, buscaNo, SEEK_SET);
 		salva_no_folha(d, noFolha, fd);
 		
+		free(aux);
+		free(aux_2);
+		
 		return buscaNo;
-	}
-	
-	/* 
-	//RECEBE O METADADOS
-	TMetadados *metadados = le_arq_metadados(nome_arquivo_metadados);
-	    
-	//CHECA SE A RAIZ É FOLHA, CASO SEJA NÃO EXISTE ARQUIVO DE INDICE
-	if(metadados->raiz_folha == 1){
-		
-		//USA O SEEK PARA SETAR O ARQUIVO
-		fseek(fd, metadados->pont_raiz, SEEK_SET);
-		//RECEBE O STRUCT DO NO INTERNO COM AS INFORMAÇÕES A SEREM CHECADAS
-		TNoFolha * noFolha = le_no_folha(d, fd);
-		
-		//CASO TENHA UM ESPAÇO VAZIO NO NÓ PARA INSERÇÃO, ADICIONA A PIZZA NO LUGAR CORRETO E AUMENTA O N DE CHAVES(M)
-		if(noFolha->m < (2 * d)){
-			
-			//CRIA PONTEIROS PARA AUXILIAREM AS TROCAS
-			TPizza * aux = newPizza;
-			TPizza * aux_2 = NULL;
-			
-			//PERCORRE A LISTA ORIGINAL DE PIZZAS
-			for(int i = 0; i < noFolha->m; i++){
-				
-				//CASO O NO JÁ EXISTA, RETORNAR ERRO (-1)
-				if(noFolha->pizzas[i]->cod == cod) return -1;
-				
-				//REALIZA UM SORT DE MODO QUE A NOVA PIZZA SEJA INSERIDA NO LOCAL CORRETO (N-1 < N < N+1)
-				if(noFolha->pizzas[i]->cod > aux->cod){
-					aux_2 = noFolha->pizzas[i];
-					noFolha->pizzas[i] = aux;
-					aux = aux_2;
-				}
-			}
-			//ADICIONA A PIZZA DE MAIOR CÓDIGO POR ULTIMO
-			noFolha->pizzas[noFolha->m] = aux;
-			noFolha->m++;
-			
-			//USA O SEEK PARA SETAR O ARQUIVO, SALVA, E RETORNA O PONTEIRO PARA A PIZZA
-			fseek(fd, metadados->pont_raiz, SEEK_SET);
-			salva_no_folha(d, noFolha, fd);
-			
-			//PARA SE CHEGAR NA PIZZA DEVE-SE IR ATÉ O INICIO DO NÓ (METADADOS->PONT_RAIZ NO CASO), E (+)
-			//     ANDAR ATÉ A PIZZA DESEJADA (TAMANHO_NO_FOLHA)
-			return (metadados->pont_raiz);
-		}
-		//CASO NÃO TENHA ESPAÇO VAZIO PARA INSERIR O NÓ, DEVE-SE ALTERAR A ESTRUTURA DA ARVORE
-		else{
-			
-		
-		}
 	}
 	else{
 	
 	
 	
 	
-	
-	
-	
-	}*/
+	}
 	
     //CASO NÃO SEJA ENCONTRADA A INFORMAÇÃO PROCURADA, RETORNA-SE O INT MAX
 	return INT_MAX;
