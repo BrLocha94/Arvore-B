@@ -6,6 +6,9 @@
 #include <string.h>
 #include "no_interno.h"
 #include "no_folha.h"
+
+#include "lista_nos_folhas.h"
+
 #include "pizza.h"
 #include "metadados.h"
 #include "arvore_b_mais.h"
@@ -142,17 +145,25 @@ int insere(int cod, char *nome, char *descricao, float preco, char *nome_arquivo
 				}
 			}
 			
-			printf("\n NO FOLHA FINAL:      ");
-			imprime_no_folha(d, noFolha);
-			
 			free(aux_2);
 		}
 		
 		noFolha->pizzas[noFolha->m] = aux;
 		noFolha->m++;
-
+		
+		printf("\n NO FOLHA FINAL:      ");
+			imprime_no_folha(d, noFolha);
+		
+		TListaNosFolhas * nosfolhas = le_nos_folhas(d, nome_arquivo_dados);
+		printf("\n LISTA NOS FOLHAS ANTES:      ");
+		imprime_nos_folhas(d, nosfolhas);
+		
 		fseek(fd, buscaNo, SEEK_SET);
 		salva_no_folha(d, noFolha, fd);
+		
+		nosfolhas = le_nos_folhas(d, nome_arquivo_dados);
+		printf("\n LISTA NOS FOLHAS DEPOIS:      ");
+		imprime_nos_folhas(d, nosfolhas);
 		
 		free(aux);
 		
