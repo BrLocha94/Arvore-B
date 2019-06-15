@@ -4,6 +4,7 @@
  
 #include <limits.h>
 #include <string.h>
+#include <stdlib.h>
 #include "no_interno.h"
 #include "no_folha.h"
 
@@ -160,7 +161,7 @@ int insere(int cod, char *nome, char *descricao, float preco, char *nome_arquivo
 			noFolha_aux->pizzas[i]->cod = aux->cod;
 			strcpy(noFolha_aux->pizzas[i]->nome, aux->nome);
 			strcpy(noFolha_aux->pizzas[i]->descricao, aux->descricao);
-			noFolha_aux->pizzas[i]->preco = aux->preco
+			noFolha_aux->pizzas[i]->preco = aux->preco;
 		}
 		
 		printf("\n NOVO NO FOLHA :      ");
