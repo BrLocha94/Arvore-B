@@ -162,15 +162,18 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 		for(int i = 0; i < noFolha->m; i++){
 			
 			noFolha_aux->pizzas[i] = pizza(noFolha->pizzas[i]->cod, noFolha->pizzas[i]->nome, noFolha->pizzas[i]->categoria, noFolha->pizzas[i]->preco);
-			
-			//noFolha_aux->pizzas[i]->cod = aux->cod;
-			//strcpy(noFolha_aux->pizzas[i]->nome, aux->nome);
-			//strcpy(noFolha_aux->pizzas[i]->categoria, aux->categoria);
-			//noFolha_aux->pizzas[i]->preco = aux->preco;
 		}
+		
+		printf("\n LISTA DE NOS FOLHA ANTES: ");
+		TListaNosFolhas * lista_folhas = le_nos_folhas(d, nome_arquivo_dados);
+		imprime_nos_folhas(d, lista_folhas);
 		
 		fseek(fd, buscaNo, SEEK_SET);
 		salva_no_folha(d, noFolha, fd);
+		
+		printf("\n LISTA DE NOS FOLHA DEPOIS: ");
+		lista_folhas = le_nos_folhas(d, nome_arquivo_dados);
+		imprime_nos_folhas(d, lista_folhas);
 		
 		free(aux);
 		
