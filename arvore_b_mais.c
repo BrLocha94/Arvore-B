@@ -7,9 +7,6 @@
 #include <stdlib.h>
 #include "no_interno.h"
 #include "no_folha.h"
-
-#include "lista_nos_folhas.h"
-
 #include "pizza.h"
 #include "metadados.h"
 #include "arvore_b_mais.h"
@@ -163,22 +160,88 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 	}
 	else{
 	
+		TPizza *aux = pizza(cod, nome, categoria, preco);
+		
 		//CRIAR NOVO NÓ FOLHA VAZIO
 		TNoFolha * novo_noFolha = no_folha_vazio(d);
+		int troca = 0;
 		
 		//ADICIONAR AS PRIMEIRAS D PIZZAS(ORDENADAS POR CODIGO) NO noFolha
+		TPizza *aux_2 = pizza(cod, nome, categoria, preco);
+
+		for(int i = 0; i < noFolha->m; i++){
+			
+			//CASO O NÓ JÁ EXISTA NA ARVORE
+			if(noFolha->pizzas[i]->cod == cod){
+				return -1;
+			}
+			
+			//CASO CONTRÁRIO, INSERE NO DEVIDO LOCAL
+			if(noFolha->pizzas[i]->cod > aux->cod){
+				
+				//TROCA O VALOR DO AUX PELO DA PIZZA MAIOR
+				aux->cod = noFolha->pizzas[i]->cod;
+				strcpy(aux->nome, noFolha->pizzas[i]->nome);
+				strcpy(aux->categoria, noFolha->pizzas[i]->categoria);
+				aux->preco = noFolha->pizzas[i]->preco;
+				
+				//TROCA O VALOR DA PIZZA PELA QUE DEVE SER INSERIDA
+				noFolha->pizzas[i]->cod = aux_2->cod;
+				strcpy(noFolha->pizzas[i]->nome, aux_2->nome);
+				strcpy(noFolha->pizzas[i]->categoria, aux_2->categoria);
+				noFolha->pizzas[i]->preco = aux_2->preco;
+				
+				//ACERTA O AUX 2 
+				aux_2->cod = aux->cod;
+				strcpy(aux_2->nome, aux->nome);
+				strcpy(aux_2->nome, aux->nome);
+				aux_2->preco = aux->preco;
+			}
+		}
+		
+		free(aux_2);
+		
+		noFolha->pizzas[noFolha->m] = aux;
+		noFolha->m++;
 		
 		//ADICIONAR AS OUTRAS PIZZAS NO novo_noFolha
+		for(int i = d; i < (2*d + 1); i++){
+			
+			novo_noFolha->pizzas[i - d] = pizza(noFolha->pizzas[i]->cod, noFolha->pizzas[i]->nome, noFolha->pizzas[i]->categoria, noFolha->pizzas[i]->preco);
+			noFolha->pizza[i] = pizza(-1, "", "", 0);;
+		}
 		
 		//MODIFICAR O ARQUIVO DE INDICE PARA TER UM PONTEIRO AO novo_noFolha
 		//   lembrete: O NOVO NO FOLHA FICARA NECESSÁRIAMENTE APOS O ANTIGO NO ARQUIVO
-		
 		//CASO O ARQUIVO DE INDICE TENHA ESPAÇO PARA INSERÇÃO
+		TNoInterno * noInterno = le_no_interno(d, fi);
+		int chave = novo_noFolha->pizza[0]->cod;
+		int aux = chave;
+		
+		if(noInterno->m < 2*d){
+		
+			for(int i = 0; i < noInterno->m; i++){
+				
+				if(noInterno->chaves[i] > chave){
+					
+					aux = noInterno->chaves[i];
+					noInterno->chaves[i] = chave;
+					chave = aux;
+				}
+			}
+			
+			noInterno->chaves[m] = chave;
+			noInterno->m ++;
+			noInterno->p[m + 1] = tamanho_no_folha(d) * (m + 1); 
+		}
 		
 		//CASO CONTRARIO, FAZER O PARTICIONAMENTO TOMANDO CUIDADO COM A PROPAGAÇÃO
 		
 		//SALVAR ARQUIVO DE INDICE
+		//FECHAR ARQUIVO DE INDICE
+		
 		//SALVAR ARQUIVO DE DADOS
+		//FECHAR ARQUIVO DE DADOS
 	}
 	
     //CASO NÃO SEJA ENCONTRADA A INFORMAÇÃO PROCURADA, RETORNA-SE O INT MAX
