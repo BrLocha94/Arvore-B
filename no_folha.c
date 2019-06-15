@@ -56,9 +56,6 @@ TNoFolha *cria_no_folha(int d, int pont_pai, int pont_prox, int m, ...)
 
 void salva_no_folha(int d, TNoFolha *no, FILE *out)
 {
-	printf("\n NO FOLHA ENTRANDO NO SALVA:      ");
-	imprime_no_folha(d, no);
-	
 	int i;
 	fwrite(&no->m, sizeof(int), 1, out);
 	fwrite(&no->pont_pai, sizeof(int), 1, out);
@@ -69,18 +66,12 @@ void salva_no_folha(int d, TNoFolha *no, FILE *out)
 
 	for (i = 0; i < 2 * d; i++) {
 		if (no->pizzas[i]) {
-			
-			printf("\n SALVOU PIZZA  :      ");
-			imprime_pizza(no->pizzas[i]);
-			
 			salva_pizza(no->pizzas[i], out);
 		} else {
 			salva_pizza(vazio, out);
 		}
 	}
 	free(vazio);
-	
-	printf("\n TERMINOU FUNÇÃO SALVAR \n");
 }
 
 TNoFolha *le_no_folha(int d, FILE *in)
