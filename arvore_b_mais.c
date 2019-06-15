@@ -213,7 +213,7 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 		for(int i = d; i < (2*d + 1); i++){
 			
 			novo_noFolha->pizzas[i - d] = pizza(noFolha->pizzas[i]->cod, noFolha->pizzas[i]->nome, noFolha->pizzas[i]->categoria, noFolha->pizzas[i]->preco);
-			noFolha->pizzas[i] = pizza(-1, "", "", 0);
+			noFolha->pizzas[i] = NULL;
 		}
 		
 		noFolha->m = d;
@@ -243,7 +243,7 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 			
 			noInterno->chaves[noInterno->m] = chave;
 			noInterno->m ++;
-			noInterno->p[noInterno->m + 1] = noInterno->p[noInterno->m] + tamanho_no_folha(d); 
+			noInterno->p[noInterno->m] = noInterno->p[noInterno->m] + tamanho_no_folha(d); 
 			
 			printf("\n NO INTERNO DEPOIS : \n");
 			imprime_no_interno(d, noInterno);
@@ -278,6 +278,8 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 			
 			TNoFolha * aux_folha_02; int loop = 0;
 			
+			printf("\n RESULTADO DO FSEEK DO WHILE : %i \n", fseek(fd, noFolha->pont_prox + (loop * tamanho_no_folha(d)), SEEK_SET));
+			
 			while(fseek(fd, noFolha->pont_prox + (loop * tamanho_no_folha(d)), SEEK_SET) == 0){
 				
 				printf("\n NO FOLHA INSERIDO : \n");
@@ -286,6 +288,9 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 				aux_folha_02 = le_no_folha(d, fd);
 				fseek(fd, noFolha->pont_prox + (loop * tamanho_no_folha(d)), SEEK_SET);
 				salva_no_folha(d, aux_folha, fd);
+				
+				printf("\n AUX_02 : \n");
+				imprime_no_folha(d, aux_folha_02);
 				
 				free(aux_folha);
 				aux_folha = aux_folha_02;
