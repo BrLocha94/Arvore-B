@@ -232,21 +232,22 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 				
 				if(noInterno->chaves[i] > chave){
 					
-					aux = noInterno->chaves[i];
+					aux_chave = noInterno->chaves[i];
 					noInterno->chaves[i] = chave;
-					chave = aux;
+					chave = aux_chave;
 				}
 			}
 			
 			noInterno->chaves[noInterno->m] = chave;
 			noInterno->m ++;
-			noInterno->p[noInterno->m + 1] = tamanho_no_folha(d) * (noInterno->m + 1); 
+			noInterno->p[noInterno->m + 1] = noInterno->p[m] + tamanho_no_folha(d); 
 			
 			//SALVAR ARQUIVO DE INDICE
 			fseek(fi, noFolha->pont_pai, SEEK_SET);
 			salva_no_interno(d, noInterno, fi);
 			//FECHAR ARQUIVO DE INDICE
 			fclose(fi);
+			
 			
 			novo_noFolha->pont_pai = noFolha->pont_pai;
 			novo_noFolha->pont_prox = noFolha->pont_prox + tamanho_no_folha(d);
@@ -283,6 +284,7 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 			free(aux_folha);
 			free(noFolha);
 			free(novo_noFolha);
+			
 		}
 		//CASO CONTRARIO, FAZER O PARTICIONAMENTO TOMANDO CUIDADO COM A PROPAGAÇÃO
 		else{
@@ -291,7 +293,6 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 		
 		}
 		
-		return (buscaNo + tamanho_no_folha(d));
 	}
 	
     //CASO NÃO SEJA ENCONTRADA A INFORMAÇÃO PROCURADA, RETORNA-SE O INT MAX
