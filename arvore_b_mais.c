@@ -276,11 +276,11 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 			
 			salva_no_folha(d, novo_noFolha, fd);
 			
-			TNoFolha * aux_folha_02; int loop = 0;
-			
-			printf("\n RESULTADO DO FSEEK DO WHILE : %i \n", fseek(fd, noFolha->pont_prox + (loop * tamanho_no_folha(d)), SEEK_SET));
-			
-			while(fseek(fd, noFolha->pont_prox + (loop * tamanho_no_folha(d)), SEEK_SET) == 0){
+			TNoFolha * aux_folha_02 = aux_folha; int loop = 0;
+						
+			while(aux_folha_02 != NULL){
+				
+				fseek(fd, noFolha->pont_prox + (loop * tamanho_no_folha(d)), SEEK_SET);
 				
 				printf("\n NO FOLHA INSERIDO : \n");
 				imprime_no_folha(d, aux_folha);
