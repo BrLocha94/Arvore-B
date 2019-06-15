@@ -227,7 +227,10 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 		int aux_chave = chave;
 		
 		if(noInterno->m < 2*d){
-		
+			
+			printf("\n NO INTERNO ANTES : \n");
+			imprime_no_interno(d, noInterno);
+			
 			for(int i = 0; i < noInterno->m; i++){
 				
 				if(noInterno->chaves[i] > chave){
@@ -242,6 +245,9 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 			noInterno->m ++;
 			noInterno->p[noInterno->m + 1] = noInterno->p[noInterno->m] + tamanho_no_folha(d); 
 			
+			printf("\n NO INTERNO DEPOIS : \n");
+			imprime_no_interno(d, noInterno);
+			
 			//SALVAR ARQUIVO DE INDICE
 			fseek(fi, noFolha->pont_pai, SEEK_SET);
 			salva_no_interno(d, noInterno, fi);
@@ -254,17 +260,28 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 			
 			//SALVAR ARQUIVO DE DADOS
 			fseek(fd, buscaNo, SEEK_SET);
+			
+			printf("\n NO FOLHA INSERIDO PRIMEIRO: \n");
+			imprime_no_folha(d, noFolha);
+			
 			salva_no_folha(d, noFolha, fd);
 			
 			fseek(fd, noFolha->pont_prox, SEEK_SET);
 			TNoFolha * aux_folha = le_no_folha(d, fd);
 			
 			fseek(fd, noFolha->pont_prox, SEEK_SET);
+			
+			printf("\n NO FOLHA INSERIDO SEGUNDO: \n");
+			imprime_no_folha(d, novo_noFolha);
+			
 			salva_no_folha(d, novo_noFolha, fd);
 			
 			TNoFolha * aux_folha_02; int loop = 0;
 			
 			while(fseek(fd, noFolha->pont_prox + (loop * tamanho_no_folha(d)), SEEK_SET) == 0){
+				
+				printf("\n NO FOLHA INSERIDO : \n");
+				imprime_no_folha(d, aux_folha);
 				
 				aux_folha_02 = le_no_folha(d, fd);
 				fseek(fd, noFolha->pont_prox + (loop * tamanho_no_folha(d)), SEEK_SET);
@@ -275,6 +292,9 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 				
 				loop ++;
 			}
+			
+			printf("\n NO FOLHA INSERIDO FINAL : \n");
+			imprime_no_folha(d, aux_folha);
 			
 			salva_no_folha(d, aux_folha, fd);
 			
