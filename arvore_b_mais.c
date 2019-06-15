@@ -240,7 +240,7 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 			
 			noInterno->chaves[noInterno->m] = chave;
 			noInterno->m ++;
-			noInterno->p[noInterno->m + 1] = noInterno->p[m] + tamanho_no_folha(d); 
+			noInterno->p[noInterno->m + 1] = noInterno->p[noInterno->m] + tamanho_no_folha(d); 
 			
 			//SALVAR ARQUIVO DE INDICE
 			fseek(fi, noFolha->pont_pai, SEEK_SET);
