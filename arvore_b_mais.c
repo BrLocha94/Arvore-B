@@ -157,11 +157,13 @@ int insere(int cod, char *nome, char *descricao, float preco, char *nome_arquivo
 		
 		TNoFolha * noFolha_aux = no_folha(d, noFolha->m, noFolha->pont_pai, noFolha->pont_prox);
 		for(int i = 0; i < noFolha->m; i++){
-			//noFolha_aux->pizzas[i] = noFolha->pizzas[i];
-			noFolha_aux->pizzas[i]->cod = aux->cod;
-			strcpy(noFolha_aux->pizzas[i]->nome, aux->nome);
-			strcpy(noFolha_aux->pizzas[i]->descricao, aux->descricao);
-			noFolha_aux->pizzas[i]->preco = aux->preco;
+			
+			noFolha_aux->pizzas[i] = pizza(aux->cod, aux->nome, aux->descricao, aux->preco);
+			
+			//noFolha_aux->pizzas[i]->cod = aux->cod;
+			//strcpy(noFolha_aux->pizzas[i]->nome, aux->nome);
+			//strcpy(noFolha_aux->pizzas[i]->descricao, aux->descricao);
+			//noFolha_aux->pizzas[i]->preco = aux->preco;
 		}
 		
 		printf("\n NOVO NO FOLHA :      ");
