@@ -56,8 +56,12 @@ TNoFolha *cria_no_folha(int d, int pont_pai, int pont_prox, int m, ...)
 
 void salva_no_folha(int d, TNoFolha *no, FILE *out)
 {
+	printf("NO FOLHA PASSADO NO SALVA_FOLHA:   ");
+	imprime_no_folha(d, no);
+	
 	int i;
 	fwrite(&no->m, sizeof(int), 1, out);
+	printf("\n m : %i   ", no->m);
 	fwrite(&no->pont_pai, sizeof(int), 1, out);
 	fwrite(&no->pont_prox, sizeof(int), 1, out);
 	//garantidamente, sempre havera pelo menos 1 chave no noh
@@ -65,9 +69,12 @@ void salva_no_folha(int d, TNoFolha *no, FILE *out)
 	TPizza *vazio = pizza(-1, "", "", 0);
 
 	for (i = 0; i < 2 * d; i++) {
+		printf(" PIZZAS :     ");
 		if (no->pizzas[i]) {
+			imprime_pizza(no->pizzas[i]);
 			salva_pizza(no->pizzas[i], out);
 		} else {
+			printf("    ENTROU NO VAZIO   \n");
 			salva_pizza(vazio, out);
 		}
 	}
