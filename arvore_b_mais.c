@@ -154,16 +154,8 @@ int insere(int cod, char *nome, char *descricao, float preco, char *nome_arquivo
 		printf("\n NO FOLHA FINAL:      ");
 			imprime_no_folha(d, noFolha);
 		
-		TListaNosFolhas * nosfolhas = le_nos_folhas(d, nome_arquivo_dados);
-		printf("\n LISTA NOS FOLHAS ANTES:      ");
-		imprime_nos_folhas(d, nosfolhas);
-		
-		fseek(fd, buscaNo, SEEK_SET);
+		//fseek(fd, buscaNo, SEEK_SET);
 		salva_no_folha(d, noFolha, fd);
-		
-		nosfolhas = le_nos_folhas(d, nome_arquivo_dados);
-		printf("\n LISTA NOS FOLHAS DEPOIS:      ");
-		imprime_nos_folhas(d, nosfolhas);
 		
 		free(aux);
 		
