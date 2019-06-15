@@ -121,11 +121,6 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 				//CASO CONTRÁRIO, INSERE NO DEVIDO LOCAL
 				if(noFolha->pizzas[i]->cod > aux->cod){
 					
-					printf("\n ENTROU NO FOR \n");
-					
-					printf("\n NO FOLHA ANTES:      ");
-					imprime_no_folha(d, noFolha);
-					
 					//TROCA O VALOR DO AUX PELO DA PIZZA MAIOR
 					aux->cod = noFolha->pizzas[i]->cod;
 					strcpy(aux->nome, noFolha->pizzas[i]->nome);
@@ -143,9 +138,6 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 					strcpy(aux_2->nome, aux->nome);
 					strcpy(aux_2->nome, aux->nome);
 					aux_2->preco = aux->preco;
-					
-					printf("\n NO FOLHA DEPOIS:      ");
-					imprime_no_folha(d, noFolha);
 				}
 			}
 			
@@ -155,25 +147,15 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 		noFolha->pizzas[noFolha->m] = aux;
 		noFolha->m++;
 		
-		printf("\n NO FOLHA DEPOIS:      ");
-		imprime_no_folha(d, noFolha);
-		
 		TNoFolha * noFolha_aux = no_folha(d, noFolha->m, noFolha->pont_pai, noFolha->pont_prox);
 		for(int i = 0; i < noFolha->m; i++){
 			
 			noFolha_aux->pizzas[i] = pizza(noFolha->pizzas[i]->cod, noFolha->pizzas[i]->nome, noFolha->pizzas[i]->categoria, noFolha->pizzas[i]->preco);
 		}
 		
-		printf("\n LISTA DE NOS FOLHA ANTES: ");
-		TListaNosFolhas * lista_folhas = le_nos_folhas(d, nome_arquivo_dados);
-		imprime_nos_folhas(d, lista_folhas);
-		
 		fseek(fd, buscaNo, SEEK_SET);
-		salva_no_folha(d, noFolha, fd);
-		
-		printf("\n LISTA DE NOS FOLHA DEPOIS: ");
-		lista_folhas = le_nos_folhas(d, nome_arquivo_dados);
-		imprime_nos_folhas(d, lista_folhas);
+		salva_no_folha(d, noFolha_aux, fd);
+		fclose(fd);
 		
 		free(aux);
 		
