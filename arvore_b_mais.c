@@ -214,7 +214,7 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 		//ADICIONAR AS OUTRAS PIZZAS NO novo_noFolha
 		for(int i = d; i < (2*d + 1); i++){
 			
-			if(novo_noFolha->pizzas[i - d]->cod == cod) trocou_folha = 1;
+			if(noFolha->pizzas[i]->cod == cod) trocou_folha = 1;
 			
 			novo_noFolha->pizzas[i - d] = pizza(noFolha->pizzas[i]->cod, noFolha->pizzas[i]->nome, noFolha->pizzas[i]->categoria, noFolha->pizzas[i]->preco);
 			noFolha->pizzas[i] = NULL;
@@ -222,6 +222,9 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 		
 		noFolha->m = d;
 		novo_noFolha->m = d + 1;
+		
+		//ABRE O ARQUIVO DE METADADOS PARA ATUALIZAR AS REFERENCIAS
+		TMetadados *metadados = le_arq_metadados(nome_arquivo_metadados);
 		
 		//MODIFICAR O ARQUIVO DE INDICE PARA TER UM PONTEIRO AO novo_noFolha
 		//   lembrete: O NOVO NO FOLHA FICARA NECESSÁRIAMENTE APOS O ANTIGO NO ARQUIVO
@@ -235,6 +238,8 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 			//printf("\n NO INTERNO ANTES : \n");
 			//imprime_no_interno(d, noInterno);
 			
+			int aux_pont = noInterno->p[0]; int aux_pont_02 = noInterno->p[1];
+			
 			for(int i = 0; i < noInterno->m; i++){
 				
 				if(noInterno->chaves[i] > chave){
@@ -242,6 +247,7 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 					aux_chave = noInterno->chaves[i];
 					noInterno->chaves[i] = chave;
 					chave = aux_chave;
+					
 				}
 			}
 			
