@@ -98,9 +98,12 @@ int insere(int cod, char *nome, char *descricao, float preco, char *nome_arquivo
 
 	fseek(fd, buscaNo, SEEK_SET);
 
-	TNoFolha *noFolha = le_no_folha(d, fd);
+	//TNoFolha *noFolha = le_no_folha(d, fd);
 
 	if(noFolha->m < (2 * d)){
+		
+		TNoFolha *noFolha = le_no_folha(d, fd);
+		
 		TPizza *aux = pizza(cod, nome, descricao, preco);
 		
 		if(noFolha->m != 0){
@@ -154,8 +157,14 @@ int insere(int cod, char *nome, char *descricao, float preco, char *nome_arquivo
 		printf("\n NO FOLHA FINAL:      ");
 			imprime_no_folha(d, noFolha);
 		
-		//fseek(fd, buscaNo, SEEK_SET);
+		fseek(fd, buscaNo, SEEK_SET);
 		salva_no_folha(d, noFolha, fd);
+		
+		printf("\n NO FOLHA APOS O SALVA:      ");
+			imprime_no_folha(d, noFolha);
+		
+		printf("\n LISTA DOS NOS FOLHAS:      ");
+		imprime_nos_folhas(le_nos_folhas(d, nome_arquivo_dados));
 		
 		free(aux);
 		
