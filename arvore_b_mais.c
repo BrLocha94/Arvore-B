@@ -281,10 +281,13 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 			//FECHAR ARQUIVO DE DADOS
 			fclose(fd);
 			
+			int ret = noFolha->pont_prox;
+			
 			free(aux_folha);
 			free(noFolha);
 			free(novo_noFolha);
 			
+			return ret;
 		}
 		//CASO CONTRARIO, FAZER O PARTICIONAMENTO TOMANDO CUIDADO COM A PROPAGAÇÃO
 		else{
