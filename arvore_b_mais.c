@@ -213,7 +213,7 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 		for(int i = d; i < (2*d + 1); i++){
 			
 			novo_noFolha->pizzas[i - d] = pizza(noFolha->pizzas[i]->cod, noFolha->pizzas[i]->nome, noFolha->pizzas[i]->categoria, noFolha->pizzas[i]->preco);
-			noFolha->pizza[i] = pizza(-1, "", "", 0);
+			noFolha->pizzas[i] = pizza(-1, "", "", 0);
 		}
 		
 		noFolha->m = d;
@@ -223,8 +223,8 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 		//   lembrete: O NOVO NO FOLHA FICARA NECESSÁRIAMENTE APOS O ANTIGO NO ARQUIVO
 		//CASO O ARQUIVO DE INDICE TENHA ESPAÇO PARA INSERÇÃO
 		TNoInterno * noInterno = le_no_interno(d, fi);
-		int chave = novo_noFolha->pizza[0]->cod;
-		int aux = chave;
+		int chave = novo_noFolha->pizzas[0]->cod;
+		int aux_chave = chave;
 		
 		if(noInterno->m < 2*d){
 		
@@ -238,9 +238,9 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 				}
 			}
 			
-			noInterno->chaves[m] = chave;
+			noInterno->chaves[noInterno->m] = chave;
 			noInterno->m ++;
-			noInterno->p[m + 1] = tamanho_no_folha(d) * (m + 1); 
+			noInterno->p[noInterno->m + 1] = tamanho_no_folha(d) * (noInterno->m + 1); 
 			
 			//SALVAR ARQUIVO DE INDICE
 			fseek(fi, noFolha->pont_pai, SEEK_SET);
@@ -263,10 +263,10 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 			
 			TNoFolha * aux_folha_02; int loop = 0;
 			
-			while(fseek(fd, noFolha->pont_prox->pont_prox + (loop * tamanho_no_folha(d)), SEEK_SET) == 0){
+			while(fseek(fd, noFolha->pont_prox + (loop * tamanho_no_folha(d)), SEEK_SET) == 0){
 				
 				aux_folha_02 = le_no_folha(d, fd);
-				fseek(fd, noFolha->pont_prox->pont_prox + (loop * tamanho_no_folha(d)), SEEK_SET);
+				fseek(fd, noFolha->pont_prox + (loop * tamanho_no_folha(d)), SEEK_SET);
 				salva_no_folha(d, aux_folha, fd);
 				
 				free(aux_folha);
