@@ -243,7 +243,7 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 			
 			noInterno->chaves[noInterno->m] = chave;
 			noInterno->m ++;
-			noInterno->p[noInterno->m] = noInterno->p[noInterno->m] + tamanho_no_folha(d); 
+			noInterno->p[noInterno->m] = tamanho_no_folha(d) * noInterno->m; 
 			
 			printf("\n NO INTERNO DEPOIS : \n");
 			imprime_no_interno(d, noInterno);
@@ -289,19 +289,16 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 				fseek(fd, noFolha->pont_prox + (loop * tamanho_no_folha(d)), SEEK_SET);
 				salva_no_folha(d, aux_folha, fd);
 				
-				printf("\n AUX_02 : \n");
-				imprime_no_folha(d, aux_folha_02);
-				
 				free(aux_folha);
-				aux_folha = aux_folha_02;
 				
+				if(aux_folha_02 != NULL){
+					printf("\n NOS FOLHAS INSERIDOS TERMINOU : \n");
+					aux_folha = aux_folha_02;
+				}
 				loop ++;
 			}
 			
-			printf("\n NO FOLHA INSERIDO FINAL : \n");
-			imprime_no_folha(d, aux_folha);
-			
-			salva_no_folha(d, aux_folha, fd);
+			//salva_no_folha(d, aux_folha, fd);
 			
 			//FECHAR ARQUIVO DE DADOS
 			fclose(fd);
