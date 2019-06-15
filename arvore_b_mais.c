@@ -304,6 +304,7 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 			fclose(fd);
 			
 			int ret = noFolha->pont_prox;
+			print("\n RET : %i \n", ret);
 			
 			free(aux_folha);
 			free(noFolha);
@@ -314,7 +315,7 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 		//CASO CONTRARIO, FAZER O PARTICIONAMENTO TOMANDO CUIDADO COM A PROPAGAÇÃO
 		else{
 		
-		
+			return -1;
 		
 		}
 		
