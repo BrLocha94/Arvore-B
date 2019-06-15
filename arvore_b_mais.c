@@ -83,7 +83,7 @@ int busca(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, char
 }
 
 
-int insere(int cod, char *nome, char *descricao, float preco, char *nome_arquivo_metadados, char *nome_arquivo_indice, char *nome_arquivo_dados, int d)
+int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo_metadados, char *nome_arquivo_indice, char *nome_arquivo_dados, int d)
 {
 	
 //chamar a busca e pega o que ela retorna, se o nó estiver inserido erro na inserção, senão inserção válida !!!
@@ -93,7 +93,7 @@ int insere(int cod, char *nome, char *descricao, float preco, char *nome_arquivo
 	FILE * fi = fopen(nome_arquivo_indice, "rb+");
 	FILE * fd = fopen(nome_arquivo_dados, "rb+");
 	    
-	//TPizza *newPizza = pizza(cod, nome, descricao, preco);
+	//TPizza *newPizza = pizza(cod, nome, categoria, preco);
 
 	int buscaNo = busca(cod, nome_arquivo_metadados, nome_arquivo_indice, nome_arquivo_dados, d);
 
@@ -105,11 +105,11 @@ int insere(int cod, char *nome, char *descricao, float preco, char *nome_arquivo
 		
 		//TNoFolha *noFolha = le_no_folha(d, fd);
 		
-		TPizza *aux = pizza(cod, nome, descricao, preco);
+		TPizza *aux = pizza(cod, nome, categoria, preco);
 		
 		if(noFolha->m != 0){
 		
-			TPizza *aux_2 = pizza(cod, nome, descricao, preco);
+			TPizza *aux_2 = pizza(cod, nome, categoria, preco);
 
 			for(int i = 0; i < noFolha->m; i++){
 				
@@ -129,13 +129,13 @@ int insere(int cod, char *nome, char *descricao, float preco, char *nome_arquivo
 					//TROCA O VALOR DO AUX PELO DA PIZZA MAIOR
 					aux->cod = noFolha->pizzas[i]->cod;
 					strcpy(aux->nome, noFolha->pizzas[i]->nome);
-					strcpy(aux->descricao, noFolha->pizzas[i]->descricao);
+					strcpy(aux->categoria, noFolha->pizzas[i]->categoria);
 					aux->preco = noFolha->pizzas[i]->preco;
 					
 					//TROCA O VALOR DA PIZZA PELA QUE DEVE SER INSERIDA
 					noFolha->pizzas[i]->cod = aux_2->cod;
 					strcpy(noFolha->pizzas[i]->nome, aux_2->nome);
-					strcpy(noFolha->pizzas[i]->descricao, aux_2->descricao);
+					strcpy(noFolha->pizzas[i]->categoria, aux_2->categoria);
 					noFolha->pizzas[i]->preco = aux_2->preco;
 					
 					//ACERTA O AUX 2 
@@ -161,11 +161,11 @@ int insere(int cod, char *nome, char *descricao, float preco, char *nome_arquivo
 		TNoFolha * noFolha_aux = no_folha(d, noFolha->m, noFolha->pont_pai, noFolha->pont_prox);
 		for(int i = 0; i < noFolha->m; i++){
 			
-			noFolha_aux->pizzas[i] = pizza(noFolha->pizzas[i]->cod, noFolha->pizzas[i]->nome, noFolha->pizzas[i]->descricao, noFolha->pizzas[i]->preco);
+			noFolha_aux->pizzas[i] = pizza(noFolha->pizzas[i]->cod, noFolha->pizzas[i]->nome, noFolha->pizzas[i]->categoria, noFolha->pizzas[i]->preco);
 			
 			//noFolha_aux->pizzas[i]->cod = aux->cod;
 			//strcpy(noFolha_aux->pizzas[i]->nome, aux->nome);
-			//strcpy(noFolha_aux->pizzas[i]->descricao, aux->descricao);
+			//strcpy(noFolha_aux->pizzas[i]->categoria, aux->categoria);
 			//noFolha_aux->pizzas[i]->preco = aux->preco;
 		}
 		

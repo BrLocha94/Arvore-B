@@ -57,7 +57,7 @@ TNoFolha *cria_no_folha(int d, int pont_pai, int pont_prox, int m, ...)
 void salva_no_folha(int d, TNoFolha *no, FILE *out)
 {
 	printf("\n NO FOLHA ENTRANDO NO SALVA:      ");
-	imprime_no_folha(d, noFolha);
+	imprime_no_folha(d, no);
 	
 	int i;
 	fwrite(&no->m, sizeof(int), 1, out);
