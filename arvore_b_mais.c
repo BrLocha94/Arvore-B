@@ -228,8 +228,8 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 		
 		if(noInterno->m < 2*d){
 			
-			printf("\n NO INTERNO ANTES : \n");
-			imprime_no_interno(d, noInterno);
+			//printf("\n NO INTERNO ANTES : \n");
+			//imprime_no_interno(d, noInterno);
 			
 			for(int i = 0; i < noInterno->m; i++){
 				
@@ -245,8 +245,8 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 			noInterno->m ++;
 			noInterno->p[noInterno->m] = tamanho_no_folha(d) * noInterno->m; 
 			
-			printf("\n NO INTERNO DEPOIS : \n");
-			imprime_no_interno(d, noInterno);
+			//printf("\n NO INTERNO DEPOIS : \n");
+			//imprime_no_interno(d, noInterno);
 			
 			//SALVAR ARQUIVO DE INDICE
 			fseek(fi, noFolha->pont_pai, SEEK_SET);
@@ -261,8 +261,8 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 			//SALVAR ARQUIVO DE DADOS
 			fseek(fd, buscaNo, SEEK_SET);
 			
-			printf("\n NO FOLHA INSERIDO PRIMEIRO: \n");
-			imprime_no_folha(d, noFolha);
+			//printf("\n NO FOLHA INSERIDO PRIMEIRO: \n");
+			//imprime_no_folha(d, noFolha);
 			
 			salva_no_folha(d, noFolha, fd);
 			
@@ -271,8 +271,8 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 			
 			fseek(fd, noFolha->pont_prox, SEEK_SET);
 			
-			printf("\n NO FOLHA INSERIDO SEGUNDO: \n");
-			imprime_no_folha(d, novo_noFolha);
+			//printf("\n NO FOLHA INSERIDO SEGUNDO: \n");
+			//imprime_no_folha(d, novo_noFolha);
 			
 			salva_no_folha(d, novo_noFolha, fd);
 			
@@ -282,8 +282,8 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 				
 				fseek(fd, noFolha->pont_prox + (loop * tamanho_no_folha(d)), SEEK_SET);
 				
-				printf("\n NO FOLHA INSERIDO : \n");
-				imprime_no_folha(d, aux_folha);
+				//printf("\n NO FOLHA INSERIDO : \n");
+				//imprime_no_folha(d, aux_folha);
 				
 				aux_folha_02 = le_no_folha(d, fd);
 				fseek(fd, noFolha->pont_prox + (loop * tamanho_no_folha(d)), SEEK_SET);
@@ -292,7 +292,7 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 				free(aux_folha);
 				
 				if(aux_folha_02 != NULL){
-					printf("\n NOS FOLHAS INSERIDOS TERMINOU : \n");
+					//printf("\n NOS FOLHAS INSERIDOS TERMINOU : \n");
 					aux_folha = aux_folha_02;
 				}
 				loop ++;
