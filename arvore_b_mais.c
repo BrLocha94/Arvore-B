@@ -209,8 +209,12 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 		noFolha->pizzas[noFolha->m] = aux;
 		noFolha->m++;
 		
+		int trocou_folha = 0;
+		
 		//ADICIONAR AS OUTRAS PIZZAS NO novo_noFolha
 		for(int i = d; i < (2*d + 1); i++){
+			
+			if(novo_noFolha->pizzas[i - d]->cod == cod) trocou_folha = 1;
 			
 			novo_noFolha->pizzas[i - d] = pizza(noFolha->pizzas[i]->cod, noFolha->pizzas[i]->nome, noFolha->pizzas[i]->categoria, noFolha->pizzas[i]->preco);
 			noFolha->pizzas[i] = NULL;
@@ -303,8 +307,16 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 			//FECHAR ARQUIVO DE DADOS
 			fclose(fd);
 			
-			int ret = noFolha->pont_prox;
-			print("\n RET : %i \n", ret);
+			int ret;
+			
+			if(trocou_folha == 0){
+				ret = buscaNo;
+			}
+			else{
+				ret = noFolha->pont_prox;
+			}
+			
+			printf("\n RET : %i \n", ret);
 			
 			free(aux_folha);
 			free(noFolha);
