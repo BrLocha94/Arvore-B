@@ -653,14 +653,14 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 			fseek(fd, buscaNo, SEEK_SET);
 			salva_no_folha(d, noFolha, fd);
 			
-			fseek(fd, pont_novo, SEEK_SET);
-			salva_no_folha(d, metadados->pont_prox_no_folha_livre, fd);
+			fseek(fd, metadados->pont_prox_no_folha_livre, SEEK_SET);
+			salva_no_folha(d, novo_noFolha, fd);
 			
 			free(noFolha);
 			free(novo_noFolha);
 			
 			metadados->pont_raiz = 0;
-			metadados->aponta_folha = 0;
+			metadados->raiz_folha = 0;
 			metadados->pont_prox_no_interno_livre = tamanho_no_interno(d);
 			metadados->pont_prox_no_folha_livre = metadados->pont_prox_no_folha_livre + tamanho_no_folha(d);
 			
