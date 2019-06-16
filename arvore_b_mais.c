@@ -391,7 +391,7 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 					//PRIMEIRO ORDENAR O NÓ QUE JÁ TEMOS
 					
 					int flag = 0;                    //chave =  nova chave adicionada = aux_chave
-					int aux_pont; int aux_pont_02;
+					int aux_pont = -2; int aux_pont_02;
 					
 					for(int i = 0; i < noInterno->m; i++){
 						
@@ -450,7 +450,7 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 					}	
 					
 					printf("\n NO INTERNO ANTES DE PARTICIONAR : \n");
-					imprime_no_interno(d, noInterno);
+					imprime_no_interno(d + 1, noInterno);
 					
 					//DEPOIS, CRIAR O NOVO NÓ E ADICIONA AS CHAVES CORRESPONDENTES PARA ELE
 					TNoInterno * novo_noInterno = no_interno_vazio(d);
