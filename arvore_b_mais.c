@@ -538,54 +538,85 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 				
 				//DA O SEEK NO ARQUIVO DE INDICE ATÉ O CORRESPONDENTE
 				fseek(fi, pont_pai_01, SEEK_SET);
-				TNoInterno * noInterno = le_no_interno(d, fi);
+				noInterno = le_no_interno(d, fi);
 				
-				if(noInterno->m < 2*d){
-					loop = 1;
-					
-					//PRIMEIRO ORDENAR O NÓ QUE JÁ TEMOS
+				if(noInterno != NULL){
 				
-					int flag = 0;                    //chave =  nova chave adicionada = aux_chave
-					int aux_pont; int aux_pont_02;
-					
-					for(int i = 0; i < noInterno->m; i++){
+					if(noInterno->m < 2*d){
 						
-						if(noInterno->chaves[i] > chave){
+						loop = 1;
+						
+						//PRIMEIRO ORDENAR O NÓ QUE JÁ TEMOS
+					
+						int flag = 0;                    //chave =  nova chave adicionada = aux_chave
+						int aux_pont; int aux_pont_02;
+						
+						for(int i = 0; i < noInterno->m; i++){
 							
-							if(flag == 0){
-								aux_pont = noInterno->p[i + 1];
-								noInterno->p[i + 1] = -2;
-								flag = 1;
+							if(noInterno->chaves[i] > chave){
+								
+								if(flag == 0){
+									aux_pont = noInterno->p[i + 1];
+									noInterno->p[i + 1] = -2;
+									flag = 1;
+								}
+								else{
+									aux_pont_02 = noInterno->p[i + 1];
+									noInterno->p[i + 1] = aux_pont;
+									aux_pont = aux_pont_02;
+								}
+								aux_chave = noInterno->chaves[i];
+								noInterno->chaves[i] = chave;
+								chave = aux_chave;
+								
 							}
-							else{
-								aux_pont_02 = noInterno->p[i + 1];
-								noInterno->p[i + 1] = aux_pont;
-								aux_pont = aux_pont_02;
+						}
+						
+						noInterno->chaves[noInterno->m] = chave;
+						noInterno->m ++;
+						
+						if(flag == 0){
+							noInterno->p[noInterno->m] = -2; 
+						}
+						else{
+							noInterno->p[noInterno->m] = aux_pont;
+						}
+						
+						//ACERTAR O PONTEIRO PARA, CASO SEJA FOLHA, RECEBER A POSIÇÃO CORRETA
+						//E CASO SEJA NÓ INTERNO, RECEBER O PONTEIRO PARA O ULTIMO ADICIONADO
+						if(flag == 0){
+							noInterno->p[noInterno->m] = metadados->pont_prox_no_interno_livre;
+						}
+						else{
+							for(int i = 0; i < noInterno->m; i++){
+						
+								if(noInterno->p[i] == -2){
+									noInterno->p[i] = metadados->pont_prox_no_interno_livre;
+									break;
+								}
 							}
-							aux_chave = noInterno->chaves[i];
-							noInterno->chaves[i] = chave;
-							chave = aux_chave;
-							
 						}
 					}
 					
-					noInterno->chaves[noInterno->m] = chave;
-					noInterno->m ++;
+					metadados->pont_prox_no_folha_livre = noFolha->pont_prox + tamanho_no_folha(d);
+				}
+				else{
+				
+					noInterno = no_interno_vazio(int d);
+					noInterno->p[0] = pont_pai_01;
+					noInterno->p[1] = pont_pai_02;
 					
-					if(flag == 0){
-						noInterno->p[noInterno->m] = -2; 
-					}
-					else{
-						noInterno->p[noInterno->m] = aux_pont;
-					}
 				}
 			}
 			
 			//SALVAR ARQUIVO METADADOS
-			metadados->pont_prox_no_folha_livre = noFolha->pont_prox + tamanho_no_folha(d);
+			//metadados->pont_prox_no_folha_livre = noFolha->pont_prox + tamanho_no_folha(d);
 			
 			//printf("\n METADADOS SALVOS \n");
 			//imprime_metadados(metadados);
+			
+			fclose(fd);
+			fclose(fi);
 			
 			salva_arq_metadados(nome_arquivo_metadados, metadados);
 		}
