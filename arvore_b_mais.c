@@ -284,11 +284,13 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 			//novo_noFolha->pont_pai = noFolha->pont_pai;
 			//novo_noFolha->pont_prox = noFolha->pont_prox;
 			
-			fseek(fd, noFolha->pont_prox, SEEK_SET);
-			TNoFolha * aux_folha = le_no_folha(d, fd);
+			//fseek(fd, noFolha->pont_prox, SEEK_SET);
+			//TNoFolha * aux_folha = le_no_folha(d, fd);
 			
-			int loop = 0; int pont_novo;
+			//int loop = 0;
+			int pont_novo;
 			
+			/*
 			while(aux_folha != NULL){
 				
 				free(aux_folha);
@@ -298,8 +300,9 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 			
 				aux_folha = le_no_folha(d, fd);
 			}
+			*/
 			
-			pont_novo = noFolha->pont_prox + (loop * tamanho_no_folha(d));
+			pont_novo = metadados-pont_prox_no_folha_livre + tamanho_no_folha(d);
 			
 			novo_noFolha->pont_pai = noFolha->pont_pai;
 			novo_noFolha->pont_prox = noFolha->pont_prox;
@@ -341,6 +344,10 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 			salva_no_interno(d, noInterno, fi);
 			//FECHAR ARQUIVO DE INDICE
 			fclose(fi)
+			
+			//SALVAR ARQUIVO METADADOS
+			metadados->pont_prox_no_folha_livre = noFolha->pont_prox;
+			salva_arq_metadados(nome_arquivo_metadados, metadados);
 			
 			int ret;
 			
