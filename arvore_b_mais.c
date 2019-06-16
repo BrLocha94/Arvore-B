@@ -450,7 +450,7 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 					}	
 					
 					printf("\n NO INTERNO ANTES DE PARTICIONAR : \n");
-					imprime_no_interno(d + 1, noInterno);
+					imprime_no_interno(d, noInterno);
 					
 					//DEPOIS, CRIAR O NOVO NÓ E ADICIONA AS CHAVES CORRESPONDENTES PARA ELE
 					TNoInterno * novo_noInterno = no_interno_vazio(d);
@@ -466,6 +466,9 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 					
 					noInterno->m = d;
 					novo_noInterno->m = d + 1;
+					
+					printf("\n NOVO NO INTERNO PARTE 1: \n");
+					imprime_no_interno(d, novo_noInterno);
 					
 					if(noInterno->aponta_folha == 1){
 						
