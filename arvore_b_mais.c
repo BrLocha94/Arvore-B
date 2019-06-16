@@ -381,7 +381,7 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 				free(noFolha);
 				free(novo_noFolha);
 				
-				int loop = 0;
+				int loop = 0; int chave_mestra;
 				
 				while(loop == 0){
 					
@@ -455,17 +455,24 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 					//DEPOIS, CRIAR O NOVO NÓ E ADICIONA AS CHAVES CORRESPONDENTES PARA ELE
 					TNoInterno * novo_noInterno = no_interno_vazio(d);
 					
+					chave_mestra = noInterno->chaves[d + 1];
+					
 					//ADICIONAR OS PONTEIROS E CHAVES NO NOVO NO INTERNO
 					for(int i = d; i < (2*d + 1); i++){
 						
 						novo_noInterno->p[i - d] = noInterno->p[i + 1];
 						noInterno->p[i] = -1;
-						novo_noInterno->chaves[i - d] = noInterno->chaves[i];
+						if(i != 2*d){
+							novo_noInterno->chaves[i - d] = noInterno->chaves[i + 1];
+						}
 						noInterno->chaves[i] = -1;				
 					}
 					
 					noInterno->m = d;
-					novo_noInterno->m = d + 1;
+					novo_noInterno->m = d;
+					
+					printf("\n NO INTERNO DEPOIS PARTE 1: \n");
+					imprime_no_interno(d, noInterno);
 					
 					printf("\n NOVO NO INTERNO PARTE 1: \n");
 					imprime_no_interno(d, novo_noInterno);
@@ -479,7 +486,7 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 							//DA O SEEK NO ARQUIVO DE INDICE ATÉ O CORRESPONDENTE
 							fseek(fd, noInterno->p[i], SEEK_SET);
 							//LE NO FOLHA DO ARQUIVO PARA ALTERAR O PONTEIRO DO PAI
-							TNoFolha * noFolha = le_no_folha(d, fd);
+							noFolha = le_no_folha(d, fd);
 							noFolha->pont_pai = pont_pai_01;
 							salva_no_folha(d, noFolha, fd);
 						}
@@ -489,7 +496,7 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 							//DA O SEEK NO ARQUIVO DE INDICE ATÉ O CORRESPONDENTE
 							fseek(fd, noInterno->p[i], SEEK_SET);
 							//LE NO FOLHA DO ARQUIVO PARA ALTERAR O PONTEIRO DO PAI
-							TNoFolha * noFolha = le_no_folha(d, fd);
+							noFolha = le_no_folha(d, fd);
 							noFolha->pont_pai = pont_pai_02;
 							salva_no_folha(d, noFolha, fd);
 						}
