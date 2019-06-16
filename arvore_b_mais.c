@@ -577,10 +577,6 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 					free(noInterno);
 					free(novo_noInterno);
 					
-					//DA O SEEK NO ARQUIVO DE INDICE ATÉ O CORRESPONDENTE
-					fseek(fi, pont_pai_01, SEEK_SET);
-					noInterno = le_no_interno(d, fi);
-					
 					if(pont_pai_01 != -1){
 						
 						//DA O SEEK NO ARQUIVO DE INDICE ATÉ O CORRESPONDENTE
@@ -645,6 +641,8 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 						
 					}
 					else{
+						
+						printf("\n ENTROU NO CASO DE CRIAR UMA NOVA RAIZ \n");
 						
 						loop = 1;
 						
