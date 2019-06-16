@@ -458,7 +458,7 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 					//ADICIONAR OS PONTEIROS E CHAVES NO NOVO NO INTERNO
 					for(int i = d; i < (2*d + 1); i++){
 						
-						novo_noInterno->p[i - d] = noInterno->p[i];
+						novo_noInterno->p[i - d] = noInterno->p[i + 1];
 						noInterno->p[i] = -1;
 						novo_noInterno->chaves[i - d] = noInterno->chaves[i];
 						noInterno->chaves[i] = -1;				
