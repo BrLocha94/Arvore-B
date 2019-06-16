@@ -603,7 +603,7 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 					
 					loop = 1;
 					
-					noInterno = no_interno_vazio(int d);
+					noInterno = no_interno_vazio(d);
 					noInterno->p[0] = pont_pai_01;
 					noInterno->p[1] = pont_pai_02;
 					noInterno->chaves[0] = chave;
