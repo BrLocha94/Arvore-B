@@ -226,6 +226,15 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 		noFolha->m = d;
 		novo_noFolha->m = d + 1;
 		
+		int ret;
+			
+		if(trocou_folha == 0){
+			ret = buscaNo;
+		}
+		else{
+			ret = noFolha->pont_prox;
+		}
+		
 		//ABRE O ARQUIVO DE METADADOS PARA ATUALIZAR AS REFERENCIAS
 		TMetadados *metadados = le_arq_metadados(nome_arquivo_metadados);
 		//printf("\n METADADOS ANTES \n");
@@ -334,15 +343,6 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 			//imprime_metadados(metadados);
 			
 			salva_arq_metadados(nome_arquivo_metadados, metadados);
-			
-			int ret;
-			
-			if(trocou_folha == 0){
-				ret = buscaNo;
-			}
-			else{
-				ret = noFolha->pont_prox;
-			}
 			
 			//printf("\n RET : %i \n", ret);
 			
@@ -627,6 +627,8 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 			fclose(fi);
 			
 			salva_arq_metadados(nome_arquivo_metadados, metadados);
+			
+			return ret;
 		}
 		
 	}
