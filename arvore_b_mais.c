@@ -385,11 +385,11 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 				
 				while(loop == 0){
 					
-					printf("\n METADADOS INICIO DO LOOP \n");
-					imprime_metadados(metadados);
+					//printf("\n METADADOS INICIO DO LOOP \n");
+					//imprime_metadados(metadados);
 					
-					printf("\n NO INTERNO ANTES : \n");
-					imprime_no_interno(d, noInterno);
+					//printf("\n NO INTERNO ANTES : \n");
+					//imprime_no_interno(d, noInterno);
 					
 					//PRIMEIRO ORDENAR O NÓ QUE JÁ TEMOS
 					
@@ -452,8 +452,8 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 						}
 					}	
 					
-					printf("\n NO INTERNO ANTES DE PARTICIONAR : \n");
-					imprime_no_interno(d, noInterno);
+					//printf("\n NO INTERNO ANTES DE PARTICIONAR : \n");
+					//imprime_no_interno(d, noInterno);
 					
 					//DEPOIS, CRIAR O NOVO NÓ E ADICIONA AS CHAVES CORRESPONDENTES PARA ELE
 					TNoInterno * novo_noInterno = no_interno_vazio(d);
@@ -476,15 +476,15 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 					noInterno->m = d;
 					novo_noInterno->m = d;
 					
-					printf("\n NO INTERNO DEPOIS PARTE 1: \n");
-					imprime_no_interno(d, noInterno);
+					//printf("\n NO INTERNO DEPOIS PARTE 1: \n");
+					//imprime_no_interno(d, noInterno);
 					
-					printf("\n NOVO NO INTERNO PARTE 1: \n");
-					imprime_no_interno(d, novo_noInterno);
+					//printf("\n NOVO NO INTERNO PARTE 1: \n");
+					//imprime_no_interno(d, novo_noInterno);
 					
 					if(noInterno->aponta_folha == 1){
 						
-						printf("\n ENTROU NO IF \n");
+						//printf("\n ENTROU NO IF \n");
 						
 						novo_noInterno->aponta_folha = 1;
 						
@@ -500,7 +500,7 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 							free(noFolha);
 						}
 						
-						printf("\n ACABOU PRIMEIRO FOR \n");
+						//printf("\n ACABOU PRIMEIRO FOR \n");
 						
 						for(int i = 0; i < (novo_noInterno->m + 1); i ++){
 						
@@ -514,11 +514,11 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 							free(noFolha);
 						}
 						
-						printf("\n ACABOU SEGUNDO FOR FOR \n");
+						//printf("\n ACABOU SEGUNDO FOR FOR \n");
 					}
 					else{
 						
-						printf("\n ENTROU NO ELSE \n");
+						//printf("\n ENTROU NO ELSE \n");
 						
 						novo_noInterno->aponta_folha = 0;
 						
@@ -535,7 +535,7 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 							free(noInterno_01);
 						}
 						
-						printf("\n ACABOU PRIMEIRO FOR \n");
+						//printf("\n ACABOU PRIMEIRO FOR \n");
 						
 						for(int i = 0; i < (novo_noInterno->m + 1); i ++){
 						
@@ -550,14 +550,14 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 							free(noInterno_01);
 						}
 						
-						printf("\n ACABOU SEGUNDO FOR FOR \n");
+						//printf("\n ACABOU SEGUNDO FOR FOR \n");
 					}
 					
-					printf("\n NO INTERNO DEPOIS : \n");
-					imprime_no_interno(d, noInterno);
+					//printf("\n NO INTERNO DEPOIS : \n");
+					//imprime_no_interno(d, noInterno);
 					
-					printf("\n NOVO NO INTERNO : \n");
-					imprime_no_interno(d, novo_noInterno);
+					//printf("\n NOVO NO INTERNO : \n");
+					//imprime_no_interno(d, novo_noInterno);
 					
 					//SALVAR NOS NO ARQUIVO
 					//DA O SEEK NO ARQUIVO DE INDICE ATÉ O CORRESPONDENTE
@@ -642,7 +642,7 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 					}
 					else{
 						
-						printf("\n ENTROU NO CASO DE CRIAR UMA NOVA RAIZ \n");
+						//printf("\n ENTROU NO CASO DE CRIAR UMA NOVA RAIZ \n");
 						
 						loop = 1;
 						
@@ -653,8 +653,8 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 						noInterno->m = 1;
 						noInterno->aponta_folha = 0;
 						
-						printf("\n NO INTERNO RAIZ : \n");
-						imprime_no_interno(d, noInterno);
+						//printf("\n NO INTERNO RAIZ : \n");
+						//imprime_no_interno(d, noInterno);
 						
 						TNoInterno * tni;
 						
@@ -686,15 +686,15 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 						metadados->pont_prox_no_interno_livre = metadados->pont_prox_no_interno_livre + tamanho_no_interno(d);
 					}
 					
-					printf("\n METADADOS FINAL DO LOOP \n");
-					imprime_metadados(metadados);
+					//printf("\n METADADOS FINAL DO LOOP \n");
+					//imprime_metadados(metadados);
 				}
 				
 				//SALVAR ARQUIVO METADADOS
 				metadados->pont_prox_no_folha_livre = metadados->pont_prox_no_folha_livre + tamanho_no_folha(d);
 				
-				printf("\n METADADOS SALVOS \n");
-				imprime_metadados(metadados);
+				//printf("\n METADADOS SALVOS \n");
+				//imprime_metadados(metadados);
 				
 				fclose(fd);
 				fclose(fi);
