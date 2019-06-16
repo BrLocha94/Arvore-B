@@ -499,6 +499,10 @@ BEGIN_TESTS();
 
         pont = insere(16, "Presunto e Queijo", "Salgada", 30, NOME_ARQUIVO_METADADOS, NOME_ARQUIVO_INDICE,
                       NOME_ARQUIVO_DADOS, 2);
+					  
+		printf("\n VALOR RETORNADO PELA FUNÇÃO INSERE: %d \n", pont);
+		printf("\n VALOR ESPERADO PELO ASSERT_EQUAL: %d", 1 * tamanho_no_folha(D));
+					  
         ASSERT_EQUAL(1 * tamanho_no_folha(D), pont);
 
         TMetadados *tabMetadados = metadados(D, 0, 0, tamanho_no_interno(D), 4 * tamanho_no_folha(D));
