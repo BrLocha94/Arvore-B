@@ -226,19 +226,19 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 		noFolha->m = d;
 		novo_noFolha->m = d + 1;
 		
+		//ABRE O ARQUIVO DE METADADOS PARA ATUALIZAR AS REFERENCIAS
+		TMetadados *metadados = le_arq_metadados(nome_arquivo_metadados);
+		//printf("\n METADADOS ANTES \n");
+		//imprime_metadados(metadados);
+		
 		int ret;
 			
 		if(trocou_folha == 0){
 			ret = buscaNo;
 		}
 		else{
-			ret = noFolha->pont_prox;
+			ret = metadados->pont_prox_no_folha_livre;
 		}
-		
-		//ABRE O ARQUIVO DE METADADOS PARA ATUALIZAR AS REFERENCIAS
-		TMetadados *metadados = le_arq_metadados(nome_arquivo_metadados);
-		//printf("\n METADADOS ANTES \n");
-		//imprime_metadados(metadados);
 		
 		if(metadados->raiz_folha == 0){
 			
@@ -385,12 +385,15 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 				
 				while(loop == 0){
 					
+					printf("\n METADADOS INICIO DO LOOP \n");
+					imprime_metadados(metadados);
+					
 					printf("\n NO INTERNO ANTES : \n");
 					imprime_no_interno(d, noInterno);
 					
 					//PRIMEIRO ORDENAR O NÓ QUE JÁ TEMOS
 					
-					int flag = 0;                    //chave =  nova chave adicionada = aux_chave
+					int flag = 0;
 					int aux_pont = -2; int aux_pont_02;
 					
 					for(int i = 0; i < noInterno->m; i++){
@@ -493,6 +496,8 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 							noFolha = le_no_folha(d, fd);
 							noFolha->pont_pai = pont_pai_01;
 							salva_no_folha(d, noFolha, fd);
+							
+							free(noFolha);
 						}
 						
 						printf("\n ACABOU PRIMEIRO FOR \n");
@@ -500,11 +505,13 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 						for(int i = 0; i < (novo_noInterno->m + 1); i ++){
 						
 							//DA O SEEK NO ARQUIVO DE INDICE ATÉ O CORRESPONDENTE
-							fseek(fd, noInterno->p[i], SEEK_SET);
+							fseek(fd, novo_noInterno->p[i], SEEK_SET);
 							//LE NO FOLHA DO ARQUIVO PARA ALTERAR O PONTEIRO DO PAI
 							noFolha = le_no_folha(d, fd);
 							noFolha->pont_pai = pont_pai_02;
 							salva_no_folha(d, noFolha, fd);
+							
+							free(noFolha);
 						}
 						
 						printf("\n ACABOU SEGUNDO FOR FOR \n");
@@ -519,10 +526,12 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 						
 							//DA O SEEK NO ARQUIVO DE INDICE ATÉ O CORRESPONDENTE
 							fseek(fi, noInterno->p[i], SEEK_SET);
+							
 							//LE NO INTERNO DO ARQUIVO PARA ALTERAR O PONTEIRO DO PAI
 							TNoInterno * noInterno_01 = le_no_interno(d, fi);
 							noInterno_01->pont_pai = pont_pai_01;
 							salva_no_interno(d, noInterno_01, fi);
+							
 							free(noInterno_01);
 						}
 						
@@ -531,11 +540,13 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 						for(int i = 0; i < (novo_noInterno->m + 1); i ++){
 						
 							//DA O SEEK NO ARQUIVO DE INDICE ATÉ O CORRESPONDENTE
-							fseek(fi, noInterno->p[i], SEEK_SET);
+							fseek(fi, novo_noInterno->p[i], SEEK_SET);
+							
 							//LE NO INTERNO DO ARQUIVO PARA ALTERAR O PONTEIRO DO PAI
 							TNoInterno * noInterno_01 = le_no_interno(d, fi);
 							noInterno_01->pont_pai = pont_pai_02;
 							salva_no_interno(d, noInterno_01, fi);
+							
 							free(noInterno_01);
 						}
 						
@@ -546,7 +557,7 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 					imprime_no_interno(d, noInterno);
 					
 					printf("\n NOVO NO INTERNO : \n");
-					imprime_no_interno(d, noInterno);
+					imprime_no_interno(d, novo_noInterno);
 					
 					//SALVAR NOS NO ARQUIVO
 					//DA O SEEK NO ARQUIVO DE INDICE ATÉ O CORRESPONDENTE
@@ -554,6 +565,7 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 					salva_no_interno(d, noInterno, fi);
 					
 					//DA O SEEK NO ARQUIVO DE INDICE ATÉ O CORRESPONDENTE
+					novo_noInterno->pont_pai = noInterno->pont_pai;
 					fseek(fi, pont_pai_02, SEEK_SET);
 					salva_no_interno(d, novo_noInterno, fi);
 					
@@ -561,7 +573,6 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 					metadados->pont_prox_no_interno_livre = metadados->pont_prox_no_interno_livre + tamanho_no_interno(d);
 					
 					//PROPAGAR A CHAVE DO NOVO NO INTERNO PARA O PAI
-					chave = novo_noInterno->chaves[0];
 					pont_pai_01 = noInterno->pont_pai;
 					free(noInterno);
 					free(novo_noInterno);
