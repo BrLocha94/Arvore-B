@@ -666,6 +666,8 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 			
 			salva_arq_metadados(nome_arquivo_metadados, metadados);
 			free(metadados);
+			
+			return ret;
 		}
 	}
 	
