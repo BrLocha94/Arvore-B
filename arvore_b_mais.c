@@ -644,7 +644,7 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 			noInterno->p[0] = buscaNo;
 			noInterno->p[1] = metadados->pont_prox_no_folha_livre;
 			noInterno->chaves[0] = novo_noFolha->pizzas[0]->cod;
-			noInterno->m ++;
+			noInterno->m = 1;
 			
 			fseek(fi, 0, SEEK_SET);
 			salva_no_interno(d, noInterno, fi);
@@ -653,8 +653,13 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 			fclose(fi);
 			
 			//SALVAR ARQUIVO DE DADOS
+			noFolha->pont_prox = metadados->pont_prox_no_folha_livre
+			noFolha->pont_pai = 0;
+			
 			fseek(fd, buscaNo, SEEK_SET);
 			salva_no_folha(d, noFolha, fd);
+			
+			novo_noFolha->pont_pai = 0;
 			
 			fseek(fd, metadados->pont_prox_no_folha_livre, SEEK_SET);
 			salva_no_folha(d, novo_noFolha, fd);
