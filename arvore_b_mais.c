@@ -461,8 +461,10 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 					for(int i = d; i < (2*d + 1); i++){
 						
 						novo_noInterno->p[i - d] = noInterno->p[i + 1];
-						if(i != 2*d){
+						if(i != d){
 							noInterno->p[i] = -1;
+						}
+						if(i != 2*d){
 							novo_noInterno->chaves[i - d] = noInterno->chaves[i + 1];
 							noInterno->chaves[i] = -1;
 						}				
