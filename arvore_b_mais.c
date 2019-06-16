@@ -464,8 +464,8 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 						noInterno->p[i] = -1;
 						if(i != 2*d){
 							novo_noInterno->chaves[i - d] = noInterno->chaves[i + 1];
-						}
-						noInterno->chaves[i] = -1;				
+							noInterno->chaves[i] = -1;
+						}				
 					}
 					
 					noInterno->m = d;
@@ -479,6 +479,8 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 					
 					if(noInterno->aponta_folha == 1){
 						
+						printf("\n ENTROU NO IF \n");
+						
 						novo_noInterno->aponta_folha = 1;
 						
 						for(int i = 0; i < (noInterno->m + 1); i ++){
@@ -491,6 +493,8 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 							salva_no_folha(d, noFolha, fd);
 						}
 						
+						printf("\n ACABOU PRIMEIRO FOR \n");
+						
 						for(int i = 0; i < (novo_noInterno->m + 1); i ++){
 						
 							//DA O SEEK NO ARQUIVO DE INDICE ATÉ O CORRESPONDENTE
@@ -500,8 +504,12 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 							noFolha->pont_pai = pont_pai_02;
 							salva_no_folha(d, noFolha, fd);
 						}
+						
+						printf("\n ACABOU SEGUNDO FOR FOR \n");
 					}
 					else{
+						
+						printf("\n ENTROU NO ELSE \n");
 						
 						novo_noInterno->aponta_folha = 0;
 						
@@ -516,6 +524,8 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 							free(noInterno_01);
 						}
 						
+						printf("\n ACABOU PRIMEIRO FOR \n");
+						
 						for(int i = 0; i < (novo_noInterno->m + 1); i ++){
 						
 							//DA O SEEK NO ARQUIVO DE INDICE ATÉ O CORRESPONDENTE
@@ -526,6 +536,8 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 							salva_no_interno(d, noInterno_01, fi);
 							free(noInterno_01);
 						}
+						
+						printf("\n ACABOU SEGUNDO FOR FOR \n");
 					}
 					
 					printf("\n NO INTERNO DEPOIS : \n");
@@ -556,20 +568,24 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 					fseek(fi, pont_pai_01, SEEK_SET);
 					noInterno = le_no_interno(d, fi);
 					
-					if(noInterno != NULL){
-					
+					if(pont_pai_01 != -1){
+						
+						//DA O SEEK NO ARQUIVO DE INDICE ATÉ O CORRESPONDENTE
+						fseek(fi, pont_pai_01, SEEK_SET);
+						noInterno = le_no_interno(d, fi);
+						
 						if(noInterno->m < 2*d){
 							
 							loop = 1;
 							
 							//PRIMEIRO ORDENAR O NÓ QUE JÁ TEMOS
 						
-							int flag = 0;                    //chave =  nova chave adicionada = aux_chave
+							int flag = 0;
 							int aux_pont; int aux_pont_02;
 							
 							for(int i = 0; i < noInterno->m; i++){
 								
-								if(noInterno->chaves[i] > chave){
+								if(noInterno->chaves[i] > chave_mestra){
 									
 									if(flag == 0){
 										aux_pont = noInterno->p[i + 1];
@@ -582,13 +598,13 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 										aux_pont = aux_pont_02;
 									}
 									aux_chave = noInterno->chaves[i];
-									noInterno->chaves[i] = chave;
-									chave = aux_chave;
+									noInterno->chaves[i] = chave_mestra;
+									chave_mestra = aux_chave;
 									
 								}
 							}
 							
-							noInterno->chaves[noInterno->m] = chave;
+							noInterno->chaves[noInterno->m] = chave_mestra;
 							noInterno->m ++;
 							
 							if(flag == 0){
@@ -622,7 +638,7 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 						noInterno = no_interno_vazio(d);
 						noInterno->p[0] = pont_pai_01;
 						noInterno->p[1] = pont_pai_02;
-						noInterno->chaves[0] = chave;
+						noInterno->chaves[0] = chave_mestra;
 						
 						//DA O SEEK NO ARQUIVO DE INDICE ATÉ O CORRESPONDENTE
 						fseek(fi, metadados->pont_prox_no_interno_livre, SEEK_SET);
