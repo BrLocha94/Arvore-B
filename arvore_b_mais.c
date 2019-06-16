@@ -458,7 +458,7 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 					//DEPOIS, CRIAR O NOVO NÓ E ADICIONA AS CHAVES CORRESPONDENTES PARA ELE
 					TNoInterno * novo_noInterno = no_interno_vazio(d);
 					
-					chave_mestra = noInterno->chaves[d + 1];
+					chave_mestra = noInterno->chaves[d];
 					
 					//ADICIONAR OS PONTEIROS E CHAVES NO NOVO NO INTERNO
 					for(int i = d; i < (2*d + 1); i++){
@@ -573,11 +573,11 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 					metadados->pont_prox_no_interno_livre = metadados->pont_prox_no_interno_livre + tamanho_no_interno(d);
 					
 					//PROPAGAR A CHAVE DO NOVO NO INTERNO PARA O PAI
-					pont_pai_01 = noInterno->pont_pai;
+					int checador_de_ponteiro = noInterno->pont_pai;
 					free(noInterno);
 					free(novo_noInterno);
 					
-					if(pont_pai_01 != -1){
+					if(checador_de_ponteiro != -1){
 						
 						//DA O SEEK NO ARQUIVO DE INDICE ATÉ O CORRESPONDENTE
 						fseek(fi, pont_pai_01, SEEK_SET);
