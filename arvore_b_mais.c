@@ -228,8 +228,8 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 		
 		//ABRE O ARQUIVO DE METADADOS PARA ATUALIZAR AS REFERENCIAS
 		TMetadados *metadados = le_arq_metadados(nome_arquivo_metadados);
-		printf("\n METADADOS ANTES \n");
-			imprime_metadados(metadados);
+		//printf("\n METADADOS ANTES \n");
+			//imprime_metadados(metadados);
 		
 		
 		//MODIFICAR O ARQUIVO DE INDICE PARA TER UM PONTEIRO AO novo_noFolha
@@ -241,8 +241,8 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 		
 		if(noInterno->m < 2*d){
 			
-			printf("\n NO INTERNO ANTES : \n");
-			imprime_no_interno(d, noInterno);
+			//printf("\n NO INTERNO ANTES : \n");
+			//imprime_no_interno(d, noInterno);
 			
 			int flag = 0;
 			int aux_pont; int aux_pont_02;
@@ -278,8 +278,8 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 				noInterno->p[noInterno->m] = aux_pont;
 			}
 			
-			printf("\n NO INTERNO DEPOIS : \n");
-			imprime_no_interno(d, noInterno);
+			//printf("\n NO INTERNO DEPOIS : \n");
+			//imprime_no_interno(d, noInterno);
 		
 			int pont_novo;
 			
@@ -289,11 +289,11 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 			novo_noFolha->pont_prox = noFolha->pont_prox;
 			noFolha->pont_prox = pont_novo;
 			
-			printf("\n NO FOLHA : \n");
-			imprime_no_folha(d, noFolha);
+			//printf("\n NO FOLHA : \n");
+			//imprime_no_folha(d, noFolha);
 			
-			printf("\n NOVO NO FOLHA : \n");
-			imprime_no_folha(d, novo_noFolha);
+			//printf("\n NOVO NO FOLHA : \n");
+			//imprime_no_folha(d, novo_noFolha);
 			
 			//SALVAR ARQUIVO DE DADOS
 			fseek(fd, buscaNo, SEEK_SET);
@@ -317,8 +317,8 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 				}
 			}
 			
-			printf("\n NO INTERNO ANTES DE SALVAR : \n");
-			imprime_no_interno(d, noInterno);
+			//printf("\n NO INTERNO ANTES DE SALVAR : \n");
+			//imprime_no_interno(d, noInterno);
 			
 			//SALVAR ARQUIVO DE INDICE
 			fseek(fi, noFolha->pont_pai, SEEK_SET);
@@ -329,8 +329,8 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 			//SALVAR ARQUIVO METADADOS
 			metadados->pont_prox_no_folha_livre = noFolha->pont_prox + tamanho_no_folha(d);
 			
-			printf("\n METADADOS SALVOS \n");
-			imprime_metadados(metadados);
+			//printf("\n METADADOS SALVOS \n");
+			//imprime_metadados(metadados);
 			
 			salva_arq_metadados(nome_arquivo_metadados, metadados);
 			
@@ -343,13 +343,13 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 				ret = noFolha->pont_prox;
 			}
 			
-			printf("\n RET : %i \n", ret);
+			//printf("\n RET : %i \n", ret);
 			
 			free(noFolha);
 			free(novo_noFolha);
 			
-			TListaNosFolhas * lista_folhas = le_nos_folhas(d, nome_arquivo_dados);
-			imprime_nos_folhas(d, lista_folhas);
+			//TListaNosFolhas * lista_folhas = le_nos_folhas(d, nome_arquivo_dados);
+			//imprime_nos_folhas(d, lista_folhas);
 			
 			return ret;
 			
