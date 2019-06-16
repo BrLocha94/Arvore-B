@@ -653,6 +653,9 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 						noInterno->m = 1;
 						noInterno->aponta_folha = 0;
 						
+						printf("\n NO INTERNO RAIZ : \n");
+						imprime_no_interno(d, noInterno);
+						
 						TNoInterno * tni;
 						
 						//DA O SEEK NO ARQUIVO DE INDICE ATÉ O CORRESPONDENTE
