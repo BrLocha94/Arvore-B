@@ -649,12 +649,16 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 			salva_no_interno(d, noInterno, fi);
 			free(noInterno);
 			
+			fclose(fi);
+			
 			//SALVAR ARQUIVO DE DADOS
 			fseek(fd, buscaNo, SEEK_SET);
 			salva_no_folha(d, noFolha, fd);
 			
 			fseek(fd, metadados->pont_prox_no_folha_livre, SEEK_SET);
 			salva_no_folha(d, novo_noFolha, fd);
+			
+			fclose(fd);
 			
 			free(noFolha);
 			free(novo_noFolha);
