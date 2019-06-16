@@ -650,10 +650,34 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 						noInterno->p[0] = pont_pai_01;
 						noInterno->p[1] = pont_pai_02;
 						noInterno->chaves[0] = chave_mestra;
+						noInterno->m = 1;
+						noInterno->aponta_folha = 0;
+						
+						TNoInterno * tni;
 						
 						//DA O SEEK NO ARQUIVO DE INDICE ATÉ O CORRESPONDENTE
 						fseek(fi, metadados->pont_prox_no_interno_livre, SEEK_SET);
-						salva_no_interno(d, novo_noInterno, fi);
+						salva_no_interno(d, noInterno, fi);
+						
+						fseek(fi, noInterno->p[0], SEEK_SET);
+						tni = le_no_interno(d, fi);
+						tni->pont_pai = metadados->pont_prox_no_interno_livre; 
+						
+						fseek(fi, noInterno->p[0], SEEK_SET);
+						salva_no_interno(d, tni, fi);
+						
+						free(tni);
+						
+						fseek(fi, noInterno->p[1], SEEK_SET);
+						tni = le_no_interno(d, fi);
+						tni->pont_pai = metadados->pont_prox_no_interno_livre; 
+						
+						fseek(fi, noInterno->p[1], SEEK_SET);
+						salva_no_interno(d, tni, fi);
+						
+						free(tni);
+						
+						free(noInterno);
 						
 						metadados->pont_raiz = metadados->pont_prox_no_interno_livre;
 						metadados->pont_prox_no_interno_livre = metadados->pont_prox_no_interno_livre + tamanho_no_interno(d);
