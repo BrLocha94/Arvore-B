@@ -7,6 +7,9 @@
 #include <stdlib.h>
 #include "no_interno.h"
 #include "no_folha.h"
+
+#include "lista_nos_folhas.h"
+
 #include "pizza.h"
 #include "metadados.h"
 #include "arvore_b_mais.h"
@@ -225,6 +228,9 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 		
 		//ABRE O ARQUIVO DE METADADOS PARA ATUALIZAR AS REFERENCIAS
 		TMetadados *metadados = le_arq_metadados(nome_arquivo_metadados);
+		printf("\n METADADOS ANTES \n");
+			imprime_metadados(metadados);
+		
 		
 		//MODIFICAR O ARQUIVO DE INDICE PARA TER UM PONTEIRO AO novo_noFolha
 		//   lembrete: O NOVO NO FOLHA FICARA NECESSÁRIAMENTE APOS O ANTIGO NO ARQUIVO
@@ -235,8 +241,8 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 		
 		if(noInterno->m < 2*d){
 			
-			//printf("\n NO INTERNO ANTES : \n");
-			//imprime_no_interno(d, noInterno);
+			printf("\n NO INTERNO ANTES : \n");
+			imprime_no_interno(d, noInterno);
 			
 			int flag = 0;
 			int aux_pont; int aux_pont_02;
@@ -274,35 +280,10 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 			
 			printf("\n NO INTERNO DEPOIS : \n");
 			imprime_no_interno(d, noInterno);
-			
-			//SALVAR ARQUIVO DE INDICE
-			//fseek(fi, noFolha->pont_pai, SEEK_SET);
-			//salva_no_interno(d, noInterno, fi);
-			//FECHAR ARQUIVO DE INDICE
-			//fclose(fi);
-			
-			//novo_noFolha->pont_pai = noFolha->pont_pai;
-			//novo_noFolha->pont_prox = noFolha->pont_prox;
-			
-			//fseek(fd, noFolha->pont_prox, SEEK_SET);
-			//TNoFolha * aux_folha = le_no_folha(d, fd);
-			
-			//int loop = 0;
+		
 			int pont_novo;
 			
-			/*
-			while(aux_folha != NULL){
-				
-				free(aux_folha);
-				
-				loop ++;
-				fseek(fd, noFolha->pont_prox + (loop * tamanho_no_folha(d)), SEEK_SET);
-			
-				aux_folha = le_no_folha(d, fd);
-			}
-			*/
-			
-			pont_novo = metadados-pont_prox_no_folha_livre + tamanho_no_folha(d);
+			pont_novo = metadados->pont_prox_no_folha_livre;
 			
 			novo_noFolha->pont_pai = noFolha->pont_pai;
 			novo_noFolha->pont_prox = noFolha->pont_prox;
@@ -343,10 +324,14 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 			fseek(fi, noFolha->pont_pai, SEEK_SET);
 			salva_no_interno(d, noInterno, fi);
 			//FECHAR ARQUIVO DE INDICE
-			fclose(fi)
+			fclose(fi);
 			
 			//SALVAR ARQUIVO METADADOS
-			metadados->pont_prox_no_folha_livre = noFolha->pont_prox;
+			metadados->pont_prox_no_folha_livre = noFolha->pont_prox + tamanho_no_folha(d);
+			
+			printf("\n METADADOS SALVOS \n");
+			imprime_metadados(metadados);
+			
 			salva_arq_metadados(nome_arquivo_metadados, metadados);
 			
 			int ret;
@@ -363,70 +348,11 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 			free(noFolha);
 			free(novo_noFolha);
 			
-			return ret;
-			/*
-			//SALVAR ARQUIVO DE DADOS
-			fseek(fd, buscaNo, SEEK_SET);
-			
-			//printf("\n NO FOLHA INSERIDO PRIMEIRO: \n");
-			//imprime_no_folha(d, noFolha);
-			
-			salva_no_folha(d, noFolha, fd);
-			
-			fseek(fd, noFolha->pont_prox, SEEK_SET);
-			TNoFolha * aux_folha = le_no_folha(d, fd);
-			
-			fseek(fd, noFolha->pont_prox, SEEK_SET);
-			
-			//printf("\n NO FOLHA INSERIDO SEGUNDO: \n");
-			//imprime_no_folha(d, novo_noFolha);
-			
-			salva_no_folha(d, novo_noFolha, fd);
-			
-			TNoFolha * aux_folha_02 = aux_folha; int loop = 0;
-						
-			while(aux_folha_02 != NULL){
-				
-				fseek(fd, noFolha->pont_prox + (loop * tamanho_no_folha(d)), SEEK_SET);
-				
-				//printf("\n NO FOLHA INSERIDO : \n");
-				//imprime_no_folha(d, aux_folha);
-				
-				aux_folha_02 = le_no_folha(d, fd);
-				fseek(fd, noFolha->pont_prox + (loop * tamanho_no_folha(d)), SEEK_SET);
-				salva_no_folha(d, aux_folha, fd);
-				
-				free(aux_folha);
-				
-				if(aux_folha_02 != NULL){
-					//printf("\n NOS FOLHAS INSERIDOS TERMINOU : \n");
-					aux_folha = aux_folha_02;
-				}
-				loop ++;
-			}
-			
-			//salva_no_folha(d, aux_folha, fd);
-			
-			//FECHAR ARQUIVO DE DADOS
-			fclose(fd);
-			
-			int ret;
-			
-			if(trocou_folha == 0){
-				ret = buscaNo;
-			}
-			else{
-				ret = noFolha->pont_prox;
-			}
-			
-			printf("\n RET : %i \n", ret);
-			
-			//free(aux_folha);
-			free(noFolha);
-			free(novo_noFolha);
+			TListaNosFolhas * lista_folhas = le_nos_folhas(d, nome_arquivo_dados);
+			imprime_nos_folhas(d, lista_folhas);
 			
 			return ret;
-			*/
+			
 		}
 		//CASO CONTRARIO, FAZER O PARTICIONAMENTO TOMANDO CUIDADO COM A PROPAGAÇÃO
 		else{
