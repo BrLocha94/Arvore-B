@@ -366,20 +366,12 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 			novo_noFolha->pont_prox = noFolha->pont_prox;
 			noFolha->pont_prox = pont_novo;
 			
-			//printf("\n NO FOLHA : \n");
-			//imprime_no_folha(d, noFolha);
-			
-			//printf("\n NOVO NO FOLHA : \n");
-			//imprime_no_folha(d, novo_noFolha);
-			
 			//SALVAR ARQUIVO DE DADOS
 			fseek(fd, buscaNo, SEEK_SET);
 			salva_no_folha(d, noFolha, fd);
 			
 			fseek(fd, pont_novo, SEEK_SET);
 			salva_no_folha(d, novo_noFolha, fd);
-			//FECHA ARQUIVO DE DADOS
-			//fclose(fd);
 			
 			int pont_pai_01 = noFolha->pont_pai;
 			int pont_pai_02 = metadados->pont_prox_no_interno_livre;
@@ -390,6 +382,9 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 			int loop = 0;
 			
 			while(loop == 0){
+				
+				printf("\n NO INTERNO ANTES : \n");
+				imprime_no_interno(d, noInterno);
 				
 				//PRIMEIRO ORDENAR O NÓ QUE JÁ TEMOS
 				
@@ -518,6 +513,12 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 					}
 				}
 				
+				printf("\n NO INTERNO DEPOIS : \n");
+				imprime_no_interno(d, noInterno);
+				
+				printf("\n NOVO NO INTERNO : \n");
+				imprime_no_interno(d, noInterno);
+				
 				//SALVAR NOS NO ARQUIVO
 				//DA O SEEK NO ARQUIVO DE INDICE ATÉ O CORRESPONDENTE
 				fseek(fi, pont_pai_01, SEEK_SET);
@@ -615,13 +616,16 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 					metadados->pont_raiz = metadados->pont_prox_no_interno_livre;
 					metadados->pont_prox_no_interno_livre = metadados->pont_prox_no_interno_livre + tamanho_no_interno(d);
 				}
+				
+				printf("\n METADADOS FINAL DO LOOP \n");
+				imprime_metadados(metadados);
 			}
 			
 			//SALVAR ARQUIVO METADADOS
 			metadados->pont_prox_no_folha_livre = noFolha->pont_prox + tamanho_no_folha(d);
 			
-			//printf("\n METADADOS SALVOS \n");
-			//imprime_metadados(metadados);
+			printf("\n METADADOS SALVOS \n");
+			imprime_metadados(metadados);
 			
 			fclose(fd);
 			fclose(fi);

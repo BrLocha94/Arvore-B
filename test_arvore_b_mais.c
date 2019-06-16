@@ -633,7 +633,7 @@ BEGIN_TESTS();
                       NOME_ARQUIVO_DADOS, 2);
         
 		printf("\n VALOR RETORNADO PELA FUNÇÃO INSERE: %d \n", pont);
-		printf("\n VALOR ESPERADO PELO ASSERT_EQUAL: %d \n", 1 * tamanho_no_folha(D));
+		printf("\n VALOR ESPERADO PELO ASSERT_EQUAL: 0 \n");
 		
 		ASSERT_EQUAL(0, pont);
 
