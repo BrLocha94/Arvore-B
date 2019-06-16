@@ -449,6 +449,9 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 						}
 					}	
 					
+					printf("\n NO INTERNO ANTES DE PARTICIONAR : \n");
+					imprime_no_interno(d, noInterno);
+					
 					//DEPOIS, CRIAR O NOVO NÓ E ADICIONA AS CHAVES CORRESPONDENTES PARA ELE
 					TNoInterno * novo_noInterno = no_interno_vazio(d);
 					
