@@ -645,6 +645,7 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 			noInterno->p[1] = metadados->pont_prox_no_folha_livre;
 			noInterno->chaves[0] = novo_noFolha->pizzas[0]->cod;
 			noInterno->m = 1;
+			noInterno->aponta_folha = 1;
 			
 			fseek(fi, 0, SEEK_SET);
 			salva_no_interno(d, noInterno, fi);
