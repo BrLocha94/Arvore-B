@@ -598,19 +598,27 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 						}
 					}
 					
-					metadados->pont_prox_no_folha_livre = noFolha->pont_prox + tamanho_no_folha(d);
 				}
 				else{
-				
+					
+					loop = 1;
+					
 					noInterno = no_interno_vazio(int d);
 					noInterno->p[0] = pont_pai_01;
 					noInterno->p[1] = pont_pai_02;
+					noInterno->chaves[0] = chave;
 					
+					//DA O SEEK NO ARQUIVO DE INDICE ATÉ O CORRESPONDENTE
+					fseek(fi, metadados->pont_prox_no_interno_livre, SEEK_SET);
+					salva_no_interno(d, novo_noInterno, fi);
+					
+					metadados->pont_raiz = metadados->pont_prox_no_interno_livre;
+					metadados->pont_prox_no_interno_livre = metadados->pont_prox_no_interno_livre + tamanho_no_interno(d);
 				}
 			}
 			
 			//SALVAR ARQUIVO METADADOS
-			//metadados->pont_prox_no_folha_livre = noFolha->pont_prox + tamanho_no_folha(d);
+			metadados->pont_prox_no_folha_livre = noFolha->pont_prox + tamanho_no_folha(d);
 			
 			//printf("\n METADADOS SALVOS \n");
 			//imprime_metadados(metadados);
