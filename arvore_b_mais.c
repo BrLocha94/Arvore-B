@@ -654,7 +654,7 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 			fclose(fi);
 			
 			//SALVAR ARQUIVO DE DADOS
-			noFolha->pont_prox = metadados->pont_prox_no_folha_livre
+			noFolha->pont_prox = metadados->pont_prox_no_folha_livre;
 			noFolha->pont_pai = 0;
 			
 			fseek(fd, buscaNo, SEEK_SET);
