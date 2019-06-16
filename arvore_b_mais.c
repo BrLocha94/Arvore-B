@@ -238,12 +238,23 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 			//printf("\n NO INTERNO ANTES : \n");
 			//imprime_no_interno(d, noInterno);
 			
-			int aux_pont = noInterno->p[0]; int aux_pont_02 = noInterno->p[1];
+			int flag = 0;
+			int aux_pont; int aux_pont_02;
 			
 			for(int i = 0; i < noInterno->m; i++){
 				
 				if(noInterno->chaves[i] > chave){
 					
+					if(flag == 0){
+						aux_pont = noInterno->p[i + 1];
+						noInterno->p[i + 1] = -2;
+						flag = 1;
+					}
+					else{
+						aux_pont_02 = noInterno->p[i + 1];
+						noInterno->p[i + 1] = aux_pont;
+						aux_pont = aux_pont_02;
+					}
 					aux_chave = noInterno->chaves[i];
 					noInterno->chaves[i] = chave;
 					chave = aux_chave;
@@ -253,21 +264,100 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 			
 			noInterno->chaves[noInterno->m] = chave;
 			noInterno->m ++;
-			noInterno->p[noInterno->m] = tamanho_no_folha(d) * noInterno->m; 
 			
-			//printf("\n NO INTERNO DEPOIS : \n");
-			//imprime_no_interno(d, noInterno);
+			if(flag == 0){
+				noInterno->p[noInterno->m] = -2; 
+			}
+			else{
+				noInterno->p[noInterno->m] = aux_pont;
+			}
+			
+			printf("\n NO INTERNO DEPOIS : \n");
+			imprime_no_interno(d, noInterno);
+			
+			//SALVAR ARQUIVO DE INDICE
+			//fseek(fi, noFolha->pont_pai, SEEK_SET);
+			//salva_no_interno(d, noInterno, fi);
+			//FECHAR ARQUIVO DE INDICE
+			//fclose(fi);
+			
+			//novo_noFolha->pont_pai = noFolha->pont_pai;
+			//novo_noFolha->pont_prox = noFolha->pont_prox;
+			
+			fseek(fd, noFolha->pont_prox, SEEK_SET);
+			TNoFolha * aux_folha = le_no_folha(d, fd);
+			
+			int loop = 0; int pont_novo;
+			
+			while(aux_folha != NULL){
+				
+				free(aux_folha);
+				
+				loop ++;
+				fseek(fd, noFolha->pont_prox + (loop * tamanho_no_folha(d)), SEEK_SET);
+			
+				aux_folha = le_no_folha(d, fd);
+			}
+			
+			pont_novo = noFolha->pont_prox + (loop * tamanho_no_folha(d));
+			
+			novo_noFolha->pont_pai = noFolha->pont_pai;
+			novo_noFolha->pont_prox = noFolha->pont_prox;
+			noFolha->pont_prox = pont_novo;
+			
+			printf("\n NO FOLHA : \n");
+			imprime_no_folha(d, noFolha);
+			
+			printf("\n NOVO NO FOLHA : \n");
+			imprime_no_folha(d, novo_noFolha);
+			
+			//SALVAR ARQUIVO DE DADOS
+			fseek(fd, buscaNo, SEEK_SET);
+			salva_no_folha(d, noFolha, fd);
+			
+			fseek(fd, pont_novo, SEEK_SET);
+			salva_no_folha(d, novo_noFolha, fd);
+			//FECHA ARQUIVO DE DADOS
+			fclose(fd);
+			
+			if(flag == 0){
+				noInterno->p[noInterno->m] = pont_novo; 
+			}
+			else{
+				for(int i = 0; i < noInterno->m; i++){
+			
+					if(noInterno->p[i] == -2){
+						noInterno->p[i] = pont_novo;
+						break;
+					}
+				}
+			}
+			
+			printf("\n NO INTERNO ANTES DE SALVAR : \n");
+			imprime_no_interno(d, noInterno);
 			
 			//SALVAR ARQUIVO DE INDICE
 			fseek(fi, noFolha->pont_pai, SEEK_SET);
 			salva_no_interno(d, noInterno, fi);
 			//FECHAR ARQUIVO DE INDICE
-			fclose(fi);
+			fclose(fi)
 			
+			int ret;
 			
-			novo_noFolha->pont_pai = noFolha->pont_pai;
-			novo_noFolha->pont_prox = noFolha->pont_prox + tamanho_no_folha(d);
+			if(trocou_folha == 0){
+				ret = buscaNo;
+			}
+			else{
+				ret = noFolha->pont_prox;
+			}
 			
+			printf("\n RET : %i \n", ret);
+			
+			free(noFolha);
+			free(novo_noFolha);
+			
+			return ret;
+			/*
 			//SALVAR ARQUIVO DE DADOS
 			fseek(fd, buscaNo, SEEK_SET);
 			
@@ -324,11 +414,12 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 			
 			printf("\n RET : %i \n", ret);
 			
-			free(aux_folha);
+			//free(aux_folha);
 			free(noFolha);
 			free(novo_noFolha);
 			
 			return ret;
+			*/
 		}
 		//CASO CONTRARIO, FAZER O PARTICIONAMENTO TOMANDO CUIDADO COM A PROPAGAÇÃO
 		else{
