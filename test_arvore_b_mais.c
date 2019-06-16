@@ -699,8 +699,8 @@ BEGIN_TESTS();
         pont = insere(22, "Banana com Chocolate", "Doce", 30, NOME_ARQUIVO_METADADOS, NOME_ARQUIVO_INDICE,
                       NOME_ARQUIVO_DADOS, 2);
 		
-		printf("\n VALOR RETORNADO PELA FUNÇÃO INSERE: %d \n", pont);
-		printf("\n VALOR ESPERADO PELO ASSERT_EQUAL: %d \n", 5 * tamanho_no_folha(D));
+		//printf("\n VALOR RETORNADO PELA FUNÇÃO INSERE: %d \n", pont);
+		//printf("\n VALOR ESPERADO PELO ASSERT_EQUAL: %d \n", 5 * tamanho_no_folha(D));
 		
         ASSERT_EQUAL(5 * tamanho_no_folha(D), pont);
 
