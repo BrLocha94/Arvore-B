@@ -564,7 +564,7 @@ BEGIN_TESTS();
 		//printf("\n LISTA DE FOLHAS CRIADA NO TESTE: \n");
 		//imprime_nos_folhas(D, tabDados);
 		
-		//printf("\n LISTA DE FOLHAS LIDA DO ARQUIVO: \n");
+        //printf("\n LISTA DE FOLHAS LIDA DO ARQUIVO: \n");
 		//imprime_nos_folhas(D, tabDadosSaida);
 		
         ASSERT_EQUAL_CMP(D, tabDados, tabDadosSaida, cmp_nos_folhas);

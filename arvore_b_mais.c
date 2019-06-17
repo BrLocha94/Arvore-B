@@ -136,7 +136,7 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 					//ACERTA O AUX 2 
 					aux_2->cod = aux->cod;
 					strcpy(aux_2->nome, aux->nome);
-					strcpy(aux_2->nome, aux->nome);
+					strcpy(aux_2->categoria, aux->categoria);
 					aux_2->preco = aux->preco;
 				}
 			}
@@ -202,7 +202,7 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 				//ACERTA O AUX 2 
 				aux_2->cod = aux->cod;
 				strcpy(aux_2->nome, aux->nome);
-				strcpy(aux_2->nome, aux->nome);
+				strcpy(aux_2->categoria, aux->categoria);
 				aux_2->preco = aux->preco;
 			}
 		}
@@ -381,10 +381,14 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 				free(noFolha);
 				free(novo_noFolha);
 				
+				//printf("\n ENTROU AQUI \n");
+
 				int loop = 0; int chave_mestra;
 				
 				while(loop == 0){
 					
+					//printf("\n ENTROU NO LOOP \n");
+
 					//printf("\n METADADOS INICIO DO LOOP \n");
 					//imprime_metadados(metadados);
 					
@@ -488,16 +492,23 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 						
 						novo_noInterno->aponta_folha = 1;
 						
+						TNoFolha * noFolha_aux = NULL;
+
 						for(int i = 0; i < (noInterno->m + 1); i ++){
 						
 							//DA O SEEK NO ARQUIVO DE INDICE ATÉ O CORRESPONDENTE
 							fseek(fd, noInterno->p[i], SEEK_SET);
 							//LE NO FOLHA DO ARQUIVO PARA ALTERAR O PONTEIRO DO PAI
-							noFolha = le_no_folha(d, fd);
-							noFolha->pont_pai = pont_pai_01;
-							salva_no_folha(d, noFolha, fd);
-							
-							free(noFolha);
+							noFolha_aux = le_no_folha(d, fd);
+							noFolha_aux->pont_pai = pont_pai_01;
+
+							//printf("\n NO FOLHA ANTES DE SER SALVO \n");
+							//imprime_no_folha(d, noFolha_aux);
+
+							fseek(fd, noInterno->p[i], SEEK_SET);
+							salva_no_folha(d, noFolha_aux, fd);
+
+							free(noFolha_aux);
 						}
 						
 						//printf("\n ACABOU PRIMEIRO FOR \n");
@@ -507,13 +518,20 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 							//DA O SEEK NO ARQUIVO DE INDICE ATÉ O CORRESPONDENTE
 							fseek(fd, novo_noInterno->p[i], SEEK_SET);
 							//LE NO FOLHA DO ARQUIVO PARA ALTERAR O PONTEIRO DO PAI
-							noFolha = le_no_folha(d, fd);
-							noFolha->pont_pai = pont_pai_02;
-							salva_no_folha(d, noFolha, fd);
+							noFolha_aux = le_no_folha(d, fd);
+							noFolha_aux->pont_pai = pont_pai_02;
+
+							//printf("\n NO FOLHA ANTES DE SER SALVO \n");
+							//imprime_no_folha(d, noFolha_aux);
+
+							fseek(fd, novo_noInterno->p[i], SEEK_SET);
+							salva_no_folha(d, noFolha_aux, fd);
 							
-							free(noFolha);
+							free(noFolha_aux);
 						}
 						
+						//fclose(fd);
+
 						//printf("\n ACABOU SEGUNDO FOR FOR \n");
 					}
 					else{
@@ -696,6 +714,8 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 				//printf("\n METADADOS SALVOS \n");
 				//imprime_metadados(metadados);
 				
+				//printf("\n  FECHOU ARQUIVO DE DADOS \n");
+
 				fclose(fd);
 				fclose(fi);
 				
