@@ -811,9 +811,14 @@ int exclui(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, cha
 				noFolha->pizzas[i] = noFolha->pizzas[i + 1];
 			}
 			
+			//DECRESCE O NUMERO DE CHAVES
+			noFolha->m --;
+			
 			//SALVA A NOVA FOLHA
 			fseek(fd, buscaNo, SEEK_SET);
 			salva_no_folha(d, noFolha, fd);
+			
+			free(noFolha);
 			
 			//FECHA OS ARQUIVOS ABERTOS
 			fclose(fd);
@@ -825,6 +830,69 @@ int exclui(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, cha
 		//CASO TENHA MENOS PIZZAS QUE D, SERÁ NECESSÁRIA UMA DAS OPERAÇÕES DE REORGANIZAÇÃO DA ARVORE B+ 
 		else{
 			
+			//LE O METADADOS CORRESPONDENTE DA ÁRVORE
+			TMetadados *metadados = le_arq_metadados(nome_arquivo_metadados);
+			
+			//CASO A RAIZ SEJA UMA FOLHA, SIMPLESENTE EXCLUI O NÓ SEM PREOCUPAÇÕES
+			if(metadados->raiz_folha == 1){
+				
+				//REORDENA A FOLHA PARA SUMIR COM A PIZZA QUE POSSUI O COD PASSADO
+				for(int i == pos_chave, i < noFolha->m; i++){
+					noFolha->pizzas[i] = noFolha->pizzas[i + 1];
+				}
+				
+				//DECRESCE O NUMERO DE CHAVES
+				noFolha->m --;
+				
+				//SALVA A NOVA FOLHA
+				fseek(fd, buscaNo, SEEK_SET);
+				salva_no_folha(d, noFolha, fd);
+				
+				free(noFolha);
+				
+			}
+			//CHECA OS CASOS DE EXCLUSÃO COM INDICE
+			else{
+				
+				//EXISTEM DOIS CASOS: REDISTRIBUIÇÃO E CONCATENAÇÃO
+				//REDISTRIBUIÇÃO: MUDAM O CONTEUDO DO INDICE E DAS FOLHAS, MAS NÃO SE PROPAGAM
+				//CONCATENAÇÃO: ALÉM DE MUDAR AS FOLHAS, SE PROPAGAM PELA ÁRVORE
+				
+				//LE O NO INTERNO PAI(PRIMEIRO AFETADO)
+				fseek(fi, noFolha->pont_pai, SEEK_SET);
+				TNoInterno *noInterno = le_no_interno(d, fi);
+				
+				//CASO TENHA MAIS QUE D CHAVES SOMENTE ALTERAR FOLHAS E NO INTERNO PAI (REDISTRIBUIÇÃO)
+				if(noInterno->m > d){
+					
+					int pos = -1;
+					//LOCALIZA A POSIÇÃO DA CHAVE NO NÓ INTERNO
+					for(int i = 0; i < noInterno->m; i++){
+					
+						if(noInterno->chaves[i] > noFolha->pizzas[0]->cod){
+							pos = i;
+							break;
+						}
+					}
+					
+					if(pos == -1) pos = noInterno->m;
+					
+					//CASO SEJA POSSIVEL
+					
+				}
+				//CASO CONTRÁRIO, A REMOÇÃO SE PROPAGA PELA ÁRVORE (CONCATENAÇÃO)
+				else{
+				
+				}
+			}
+			
+			//FECHA METADADOS
+			salva_arq_metadados(nome_arquivo_metadados, metadados);
+			free(metadados);
+			
+			//FECHA OS ARQUIVOS ABERTOS
+			fclose(fd);
+			fclose(fi);
 			
 			//RETORNA O PONTEIRO PARA A FOLHA NA QUAL FOI EXECUTADA A REMOÇÃO
 			return buscaNo;
@@ -833,6 +901,8 @@ int exclui(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, cha
 	}
 	//CASO O COD PASSADO NÃO EXISTA NA ARVORE
 	else{
+		
+		free(noFolha);
 		
 		//FECHA OS ARQUIVOS ABERTOS
 		fclose(fd);
