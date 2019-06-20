@@ -816,11 +816,11 @@ int exclui(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, cha
 			
 			noFolha->pizzas[noFolha->m] = NULL; 
 			
-			printf("\n NO FOLHA DEPOIS: \n");
-			imprime_no_folha(d, noFolha);
-			
 			//DECRESCE O NUMERO DE CHAVES
 			noFolha->m --;
+			
+			printf("\n NO FOLHA DEPOIS: \n");
+			imprime_no_folha(d, noFolha);
 			
 			//SALVA A NOVA FOLHA
 			fseek(fd, buscaNo, SEEK_SET);
