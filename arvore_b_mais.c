@@ -819,6 +819,7 @@ int exclui(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, cha
 			
 			printf("\n AQUI -1 \n");
 			noFolha->pizzas[noFolha->m] = NULL; 
+			noFolha->pizzas[noFolha->m - 1] = NULL; 
 			
 			printf("\n AQUI 0 \n");
 			//DECRESCE O NUMERO DE CHAVES
