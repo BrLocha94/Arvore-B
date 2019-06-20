@@ -807,7 +807,7 @@ int exclui(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, cha
 		if(noFolha->m > d){
 			
 			//REORDENA A FOLHA PARA SUMIR COM A PIZZA QUE POSSUI O COD PASSADO
-			for(int i == pos_chave, i < noFolha->m; i++){
+			for(int i = pos_chave; i < noFolha->m; i++){
 				noFolha->pizzas[i] = noFolha->pizzas[i + 1];
 			}
 			
@@ -837,7 +837,7 @@ int exclui(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, cha
 			if(metadados->raiz_folha == 1){
 				
 				//REORDENA A FOLHA PARA SUMIR COM A PIZZA QUE POSSUI O COD PASSADO
-				for(int i == pos_chave, i < noFolha->m; i++){
+				for(int i = pos_chave; i < noFolha->m; i++){
 					noFolha->pizzas[i] = noFolha->pizzas[i + 1];
 				}
 				
