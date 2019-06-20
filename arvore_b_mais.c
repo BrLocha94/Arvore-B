@@ -812,9 +812,8 @@ int exclui(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, cha
 			//REORDENA A FOLHA PARA SUMIR COM A PIZZA QUE POSSUI O COD PASSADO
 			for(int i = pos_chave; i < noFolha->m; i++){
 				noFolha->pizzas[i] = noFolha->pizzas[i + 1];
+				noFolha->pizzas[i + 1] = NULL; 
 			}
-			
-			noFolha->pizzas[noFolha->m] = NULL; 
 			
 			//DECRESCE O NUMERO DE CHAVES
 			noFolha->m --;
@@ -823,17 +822,28 @@ int exclui(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, cha
 			//imprime_no_folha(d, noFolha);
 			
 			//SALVA A NOVA FOLHA
+			
+			printf("\n AQUI 1 \n");
 			fseek(fd, buscaNo, SEEK_SET);
+			
+			printf("\n AQUI 2 \n");
 			salva_no_folha(d, noFolha, fd);
 			
+			printf("\n AQUI 3 \n");
 			free(noFolha);
 			
+			printf("\n AQUI 4 \n");
 			//FECHA OS ARQUIVOS ABERTOS
 			fclose(fd);
+			
+			printf("\n AQUI 5 \n");
 			fclose(fi);
 			
+			printf("\n AQUI 6 \n");
 			//RETORNA O PONTEIRO PARA A FOLHA NA QUAL FOI EXECUTADA A REMOÇÃO
 			return buscaNo;
+			
+			printf("\n AQUI 7 \n");
 		}
 		//CASO TENHA MENOS PIZZAS QUE D, SERÁ NECESSÁRIA UMA DAS OPERAÇÕES DE REORGANIZAÇÃO DA ARVORE B+ 
 		else{
