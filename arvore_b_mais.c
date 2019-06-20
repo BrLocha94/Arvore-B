@@ -775,8 +775,73 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 
 int exclui(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, char *nome_arquivo_dados, int d)
 {
-	//TODO: Inserir aqui o codigo do algoritmo de remocao
-    return INT_MAX;
+	//ABRE O ARQUIVO DE INDICE
+	FILE * fi = fopen(nome_arquivo_indice, "rb+");
+	FILE * fd = fopen(nome_arquivo_dados, "rb+");
+	
+	//USA A FUNÇÃO DE BUSCA PARA ACHAR O NÓ CORRETO
+	int buscaNo = busca(cod, nome_arquivo_metadados, nome_arquivo_indice, nome_arquivo_dados, d);
+	
+	//LE O NO CORRESPONDENTE
+	fseek(fd, buscaNo, SEEK_SET);
+	TNoFolha *noFolha = le_no_folha(d, fd);
+	
+	//PARAMETROS DE CONTROLE
+	int possui_chave = 0;
+	int pos_chave = 0;
+	
+	//PROCURA A CHAVE PASSADA NA FUNÇÃO NO NOFOLHA
+	for(int i = 0; i < noFolha->m; i++){
+	
+		if(noFolha->pizzas[i]->cod == cod){
+			possui_chave = 1;
+			pos_chave = i;
+			break;
+		}
+	}
+	
+	//CASO A CHAVE EXISTA, EXECUTA A REMOÇÃO
+	if(possui_chave == 1){
+		
+		//CASO A FOLHA TENHA MAIS DE D PIZZAS, A REMOÇÃO SERÁ SIMPLES
+		if(noFolha->m > d){
+			
+			//REORDENA A FOLHA PARA SUMIR COM A PIZZA QUE POSSUI O COD PASSADO
+			for(int i == pos_chave, i < noFolha->m; i++){
+				noFolha->pizzas[i] = noFolha->pizzas[i + 1];
+			}
+			
+			//SALVA A NOVA FOLHA
+			fseek(fd, buscaNo, SEEK_SET);
+			salva_no_folha(d, noFolha, fd);
+			
+			//FECHA OS ARQUIVOS ABERTOS
+			fclose(fd);
+			fclose(fi);
+			
+			//RETORNA O PONTEIRO PARA A FOLHA NA QUAL FOI EXECUTADA A REMOÇÃO
+			return buscaNo;
+		}
+		//CASO TENHA MENOS PIZZAS QUE D, SERÁ NECESSÁRIA UMA DAS OPERAÇÕES DE REORGANIZAÇÃO DA ARVORE B+ 
+		else{
+			
+			
+			//RETORNA O PONTEIRO PARA A FOLHA NA QUAL FOI EXECUTADA A REMOÇÃO
+			return buscaNo;
+		}
+		
+	}
+	//CASO O COD PASSADO NÃO EXISTA NA ARVORE
+	else{
+		
+		//FECHA OS ARQUIVOS ABERTOS
+		fclose(fd);
+		fclose(fi);
+		
+		//RETORNA MENSAGEM DE ERRO
+		return -1;
+	}
+	
 }
 
 void carrega_dados(int d, char *nome_arquivo_entrada, char *nome_arquivo_metadados, char *nome_arquivo_indice, char *nome_arquivo_dados)
