@@ -811,7 +811,10 @@ int exclui(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, cha
 			
 			//REORDENA A FOLHA PARA SUMIR COM A PIZZA QUE POSSUI O COD PASSADO
 			for(int i = pos_chave; i < noFolha->m; i++){
-				noFolha->pizzas[i] = noFolha->pizzas[i + 1];
+				noFolha->pizzas[i]->cod = noFolha->pizzas[i + 1]->cod;
+				strcpy(noFolha->pizzas[i]->nome, noFolha->pizzas[i + 1]->nome);
+				strcpy(noFolha->pizzas[i]->categoria, noFolha->pizzas[i + 1]->categoria);
+				noFolha->pizzas[i]->preco = noFolha->pizzas[i + 1]->preco;
 			}
 			
 			printf("\n AQUI -1 \n");
