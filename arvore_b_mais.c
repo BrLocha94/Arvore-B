@@ -806,7 +806,7 @@ int exclui(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, cha
 		//CASO A FOLHA TENHA MAIS DE D PIZZAS, A REMOÇÃO SERÁ SIMPLES
 		if(noFolha->m > d){
 			
-			//printf("\n NO FOLHA ANTES: \n");
+			printf("\n NO FOLHA ANTES: \n");
 			imprime_no_folha(d, noFolha);
 			
 			//REORDENA A FOLHA PARA SUMIR COM A PIZZA QUE POSSUI O COD PASSADO
@@ -814,7 +814,9 @@ int exclui(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, cha
 				noFolha->pizzas[i] = noFolha->pizzas[i + 1];
 			}
 			
-			//printf("\n NO FOLHA DEPOIS: \n");
+			noFolha->pizzas[noFolha->m] = NULL; 
+			
+			printf("\n NO FOLHA DEPOIS: \n");
 			imprime_no_folha(d, noFolha);
 			
 			//DECRESCE O NUMERO DE CHAVES
