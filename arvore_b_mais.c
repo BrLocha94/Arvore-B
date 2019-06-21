@@ -881,7 +881,7 @@ int exclui(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, cha
 				imprime_no_interno(d, noInterno);
 				
 				//CASO TENHA MAIS QUE D CHAVES SOMENTE ALTERAR FOLHAS E NO INTERNO PAI (REDISTRIBUIÇÃO)
-				if(noInterno->m > d){
+				if(noInterno->m > d || noInterno->pont_pai == -1){
 					
 					int pos = -1;
 					//LOCALIZA A POSIÇÃO DA CHAVE NO NÓ INTERNO
