@@ -900,6 +900,15 @@ int exclui(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, cha
 						fseek(fd, noInterno->p[pos + 1], SEEK_SET);
 						vizinho = le_no_folha(d, fd);
 						
+						printf("\n NO INTERNO ANTES : \n");
+						imprime_no_interno(d, noInterno);
+						
+						printf("\n NO FOLHA ANTES : \n");
+						imprime_no_folha(d, noFolha);
+						
+						printf("\n NO VIZINHO ANTES : \n");
+						imprime_no_folha(d, vizinho);
+						
 						//CASO SEJA POSSIVEL PEGAR UMA CHAVE DO VIZINHO SEM DESBALANCEAR A ARVORE
 						if(vizinho->m > d){
 							
@@ -909,6 +918,9 @@ int exclui(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, cha
 							strcpy(noFolha->pizzas[noFolha->m - 1]->categoria, vizinho->pizzas[0]->categoria);
 							noFolha->pizzas[noFolha->m - 1]->preco = vizinho->pizzas[0]->preco;
 							
+							printf("\n NO FOLHA 1 : \n");
+							imprime_no_folha(d, noFolha);
+							
 							//RETIRA A CHAVE TROCADA DO VIZINHO
 							for(int i = 0; i < vizinho->m - 1; i++){
 								vizinho->pizzas[i]->cod = vizinho->pizzas[i + 1]->cod;
@@ -917,11 +929,17 @@ int exclui(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, cha
 								vizinho->pizzas[i]->preco = vizinho->pizzas[i + 1]->preco;
 							}
 							
+							printf("\n NO VIZINHO 1 : \n");
+							imprime_no_folha(d, vizinho);
+							
 							vizinho->pizzas[vizinho->m] = NULL; 
 							vizinho->pizzas[vizinho->m - 1] = NULL; 
 							
 							//DECRESCE O NUMERO DE CHAVES
 							vizinho->m = vizinho->m - 1;
+							
+							printf("\n NO VIZINHO 2 : \n");
+							imprime_no_folha(d, vizinho);
 							
 							//SALVA AMBAS AS FOLHAS
 							fseek(fd, noInterno->chaves[pos + 1], SEEK_SET);
