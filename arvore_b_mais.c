@@ -945,7 +945,7 @@ int exclui(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, cha
 							imprime_no_folha(d, vizinho);
 							
 							//SALVA AMBAS AS FOLHAS
-							fseek(fd, noInterno->chaves[pos + 1], SEEK_SET);
+							fseek(fd, noInterno->p[pos + 1], SEEK_SET);
 							salva_no_folha(d, vizinho, fd);
 							
 							fseek(fd, buscaNo, SEEK_SET);
