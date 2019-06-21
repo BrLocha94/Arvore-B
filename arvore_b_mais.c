@@ -931,7 +931,7 @@ int exclui(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, cha
 							salva_no_folha(d, noFolha, fd);
 							
 							//ATUALIZA CHAVE DO NÓ INTERNO
-							noInterno->chaves[pos] = vizinho->pizzas[0];
+							noInterno->chaves[pos] = vizinho->pizzas[0]->cod;
 							
 							//SALVA NÓ INTERNO
 							fseek(fi, noFolha->pont_pai, SEEK_SET);
@@ -957,7 +957,7 @@ int exclui(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, cha
 							noFolha->m = noFolha->m + vizinho->m - 1;
 							
 							//ACERTA OS PONTEIROS DO NÓ INTERNO
-							for(int i = pos + 1; i < noInterno->m - 1, i++){
+							for(int i = pos + 1; i < noInterno->m - 1; i++){
 								noInterno->chaves[i] = noInterno->chaves[i + 1];
 								noInterno->p[i] = noInterno->p[i + 1];
 								
