@@ -877,6 +877,9 @@ int exclui(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, cha
 				fseek(fi, noFolha->pont_pai, SEEK_SET);
 				TNoInterno *noInterno = le_no_interno(d, fi);
 				
+				printf("\n NO INTERNO ANTES : \n");
+				imprime_no_interno(d, noInterno);
+				
 				//CASO TENHA MAIS QUE D CHAVES SOMENTE ALTERAR FOLHAS E NO INTERNO PAI (REDISTRIBUIÇÃO)
 				if(noInterno->m > d){
 					
