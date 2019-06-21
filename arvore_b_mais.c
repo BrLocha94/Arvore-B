@@ -890,7 +890,7 @@ int exclui(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, cha
 						}
 					}
 					
-					if(pos == -1) pos = noInterno->m;
+					printf("\n POS : %i \n", pos);
 					
 					TNoFolha * vizinho;
 					
