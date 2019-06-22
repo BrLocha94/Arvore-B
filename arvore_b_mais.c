@@ -1232,7 +1232,7 @@ int exclui(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, cha
 								imprime_no_interno(d, noInterno);
 								
 								printf("\n NO VIZINHO INICIAL\n");
-								imprime_no_interno(d, noInterno);
+								imprime_no_interno(d, vizinho_interno);
 								
 								//TRANSFERE OS PONTEIROS DO VIZINHO DA DIREITA PARA O NOINTERNO
 								for(int i = 0; i < vizinho_interno->m + 1; i++){
