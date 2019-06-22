@@ -999,12 +999,17 @@ int exclui(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, cha
 							imprime_no_interno(d, noInterno);
 							
 							//ACERTA OS PONTEIROS DO NÓ INTERNO
-							for(int i = pos + 1; i < noInterno->m - 1; i++){
-								noInterno->chaves[i] = noInterno->chaves[i + 1];
+							for(int i = pos + 1; i < noInterno->m; i++){
 								noInterno->p[i] = noInterno->p[i + 1];
 								
-								noInterno->chaves[i + 1] = -1;
 								noInterno->p[i + 1] = -1;
+							}
+							
+							//ACERTA AS CHAVES DO NÓ INTERNO
+							for(int i = pos; i < noInterno->m - 1; i++){
+								noInterno->chaves[i] = noInterno->chaves[i + 1];
+								
+								noInterno->chaves[i + 1] = -1;
 							}
 							
 							printf("\n NO INTERNO 1 : \n");
