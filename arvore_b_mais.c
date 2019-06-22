@@ -1154,9 +1154,6 @@ int exclui(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, cha
 				}
 				
 				int pont_noInterno = noFolha->pont_pai;
-				
-				free(noFolha);
-				free(vizinho);
 					
 				if(noInterno->m >= d || noInterno->pont_pai == -1){
 					
@@ -1164,6 +1161,8 @@ int exclui(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, cha
 					fseek(fi, noFolha->pont_pai, SEEK_SET);
 					salva_no_interno(d, noInterno, fi);
 					
+					free(noFolha);
+					free(vizinho);
 					free(noInterno);
 				}
 				else{
@@ -1227,7 +1226,7 @@ int exclui(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, cha
 							//CONCATENA
 							else{
 								
-								printf("\n CONCATENAÇÃO DE NOS INTERNOS \n")
+								printf("\n CONCATENAÇÃO DE NOS INTERNOS \n");
 								
 								printf("\n NO INTERNO INICIAL\n");
 								imprime_no_interno(d, noInterno);
