@@ -1091,7 +1091,7 @@ BEGIN_TESTS();
     if (!skip) {
         int pont = INT_MAX;
         monta_arvore_h3();
-
+		
         pont = exclui(13, NOME_ARQUIVO_METADADOS, NOME_ARQUIVO_INDICE, NOME_ARQUIVO_DADOS, 2);
         
 		printf("\n VALOR RETORNADO PELA FUNÇÃO INSERE: %d \n", pont);
@@ -1152,7 +1152,7 @@ BEGIN_TESTS();
 
         TListaNosFolhas *tabDados = cria_nos_folhas(D, 6,
                                                     cria_no_folha(D, 1 * tamanho_no_interno(D), 1 * tamanho_no_folha(D),
-                                                                  2,
+                                                                  3,
                                                                   pizza(10, "Calabresa", "Salgada", 30),
                                                                   pizza(15, "Bianca", "Salgada", 30),
                                                                   pizza(20, "Lombinho", "Salgada", 32)
@@ -1177,7 +1177,8 @@ BEGIN_TESTS();
                                                                   pizza(39, "Frango com Catupiry", "Salgada", 35),
                                                                   pizza(50, "Marguerita", "Salgada", 28)
                                                     ),
-                                                    cria_no_folha(D, 2 * tamanho_no_interno(D), -1, 2,
+                                                    cria_no_folha(D, 2 * tamanho_no_interno(D), -1, 
+																  3,
                                                                   pizza(55, "Morango com Nutella", "Doce Especial", 45),
                                                                   pizza(60, "Presunto, Queijo e Tomate", "Salgada", 31),
                                                                   pizza(70, "Muzzarela", "Salgada", 28)
