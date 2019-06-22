@@ -1146,6 +1146,8 @@ int exclui(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, cha
 								}
 								noInterno->p[0] = vizinho_interno->p[vizinho_interno->m];
 								
+								TNoFolha * aux_folha;
+								
 								fseek(fd, noInterno->p[0], SEEK_SET);
 								aux_folha = le_no_folha(d, fd);
 								noInterno->chaves[0] = aux_folha->pizzas[0]->cod;
