@@ -921,9 +921,6 @@ int exclui(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, cha
 							strcpy(noFolha->pizzas[noFolha->m - 1]->categoria, vizinho->pizzas[0]->categoria);
 							noFolha->pizzas[noFolha->m - 1]->preco = vizinho->pizzas[0]->preco;
 							
-							printf("\n NO FOLHA 1 : \n");
-							imprime_no_folha(d, noFolha);
-							
 							//RETIRA A CHAVE TROCADA DO VIZINHO
 							for(int i = 0; i < vizinho->m - 1; i++){
 								vizinho->pizzas[i]->cod = vizinho->pizzas[i + 1]->cod;
@@ -932,17 +929,11 @@ int exclui(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, cha
 								vizinho->pizzas[i]->preco = vizinho->pizzas[i + 1]->preco;
 							}
 							
-							printf("\n NO VIZINHO 1 : \n");
-							imprime_no_folha(d, vizinho);
-							
 							vizinho->pizzas[vizinho->m] = NULL; 
 							vizinho->pizzas[vizinho->m - 1] = NULL; 
 							
 							//DECRESCE O NUMERO DE CHAVES
 							vizinho->m = vizinho->m - 1;
-							
-							printf("\n NO VIZINHO 2 : \n");
-							imprime_no_folha(d, vizinho);
 							
 							//SALVA AMBAS AS FOLHAS
 							fseek(fd, noInterno->p[pos + 1], SEEK_SET);
@@ -966,6 +957,9 @@ int exclui(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, cha
 						//NESSE CASO SÓ SE SALVA O NÓ FOLHA
 						else{
 							
+							printf("\n NO FOLHA 1 : \n");
+							imprime_no_folha(d, noFolha);
+							
 							//COPIA AS PIZZAS DO VIZINHO PARA O NÓ FOLHA NA POSIÇÃO CORRETA
 							for(int i = 0; i < vizinho->m; i++){
 								noFolha->pizzas[noFolha->m]->cod = vizinho->pizzas[i]->cod;
@@ -974,8 +968,14 @@ int exclui(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, cha
 								noFolha->pizzas[noFolha->m]->preco = vizinho->pizzas[i]->preco;
 							}
 							
+							printf("\n NO FOLHA 2 : \n");
+							imprime_no_folha(d, noFolha);
+							
 							//AUMENTA O M DO NÓ FOLHA
 							noFolha->m = noFolha->m + vizinho->m - 1;
+							
+							printf("\n NO FOLHA 3 : \n");
+							imprime_no_folha(d, noFolha);
 							
 							//ACERTA OS PONTEIROS DO NÓ INTERNO
 							for(int i = pos + 1; i < noInterno->m - 1; i++){
@@ -986,10 +986,16 @@ int exclui(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, cha
 								noInterno->p[i + 1] = -1;
 							}
 							
+							printf("\n NO INTERNO 1 : \n");
+							imprime_no_interno(d, noInterno);
+							
 							noInterno->p[noInterno->m] = noInterno->p[noInterno->m + 1];
 							noInterno->p[noInterno->m + 1] = -1;
 							noInterno->chaves[noInterno->m] = -1;
 							noInterno->m = noInterno->m - 1;
+							
+							printf("\n NO INTERNO 2 : \n");
+							imprime_no_interno(d, noInterno);
 							
 							//SALVA NO FOLHA
 							fseek(fd, buscaNo, SEEK_SET);
