@@ -1158,7 +1158,7 @@ int exclui(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, cha
 				free(noFolha);
 				free(vizinho);
 					
-				if(noInterno->m >= d || noInterno->pont_pai = -1){
+				if(noInterno->m >= d || noInterno->pont_pai == -1){
 					
 					//SALVA NÓ INTERNO
 					fseek(fi, noFolha->pont_pai, SEEK_SET);
@@ -1227,14 +1227,24 @@ int exclui(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, cha
 							//CONCATENA
 							else{
 								
+								printf("\n CONCATENAÇÃO DE NOS INTERNOS \n")
+								
+								printf("\n NO INTERNO INICIAL\n");
+								imprime_no_interno(d, noInterno);
+								
 								//TRANSFERE OS PONTEIROS DO VIZINHO DA DIREITA PARA O NOINTERNO
 								for(int i = 0; i < vizinho_interno->m + 1; i++){
 									noInterno->p[noInterno->m + 1 + i] = vizinho_interno->p[i];
 								}
 								noInterno->m = noInterno->m + vizinho_interno->m;
 								
+								printf("\n NO INTERNO MOD 1\n");
+								imprime_no_interno(d, noInterno);
+								
 								//ACERTA AS CHAVES
 								if(noInterno->aponta_folha == 1){
+									
+									printf("\n NO INTERNO APONTA FOLHA\n");
 									
 									TNoFolha * aux_folha;
 									for(int i = 1; i < noInterno->m + 1; i++){
@@ -1242,9 +1252,14 @@ int exclui(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, cha
 										aux_folha = le_no_folha(d, fd);
 										noInterno->chaves[i - 1] = aux_folha->pizzas[0]->cod;
 										free(aux_folha);
+										
+										printf("\n NO INTERNO FOR %i\n", i);
+										imprime_no_interno(d, noInterno);
 									}
 								}
 								else{
+									
+									printf("\n NO INTERNO APONTA FOLHA FALSO\n");
 									
 									TNoInterno* aux_interno;
 									for(int i = 1; i < noInterno->m + 1; i++){
@@ -1254,6 +1269,9 @@ int exclui(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, cha
 										free(aux_interno);
 									}
 								}
+								
+								printf("\n NO INTERNO MOD 2 \n");
+								imprime_no_interno(d, noInterno);
 								
 								//ACERTA AS CHAVES E OS PONTEIROS EXTRAS DO PAI
 								for(int i = pos_interno + 1; i < pai_interno->m; i++){
@@ -1283,12 +1301,12 @@ int exclui(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, cha
 									loop = 1;
 								}
 								//CASO O PAI TENHA MAIS QUE D - 1 CHAVES TERMINA
-								else if(pont_pai->m >= d){
+								else if(pai_interno->m >= d){
 									loop = 1;
 								}
 								else{
 									pont_noInterno = noInterno->pont_pai;
-									noInterno = pont_pai;
+									noInterno = pai_interno;
 								}
 							}
 							
