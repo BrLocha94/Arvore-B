@@ -937,12 +937,12 @@ int exclui(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, cha
 						noInterno->chaves[pos] = vizinho->pizzas[0]->cod;
 						
 						//SALVA NÓ INTERNO
-						fseek(fi, noFolha->pont_pai, SEEK_SET);
-						salva_no_interno(d, noInterno, fi);
+						//fseek(fi, noFolha->pont_pai, SEEK_SET);
+						//salva_no_interno(d, noInterno, fi);
 						
-						free(noFolha);
-						free(vizinho);
-						free(noInterno);
+						//free(noFolha);
+						//free(vizinho);
+						//free(noInterno);
 					}
 					//CASO CONTRÁRIO, PUXA TODO O VIZINHO E ELIMINA O NÓ
 					//NESSE CASO SÓ SE SALVA O NÓ FOLHA
@@ -957,8 +957,8 @@ int exclui(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, cha
 						//printf("\n NO VIZINHO ANTES : \n");
 						//imprime_no_folha(d, vizinho);
 						
-						printf("\n NO FOLHA 1 : \n");
-						imprime_no_folha(d, noFolha);
+						//printf("\n NO FOLHA 1 : \n");
+						//imprime_no_folha(d, noFolha);
 						
 						//REORDENA A FOLHA PARA SUMIR COM A PIZZA QUE POSSUI O COD PASSADO
 						for(int i = pos_chave; i < noFolha->m - 1; i++){
@@ -974,8 +974,8 @@ int exclui(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, cha
 						//DECRESCE O NUMERO DE CHAVES
 						noFolha->m = noFolha->m - 1;
 						
-						printf("\n NO FOLHA 2 : \n");
-						imprime_no_folha(d, noFolha);
+						//printf("\n NO FOLHA 2 : \n");
+						//imprime_no_folha(d, noFolha);
 						
 						//COPIA AS PIZZAS DO VIZINHO PARA O NÓ FOLHA NA POSIÇÃO CORRETA
 						for(int i = 0; i < vizinho->m; i++){
@@ -998,11 +998,11 @@ int exclui(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, cha
 						noFolha->m = noFolha->m + vizinho->m;
 						noFolha->pont_prox = vizinho->pont_prox;
 						
-						printf("\n NO FOLHA 3 : \n");
-						imprime_no_folha(d, noFolha);
+						//printf("\n NO FOLHA 3 : \n");
+						//imprime_no_folha(d, noFolha);
 						
-						printf("\n NO INTERNO 0 : \n");
-						imprime_no_interno(d, noInterno);
+						//printf("\n NO INTERNO 0 : \n");
+						//imprime_no_interno(d, noInterno);
 						
 						//ACERTA OS PONTEIROS DO NÓ INTERNO
 						for(int i = pos + 1; i < noInterno->m; i++){
@@ -1034,12 +1034,12 @@ int exclui(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, cha
 						salva_no_folha(d, noFolha, fd);
 						
 						//SALVA NÓ INTERNO
-						fseek(fi, noFolha->pont_pai, SEEK_SET);
-						salva_no_interno(d, noInterno, fi);
+						//fseek(fi, noFolha->pont_pai, SEEK_SET);
+						//salva_no_interno(d, noInterno, fi);
 						
-						free(noFolha);
-						free(vizinho);
-						free(noInterno);
+						//free(noFolha);
+						//free(vizinho);
+						//free(noInterno);
 					}
 				}
 				//CASO CONTRÁRIO, SEGUE A MESMMA LÓGICA ACIMA, PORÉM PARA A ESQUERDA, OU SEJA, INVERTIDO
@@ -1085,12 +1085,12 @@ int exclui(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, cha
 						noInterno->chaves[pos] = noFolha->pizzas[0]->cod;
 						
 						//SALVA NÓ INTERNO
-						fseek(fi, noFolha->pont_pai, SEEK_SET);
-						salva_no_interno(d, noInterno, fi);
+						//fseek(fi, noFolha->pont_pai, SEEK_SET);
+						//salva_no_interno(d, noInterno, fi);
 						
-						free(noFolha);
-						free(vizinho);
-						free(noInterno);
+						//free(noFolha);
+						//free(vizinho);
+						//free(noInterno);
 						
 					}
 					//CASO CONTRÁRIO, DEVE OCORRER A CONCATENAÇÃO
@@ -1144,23 +1144,36 @@ int exclui(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, cha
 						salva_no_folha(d, vizinho, fd);
 						
 						//SALVA NÓ INTERNO
-						fseek(fi, noFolha->pont_pai, SEEK_SET);
-						salva_no_interno(d, noInterno, fi);
+						//fseek(fi, noFolha->pont_pai, SEEK_SET);
+						//salva_no_interno(d, noInterno, fi);
 						
-						free(noFolha);
-						free(vizinho);
-						free(noInterno);
+						//free(noFolha);
+						//free(vizinho);
+						//free(noInterno);
 					}
 				}
+				
+				//SALVA NÓ INTERNO
+				fseek(fi, noFolha->pont_pai, SEEK_SET);
+				salva_no_interno(d, noInterno, fi);
+				
+				free(noFolha);
+				free(vizinho);
+				//free(noInterno);
 					
-				//}
-				//CASO CONTRÁRIO, A REMOÇÃO SE PROPAGA PELA ÁRVORE (CONCATENAÇÃO)
-				//else{
+				if(noInterno->m < d || noInterno->pont_pai != -1){
+					
+					loop = 0;
+					
+					//while(loop == 0){
 					
 					
-					
-					
-				//}
+					//}
+				
+				
+				
+				}
+				
 			}
 			
 			//FECHA METADADOS
