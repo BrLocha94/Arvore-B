@@ -1094,18 +1094,18 @@ BEGIN_TESTS();
 		
         pont = exclui(13, NOME_ARQUIVO_METADADOS, NOME_ARQUIVO_INDICE, NOME_ARQUIVO_DADOS, 2);
         
-		printf("\n VALOR RETORNADO PELA FUNÇÃO INSERE: %d \n", pont);
-		printf("\n VALOR ESPERADO PELO ASSERT_EQUAL: 0 \n");
+		//printf("\n VALOR RETORNADO PELA FUNÇÃO INSERE: %d \n", pont);
+		//printf("\n VALOR ESPERADO PELO ASSERT_EQUAL: 0 \n");
 		
 		ASSERT_EQUAL(0, pont);
 
         TMetadados *tabMetadados = metadados(D, 48, 0, 3 * tamanho_no_interno(D), 6 * tamanho_no_folha(D));
         TMetadados *tabMetadadosSaida = le_arq_metadados(NOME_ARQUIVO_METADADOS);
         
-		printf("\n METADADOS CRIADOS NA FUNCAO \n");
-		imprime_metadados(tabMetadados);
-		printf("\n METADADOS LIDOS DO ARQUIVO \n");
-		imprime_metadados(tabMetadadosSaida);
+		//printf("\n METADADOS CRIADOS NA FUNCAO \n");
+		//imprime_metadados(tabMetadados);
+		//printf("\n METADADOS LIDOS DO ARQUIVO \n");
+		//imprime_metadados(tabMetadadosSaida);
 		
 		ASSERT_EQUAL_CMP(D, tabMetadados, tabMetadadosSaida, cmp_metadados);
         free(tabMetadados);
@@ -1141,10 +1141,10 @@ BEGIN_TESTS();
 
         TListaNosInternos *tabIndiceSaida = le_nos_internos(D, NOME_ARQUIVO_INDICE);
         
-		printf("\n NOS INTERNOS CRIADOS NA FUNCAO \n");
-		imprime_nos_internos(D, tabIndice);
-		printf("\n NOS INTERNOS LIDOS DO ARQUIVO \n");
-		imprime_nos_internos(D, tabIndiceSaida);
+		//printf("\n NOS INTERNOS CRIADOS NA FUNCAO \n");
+		//imprime_nos_internos(D, tabIndice);
+		//printf("\n NOS INTERNOS LIDOS DO ARQUIVO \n");
+		//imprime_nos_internos(D, tabIndiceSaida);
 		
 		ASSERT_EQUAL_CMP(D, tabIndice, tabIndiceSaida, cmp_nos_internos);
         libera_nos_internos(tabIndice);
@@ -1187,10 +1187,10 @@ BEGIN_TESTS();
 
         TListaNosFolhas *tabDadosSaida = le_nos_folhas(D, NOME_ARQUIVO_DADOS);
 
-		printf("\n LISTA DE FOLHAS CRIADA NO TESTE: \n");
-		imprime_nos_folhas(D, tabDados);
-		printf("\n LISTA DE FOLHAS LIDA DO ARQUIVO: \n");
-		imprime_nos_folhas(D, tabDadosSaida);
+		//printf("\n LISTA DE FOLHAS CRIADA NO TESTE: \n");
+		//imprime_nos_folhas(D, tabDados);
+		//printf("\n LISTA DE FOLHAS LIDA DO ARQUIVO: \n");
+		//imprime_nos_folhas(D, tabDadosSaida);
 		
         ASSERT_EQUAL_CMP(D, tabDados, tabDadosSaida, cmp_nos_folhas);
         libera_nos_folhas(D, tabDados);
