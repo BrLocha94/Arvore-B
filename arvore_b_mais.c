@@ -893,12 +893,12 @@ int exclui(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, cha
 						}
 					}
 					
-					printf("\n POS : %i \n", pos);
+					//printf("\n POS : %i \n", pos);
 					
 					TNoFolha * vizinho;
 					
 					//OLHA PRIMEIRO A DIREITA DO PONTEIRO, CASO ELA EXISTA
-					if(pos != noInterno->m){
+					if(pos != -1){
 					
 						fseek(fd, noInterno->p[pos + 1], SEEK_SET);
 						vizinho = le_no_folha(d, fd);
@@ -1045,8 +1045,112 @@ int exclui(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, cha
 					//CASO CONTRÁRIO, SEGUE A MESMMA LÓGICA ACIMA, PORÉM PARA A ESQUERDA, OU SEJA, INVERTIDO
 					else{
 						
+						pos = noInterno->m;
 						
-					
+						//LE O VIZINHO DA ESQUERDA
+						fseek(fd, noInterno->p[pos - 1], SEEK_SET);
+						vizinho = le_no_folha(d, fd);
+						
+						//CASO SEJA POSSIVEL PEGAR UMA CHAVE DO VIZINHO SEM DESBALANCEAR A ARVORE
+						if(vizinho->m > d){
+							
+							//CRIA NOVA PIZZA BASEADA NO VALOR MAIS ALTO DO VIZINHO DA ESQUERDA
+							TPizza * nova_pizza = pizza(vizinho->pizzas[vizinho->m]->cod,
+															vizinho->pizzas[vizinho->m]->nome,
+															vizinho->pizzas[vizinho->m]->categoria,
+															vizinho->pizzas[vizinho->m]->preco
+															);
+							
+							//MOVE TODAS AS PIZZAS DO NO FOLHA PARA A DIREITA
+							for(int i = noFolha->m - 1; i >= 0; i--){
+								noFolha->pizzas[i + 1] = noFolha->pizzas[i]; 
+							}
+							
+							//ADICIONA A NOVA PIZZA NO INICIO DA FOLHA
+							noFolha->pizzas[0] = nova_pizza;
+							noFolha->m = noFolha->m + 1;
+							
+							//REMOVE A PIZZA RETIRADA DO VIZINHO
+							vizinho->pizzas[vizinho->m] = NULL;
+							vizinho->m = vizinho->m - 1;
+							
+							//SALVA AMBAS AS FOLHAS
+							fseek(fd, noInterno->p[pos - 1], SEEK_SET);
+							salva_no_folha(d, vizinho, fd);
+							
+							fseek(fd, buscaNo, SEEK_SET);
+							salva_no_folha(d, noFolha, fd);
+							
+							//ATUALIZA CHAVE DO NÓ INTERNO
+							noInterno->chaves[pos] = noFolha->pizzas[0]->cod;
+							
+							//SALVA NÓ INTERNO
+							fseek(fi, noFolha->pont_pai, SEEK_SET);
+							salva_no_interno(d, noInterno, fi);
+							
+							free(noFolha);
+							free(vizinho);
+							free(noInterno);
+							
+						}
+						//CASO CONTRÁRIO, DEVE OCORRER A CONCATENAÇÃO
+						//NESSE CASO, SÓ O VIZINHO SERÁ SALVO
+						else{
+							
+							//REORDENA A FOLHA PARA SUMIR COM A PIZZA QUE POSSUI O COD PASSADO
+							for(int i = pos_chave; i < noFolha->m - 1; i++){
+								noFolha->pizzas[i]->cod = noFolha->pizzas[i + 1]->cod;
+								strcpy(noFolha->pizzas[i]->nome, noFolha->pizzas[i + 1]->nome);
+								strcpy(noFolha->pizzas[i]->categoria, noFolha->pizzas[i + 1]->categoria);
+								noFolha->pizzas[i]->preco = noFolha->pizzas[i + 1]->preco;
+							}
+							
+							noFolha->pizzas[noFolha->m] = NULL; 
+							noFolha->pizzas[noFolha->m - 1] = NULL; 
+							
+							//DECRESCE O NUMERO DE CHAVES
+							noFolha->m = noFolha->m - 1;
+							
+							//COPIA AS PIZZAS DO VIZINHO PARA O NÓ FOLHA NA POSIÇÃO CORRETA
+							for(int i = 0; i < noFolha->m; i++){
+								
+								TPizza * nova_pizza = pizza(noFolha->pizzas[i]->cod,
+															noFolha->pizzas[i]->nome,
+															noFolha->pizzas[i]->categoria,
+															noFolha->pizzas[i]->preco
+															);
+								
+								vizinho->pizzas[vizinho->m + i] = nova_pizza;
+							}
+							
+							//AUMENTA O M DO NÓ FOLHA
+							vizinho->m = vizinho->m + noFolha->m;
+							vizinho->pont_prox = noFolha->pont_prox;
+							
+							//ACERTA OS PONTEIROS DO NÓ INTERNO
+							noInterno->p[noInterno->m] = -1;
+							noInterno->chaves[noInterno->m - 1] = -1;
+							noInterno->m = noInterno->m - 1;
+							
+							//CASO O NO INTERNO NÃO POSSUA MAIS CHAVES, DEVE-SE ACERTAR OS METADADOS
+							if(noInterno->m = 0){
+								noInterno->p[0] = -1;
+								metadados->pont_raiz = buscaNo;
+								metadados->raiz_folha = 1;
+							}
+							
+							//SALVA VIZINHO
+							fseek(fd, noInterno->p[pos - 1], SEEK_SET);
+							salva_no_folha(d, vizinho, fd);
+							
+							//SALVA NÓ INTERNO
+							fseek(fi, noFolha->pont_pai, SEEK_SET);
+							salva_no_interno(d, noInterno, fi);
+							
+							free(noFolha);
+							free(vizinho);
+							free(noInterno);
+						}
 					}
 					
 				}
