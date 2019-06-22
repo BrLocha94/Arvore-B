@@ -996,6 +996,7 @@ int exclui(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, cha
 							
 							//AUMENTA O M DO NÓ FOLHA
 							noFolha->m = noFolha->m + vizinho->m;
+							noFolha->pont_prox = vizinho->pont_prox;
 							
 							printf("\n NO FOLHA 3 : \n");
 							imprime_no_folha(d, noFolha);
