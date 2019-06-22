@@ -1192,6 +1192,8 @@ int exclui(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, cha
 								//ACIDIONA O MENOR PONTEIRO DO VIZINHO AO NO INTERNO
 								noInterno->p[noInterno->m + 1] = vizinho_interno->p[0];
 								
+								TNoFolha * aux_folha;
+								
 								fseek(fd, noInterno->p[noInterno->m + 1], SEEK_SET);
 								aux_folha = le_no_folha(d, fd);
 								noInterno->chaves[noInterno->m] = aux_folha->pizzas[0]->cod;
