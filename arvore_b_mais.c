@@ -962,13 +962,19 @@ int exclui(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, cha
 							
 							//COPIA AS PIZZAS DO VIZINHO PARA O NÓ FOLHA NA POSIÇÃO CORRETA
 							for(int i = 0; i < vizinho->m; i++){
-								noFolha->pizzas[noFolha->m + i]->cod = vizinho->pizzas[i]->cod;
-								strcpy(noFolha->pizzas[noFolha->m + i]->nome, vizinho->pizzas[i]->nome);
-								strcpy(noFolha->pizzas[noFolha->m + i]->categoria, vizinho->pizzas[i]->categoria);
-								noFolha->pizzas[noFolha->m + i]->preco = vizinho->pizzas[i]->preco;
 								
-								printf("\n NO FOLHA NO FOR %d : \n", i);
-								imprime_no_folha(d, noFolha);
+								Tpizza * nova_pizza = pizza(vizinho->pizzas[i]->cod,
+															vizinho->pizzas[i]->nome,
+															vizinho->pizzas[i]->categoria,
+															vizinho->pizzas[i]->preco
+															);
+								
+								noFolha->pizzas[noFolha->m + i] = nova_pizza;
+								
+								//noFolha->pizzas[noFolha->m + i]->cod = vizinho->pizzas[i]->cod;
+								//strcpy(noFolha->pizzas[noFolha->m + i]->nome, vizinho->pizzas[i]->nome);
+								//strcpy(noFolha->pizzas[noFolha->m + i]->categoria, vizinho->pizzas[i]->categoria);
+								//noFolha->pizzas[noFolha->m + i]->preco = vizinho->pizzas[i]->preco;
 							}
 							
 							printf("\n NO FOLHA 2 : \n");
