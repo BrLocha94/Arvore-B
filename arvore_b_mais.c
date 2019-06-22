@@ -877,8 +877,8 @@ int exclui(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, cha
 				fseek(fi, noFolha->pont_pai, SEEK_SET);
 				TNoInterno *noInterno = le_no_interno(d, fi);
 				
-				printf("\n NO INTERNO ANTES : \n");
-				imprime_no_interno(d, noInterno);
+				//printf("\n NO INTERNO ANTES : \n");
+				//imprime_no_interno(d, noInterno);
 				
 				//CASO TENHA MAIS QUE D CHAVES SOMENTE ALTERAR FOLHAS E NO INTERNO PAI (REDISTRIBUIÇÃO)
 				if(noInterno->m > d || noInterno->pont_pai == -1){
@@ -959,6 +959,15 @@ int exclui(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, cha
 							
 							//printf("\n NO FOLHA 1 : \n");
 							//imprime_no_folha(d, noFolha);
+							
+							//REORDENA A FOLHA PARA SUMIR COM A PIZZA QUE POSSUI O COD PASSADO
+							for(int i = pos_chave; i < noFolha->m - 1; i++){
+								noFolha->pizzas[i]->cod = noFolha->pizzas[i + 1]->cod;
+								strcpy(noFolha->pizzas[i]->nome, noFolha->pizzas[i + 1]->nome);
+								strcpy(noFolha->pizzas[i]->categoria, noFolha->pizzas[i + 1]->categoria);
+								noFolha->pizzas[i]->preco = noFolha->pizzas[i + 1]->preco;
+							}
+							
 							
 							//COPIA AS PIZZAS DO VIZINHO PARA O NÓ FOLHA NA POSIÇÃO CORRETA
 							for(int i = 0; i < vizinho->m; i++){
