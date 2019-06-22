@@ -7,9 +7,6 @@
 #include <stdlib.h>
 #include "no_interno.h"
 #include "no_folha.h"
-
-#include "lista_nos_folhas.h"
-
 #include "pizza.h"
 #include "metadados.h"
 #include "arvore_b_mais.h"
@@ -1192,10 +1189,15 @@ int exclui(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, cha
 							//NÃO NECESSITA DE CONCATENAÇÃO
 							if( (vizinho_interno->m + noInterno->m) > 2*d){
 								
-								//ACIDIONA A MENOR CHAVE E PONTEIRO DO VIZINHO AO NO INTERNO
-								noInterno->chaves[noInterno->m] = vizinho_interno->chaves[0];
+								//ACIDIONA O MENOR PONTEIRO DO VIZINHO AO NO INTERNO
 								noInterno->p[noInterno->m + 1] = vizinho_interno->p[0];
-								noInterno->m = noInterno->m - 1;
+								
+								fseek(fd, noInterno->p[noInterno->m + 1], SEEK_SET);
+								aux_folha = le_no_folha(d, fd);
+								noInterno->chaves[noInterno->m] = aux_folha->pizzas[0]->cod;
+								free(aux_folha);
+								
+								noInterno->m = noInterno->m + 1;
 								
 								//REMOVE A MENOR CHAVE E PONTEIRO DO VIZINHO
 								for(int i = 0; i < vizinho_interno->m - 1; i ++){
@@ -1322,19 +1324,100 @@ int exclui(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, cha
 							vizinho_interno = le_no_interno(d, fi);
 							
 							//NÃO NECESSITA DE CONCATENAÇÃO
-							if( (vizinho_interno->m + noInterno->m) > 2*d){
+							if((vizinho_interno->m + noInterno->m) > 2*d){
 								
+								//ACIDIONA O MAIOR PONTEIRO DO VIZINHO AO NO INTERNO
+								for(int i = noInterno->m; i > 0; i--){
+									noInterno->chaves[i] = noInterno->chaves[i - 1]; 
+								}
+								for(int i = noInterno->m + 1; i > 0; i--){
+									noInterno->p[i] = noInterno->p[i - 1];
+								}
+								noInterno->p[0] = vizinho_interno->p[vizinho_interno->m];
 								
+								fseek(fd, noInterno->p[0], SEEK_SET);
+								aux_folha = le_no_folha(d, fd);
+								noInterno->chaves[0] = aux_folha->pizzas[0]->cod;
+								free(aux_folha);
+								
+								noInterno->m = noInterno->m + 1;
+								
+								vizinho_interno->p[vizinho_interno->m] = -1;
+								vizinho_interno->p[vizinho_interno->m - 1] = -1;
+								
+								//ATUALIZAR CHAVE DO PAI
+								pai_interno->chaves[pos_interno + 1] = noInterno->chaves[0];
+								
+								//SALVA OS NOS ATUALIZADOS
+								fseek(fi, pai_interno->p[pos_interno + 1], SEEK_SET);
+								salva_no_interno(d, vizinho_interno, fi);
+								
+								fseek(fi, noInterno->pont_pai, SEEK_SET);
+								salva_no_interno(d, pai_interno, fi);
+								
+								fseek(fi, pont_noInterno, SEEK_SET);
+								salva_no_interno(d, noInterno, fi);
+								
+								loop = 1;
+							
 							}
 							//CONCATENA
 							else{
 							
+								//TRANSFERE OS PONTEIROS DO NOINTERNO PARA O VIZINHO DA ESQUERDA
+								for(int i = 0; i < noInterno->m + 1; i++){
+									vizinho_interno->p[vizinho_interno->m + 1 + i] = noInterno->p[i];
+								}
+								vizinho_interno->m = vizinho_interno->m + noInterno->m + 1;
+							
+								//ACERTA AS CHAVES
+								if(vizinho_interno->aponta_folha == 1){
+									
+									TNoFolha * aux_folha;
+									for(int i = 1; i < vizinho_interno->m + 1; i++){
+										fseek(fd, vizinho_interno->p[i], SEEK_SET);
+										aux_folha = le_no_folha(d, fd);
+										vizinho_interno->chaves[i - 1] = aux_folha->pizzas[0]->cod;
+										free(aux_folha);
+									}
+								}
+								else{
+									
+									TNoInterno* aux_interno;
+									for(int i = 1; i < vizinho_interno->m + 1; i++){
+										fseek(fi, vizinho_interno->p[i], SEEK_SET);
+										aux_interno = le_no_interno(d, fi);
+										vizinho_interno->chaves[i - 1] = aux_interno->chaves[0];
+										free(aux_interno);
+									}
+								}
+								
+								//ACERTA AS CHAVES E OS PONTEIROS EXTRAS DO PAI
+								pai_interno->p[pai_interno->m + 1] = -1;
+								pai_interno->chaves[pai_interno->m - 1] = -1;
+								pai_interno->m = pai_interno->m - 1;
+								
+								//SALVA O NOINTERNO
+								fseek(fi, pont_noInterno, SEEK_SET);
+								salva_no_interno(d, noInterno, fi);
+								
+								//CASO O NO PAI NÃO TENHA MAIS CHAVES E SEJA RAIZ, ALTERA A RAIZ PARA O NOINTERNO
+								if(pai_interno->m == 0 && (metadados->pont_raiz == noInterno->pont_pai)){
+									metadados->pont_raiz = pont_noInterno;
+									loop = 1;
+								}
+								//CASO O PAI TENHA MAIS QUE D - 1 CHAVES TERMINA
+								else if(pai_interno->m >= d){
+									loop = 1;
+								}
+								else{
+									pont_noInterno = noInterno->pont_pai;
+									noInterno = pai_interno;
+								}
 							}
 						}
 					}
-					
 				}
-				
 			}
 			
 			//FECHA METADADOS
