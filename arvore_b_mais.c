@@ -1295,8 +1295,8 @@ int exclui(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, cha
 								fseek(fi, pont_noInterno, SEEK_SET);
 								salva_no_interno(d, noInterno, fi);
 								
-								//CASO O NO PAI NÃO TENHA MAIS CHAVES, ALTERA A RAIZ PARA O NOINTERNO
-								if(pai_interno->m == 0){
+								//CASO O NO PAI NÃO TENHA MAIS CHAVES E SEJA RAIZ, ALTERA A RAIZ PARA O NOINTERNO
+								if(pai_interno->m == 0 && (metadados->pont_raiz == noInterno->pont_pai)){
 									metadados->pont_raiz = pont_noInterno;
 									loop = 1;
 								}
