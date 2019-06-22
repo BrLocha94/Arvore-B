@@ -1238,7 +1238,7 @@ int exclui(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, cha
 								for(int i = 0; i < vizinho_interno->m + 1; i++){
 									noInterno->p[noInterno->m + 1 + i] = vizinho_interno->p[i];
 								}
-								noInterno->m = noInterno->m + vizinho_interno->m;
+								noInterno->m = noInterno->m + vizinho_interno->m + 1;
 								
 								printf("\n NO INTERNO MOD 1\n");
 								imprime_no_interno(d, noInterno);
