@@ -1151,7 +1151,7 @@ BEGIN_TESTS();
         libera_nos_internos(tabIndiceSaida);
 
         TListaNosFolhas *tabDados = cria_nos_folhas(D, 6,
-                                                    cria_no_folha(D, 1 * tamanho_no_interno(D), 1 * tamanho_no_folha(D),
+                                                    cria_no_folha(D, 1 * tamanho_no_interno(D), 2 * tamanho_no_folha(D),
                                                                   3,
                                                                   pizza(10, "Calabresa", "Salgada", 30),
                                                                   pizza(15, "Bianca", "Salgada", 30),
