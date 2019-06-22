@@ -1226,13 +1226,13 @@ int exclui(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, cha
 							//CONCATENA
 							else{
 								
-								printf("\n CONCATENAÇÃO DE NOS INTERNOS \n");
+								//printf("\n CONCATENAÇÃO DE NOS INTERNOS \n");
 								
-								printf("\n NO INTERNO INICIAL\n");
-								imprime_no_interno(d, noInterno);
+								//printf("\n NO INTERNO INICIAL\n");
+								//imprime_no_interno(d, noInterno);
 								
-								printf("\n NO VIZINHO INICIAL\n");
-								imprime_no_interno(d, vizinho_interno);
+								//printf("\n NO VIZINHO INICIAL\n");
+								//imprime_no_interno(d, vizinho_interno);
 								
 								//TRANSFERE OS PONTEIROS DO VIZINHO DA DIREITA PARA O NOINTERNO
 								for(int i = 0; i < vizinho_interno->m + 1; i++){
@@ -1240,13 +1240,13 @@ int exclui(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, cha
 								}
 								noInterno->m = noInterno->m + vizinho_interno->m + 1;
 								
-								printf("\n NO INTERNO MOD 1\n");
-								imprime_no_interno(d, noInterno);
+								//printf("\n NO INTERNO MOD 1\n");
+								//imprime_no_interno(d, noInterno);
 								
 								//ACERTA AS CHAVES
 								if(noInterno->aponta_folha == 1){
 									
-									printf("\n NO INTERNO APONTA FOLHA\n");
+									//printf("\n NO INTERNO APONTA FOLHA\n");
 									
 									TNoFolha * aux_folha;
 									for(int i = 1; i < noInterno->m + 1; i++){
@@ -1255,13 +1255,13 @@ int exclui(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, cha
 										noInterno->chaves[i - 1] = aux_folha->pizzas[0]->cod;
 										free(aux_folha);
 										
-										printf("\n NO INTERNO FOR %i\n", i);
-										imprime_no_interno(d, noInterno);
+										//printf("\n NO INTERNO FOR %i\n", i);
+										//imprime_no_interno(d, noInterno);
 									}
 								}
 								else{
 									
-									printf("\n NO INTERNO APONTA FOLHA FALSO\n");
+									//printf("\n NO INTERNO APONTA FOLHA FALSO\n");
 									
 									TNoInterno* aux_interno;
 									for(int i = 1; i < noInterno->m + 1; i++){
@@ -1272,8 +1272,8 @@ int exclui(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, cha
 									}
 								}
 								
-								printf("\n NO INTERNO MOD 2 \n");
-								imprime_no_interno(d, noInterno);
+								//printf("\n NO INTERNO MOD 2 \n");
+								//imprime_no_interno(d, noInterno);
 								
 								//ACERTA AS CHAVES E OS PONTEIROS EXTRAS DO PAI
 								for(int i = pos_interno + 1; i < pai_interno->m; i++){
