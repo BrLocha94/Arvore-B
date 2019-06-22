@@ -966,6 +966,9 @@ int exclui(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, cha
 								strcpy(noFolha->pizzas[noFolha->m + i]->nome, vizinho->pizzas[i]->nome);
 								strcpy(noFolha->pizzas[noFolha->m + i]->categoria, vizinho->pizzas[i]->categoria);
 								noFolha->pizzas[noFolha->m + i]->preco = vizinho->pizzas[i]->preco;
+								
+								printf("\n NO FOLHA NO FOR %d : \n", i);
+								imprime_no_folha(d, noFolha);
 							}
 							
 							printf("\n NO FOLHA 2 : \n");
