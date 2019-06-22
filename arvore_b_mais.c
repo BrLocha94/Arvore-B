@@ -957,8 +957,8 @@ int exclui(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, cha
 							//printf("\n NO VIZINHO ANTES : \n");
 							//imprime_no_folha(d, vizinho);
 							
-							//printf("\n NO FOLHA 1 : \n");
-							//imprime_no_folha(d, noFolha);
+							printf("\n NO FOLHA 1 : \n");
+							imprime_no_folha(d, noFolha);
 							
 							//REORDENA A FOLHA PARA SUMIR COM A PIZZA QUE POSSUI O COD PASSADO
 							for(int i = pos_chave; i < noFolha->m - 1; i++){
@@ -968,9 +968,14 @@ int exclui(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, cha
 								noFolha->pizzas[i]->preco = noFolha->pizzas[i + 1]->preco;
 							}
 							
-							free(noFolha->pizzas[noFolha->m - 1]);
-							noFolha->pizzas[noFolha->m - 1] = NULL;
+							noFolha->pizzas[noFolha->m] = NULL; 
+							noFolha->pizzas[noFolha->m - 1] = NULL; 
+							
+							//DECRESCE O NUMERO DE CHAVES
 							noFolha->m = noFolha->m - 1;
+							
+							printf("\n NO FOLHA 2 : \n");
+							imprime_no_folha(d, noFolha);
 							
 							//COPIA AS PIZZAS DO VIZINHO PARA O NÓ FOLHA NA POSIÇÃO CORRETA
 							for(int i = 0; i < vizinho->m; i++){
@@ -989,14 +994,11 @@ int exclui(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, cha
 								//noFolha->pizzas[noFolha->m + i]->preco = vizinho->pizzas[i]->preco;
 							}
 							
-							//printf("\n NO FOLHA 2 : \n");
-							//imprime_no_folha(d, noFolha);
-							
 							//AUMENTA O M DO NÓ FOLHA
-							noFolha->m = noFolha->m + vizinho->m - 1;
+							noFolha->m = noFolha->m + vizinho->m;
 							
-							//printf("\n NO FOLHA 3 : \n");
-							//imprime_no_folha(d, noFolha);
+							printf("\n NO FOLHA 3 : \n");
+							imprime_no_folha(d, noFolha);
 							
 							printf("\n NO INTERNO 0 : \n");
 							imprime_no_interno(d, noInterno);
