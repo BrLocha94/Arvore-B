@@ -1153,25 +1153,166 @@ int exclui(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, cha
 					}
 				}
 				
-				//SALVA NÓ INTERNO
-				fseek(fi, noFolha->pont_pai, SEEK_SET);
-				salva_no_interno(d, noInterno, fi);
+				int pont_noInterno = noFolha->pont_pai;
 				
 				free(noFolha);
 				free(vizinho);
-				//free(noInterno);
 					
-				if(noInterno->m < d || noInterno->pont_pai != -1){
+				if(noInterno->m >= d || noInterno->pont_pai = -1){
 					
-					loop = 0;
+					//SALVA NÓ INTERNO
+					fseek(fi, noFolha->pont_pai, SEEK_SET);
+					salva_no_interno(d, noInterno, fi);
 					
-					//while(loop == 0){
-					
-					
-					//}
+					free(noInterno);
+				}
+				else{
 				
-				
-				
+					int loop = 0; int pos_interno = -1;
+					
+					TNoInterno * vizinho_interno; TNoInterno * pai_interno;
+					
+					while(loop == 0){
+						
+						fseek(fi, noInterno->pont_pai, SEEK_SET);
+						pai_interno = le_no_interno(d, fi);
+						
+						for(int i = 0; i < pai_interno->m; i++){
+							if(pai_interno->chaves[i] > noInterno->chaves[0]){
+								pos_interno = i;
+								break;
+							}
+						}
+						
+						//EXISTE NO A DIREITA
+						if(pos_interno != -1){
+						
+							fseek(fi, pai_interno->p[pos_interno + 1], SEEK_SET);
+							vizinho_interno = le_no_interno(d, fi);
+							
+							//NÃO NECESSITA DE CONCATENAÇÃO
+							if( (vizinho_interno->m + noInterno->m) > 2*d){
+								
+								//ACIDIONA A MENOR CHAVE E PONTEIRO DO VIZINHO AO NO INTERNO
+								noInterno->chaves[noInterno->m] = vizinho_interno->chaves[0];
+								noInterno->p[noInterno->m + 1] = vizinho_interno->p[0];
+								noInterno->m = noInterno->m - 1;
+								
+								//REMOVE A MENOR CHAVE E PONTEIRO DO VIZINHO
+								for(int i = 0; i < vizinho_interno->m - 1; i ++){
+									vizinho_interno->chaves[i] = vizinho_interno->chaves[i + 1];
+									vizinho_interno->chaves[i + 1] = -1;
+								}
+								for(int i = 0; i < vizinho_interno->m; i++){
+									vizinho_interno->p[i] = vizinho_interno->p[i + 1];
+									vizinho_interno->p[i + 1] = -1;
+								}
+								vizinho_interno->m = vizinho_interno->m - 1;
+								
+								//ATUALIZAR CHAVE DO PAI
+								pai_interno->chaves[pos_interno + 1] = vizinho_interno->chaves[0];
+								
+								//SALVA OS NOS ATUALIZADOS
+								fseek(fi, pai_interno->p[pos_interno + 1], SEEK_SET);
+								salva_no_interno(d, vizinho_interno, fi);
+								
+								fseek(fi, noInterno->pont_pai, SEEK_SET);
+								salva_no_interno(d, pai_interno, fi);
+								
+								fseek(fi, pont_noInterno, SEEK_SET);
+								salva_no_interno(d, noInterno, fi);
+								
+								loop = 1;
+							}
+							//CONCATENA
+							else{
+								
+								//TRANSFERE OS PONTEIROS DO VIZINHO DA DIREITA PARA O NOINTERNO
+								for(int i = 0; i < vizinho_interno->m + 1; i++){
+									noInterno->p[noInterno->m + 1 + i] = vizinho_interno->p[i];
+								}
+								noInterno->m = noInterno->m + vizinho_interno->m;
+								
+								//ACERTA AS CHAVES
+								if(noInterno->aponta_folha == 1){
+									
+									TNoFolha * aux_folha;
+									for(int i = 1; i < noInterno->m + 1; i++){
+										fseek(fd, noInterno->p[i], SEEK_SET);
+										aux_folha = le_no_folha(d, fd);
+										noInterno->chaves[i - 1] = aux_folha->pizzas[0]->cod;
+										free(aux_folha);
+									}
+								}
+								else{
+									
+									TNoInterno* aux_interno;
+									for(int i = 1; i < noInterno->m + 1; i++){
+										fseek(fi, noInterno->p[i], SEEK_SET);
+										aux_interno = le_no_interno(d, fi);
+										noInterno->chaves[i - 1] = aux_interno->chaves[0];
+										free(aux_interno);
+									}
+								}
+								
+								//ACERTA AS CHAVES E OS PONTEIROS EXTRAS DO PAI
+								for(int i = pos_interno + 1; i < pai_interno->m; i++){
+									pai_interno->p[i] = pai_interno->p[i + 1];
+									
+									pai_interno->p[i + 1] = -1;
+								}
+								
+								for(int i = pos_interno; i < pai_interno->m - 1; i++){
+									pai_interno->chaves[i] = pai_interno->chaves[i + 1];
+									
+									pai_interno->chaves[i + 1] = -1;
+								}
+								
+								pai_interno->p[pai_interno->m] = pai_interno->p[pai_interno->m + 1];
+								pai_interno->p[pai_interno->m + 1] = -1;
+								pai_interno->chaves[pai_interno->m - 1] = -1;
+								pai_interno->m = pai_interno->m - 1;
+								
+								//SALVA O NOINTERNO
+								fseek(fi, pont_noInterno, SEEK_SET);
+								salva_no_interno(d, noInterno, fi);
+								
+								//CASO O NO PAI NÃO TENHA MAIS CHAVES, ALTERA A RAIZ PARA O NOINTERNO
+								if(pai_interno->m == 0){
+									metadados->pont_raiz = pont_noInterno;
+									loop = 1;
+								}
+								//CASO O PAI TENHA MAIS QUE D - 1 CHAVES TERMINA
+								else if(pont_pai->m >= d){
+									loop = 1;
+								}
+								else{
+									pont_noInterno = noInterno->pont_pai;
+									noInterno = pont_pai;
+								}
+							}
+							
+						}
+						//DEVE SE TRABALHAR COM A ESQUERDA
+						else{
+							
+							pos_interno = pai_interno->m;
+							
+							fseek(fi, pai_interno->p[pos_interno - 1], SEEK_SET);
+							vizinho_interno = le_no_interno(d, fi);
+							
+							//NÃO NECESSITA DE CONCATENAÇÃO
+							if( (vizinho_interno->m + noInterno->m) > 2*d){
+								
+								
+							}
+							//CONCATENA
+							else{
+							
+							}
+						}
+					}
+					
 				}
 				
 			}
