@@ -968,8 +968,8 @@ int exclui(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, cha
 								noFolha->pizzas[i]->preco = noFolha->pizzas[i + 1]->preco;
 							}
 							
-							free(noFolha->pizzas[noFolha->m]);
-							noFolha->pizzas[noFolha->m] = NULL;
+							free(noFolha->pizzas[noFolha->m - 1]);
+							noFolha->pizzas[noFolha->m - 1] = NULL;
 							noFolha->m = noFolha->m - 1;
 							
 							//COPIA AS PIZZAS DO VIZINHO PARA O NÓ FOLHA NA POSIÇÃO CORRETA
