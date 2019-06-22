@@ -903,15 +903,6 @@ int exclui(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, cha
 						fseek(fd, noInterno->p[pos + 1], SEEK_SET);
 						vizinho = le_no_folha(d, fd);
 						
-						printf("\n NO INTERNO ANTES : \n");
-						imprime_no_interno(d, noInterno);
-						
-						printf("\n NO FOLHA ANTES : \n");
-						imprime_no_folha(d, noFolha);
-						
-						printf("\n NO VIZINHO ANTES : \n");
-						imprime_no_folha(d, vizinho);
-						
 						//CASO SEJA POSSIVEL PEGAR UMA CHAVE DO VIZINHO SEM DESBALANCEAR A ARVORE
 						if(vizinho->m > d){
 							
@@ -957,15 +948,24 @@ int exclui(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, cha
 						//NESSE CASO SÓ SE SALVA O NÓ FOLHA
 						else{
 							
+							printf("\n NO INTERNO ANTES : \n");
+							imprime_no_interno(d, noInterno);
+						
+							printf("\n NO FOLHA ANTES : \n");
+							imprime_no_folha(d, noFolha);
+						
+							printf("\n NO VIZINHO ANTES : \n");
+							imprime_no_folha(d, vizinho);
+							
 							printf("\n NO FOLHA 1 : \n");
 							imprime_no_folha(d, noFolha);
 							
 							//COPIA AS PIZZAS DO VIZINHO PARA O NÓ FOLHA NA POSIÇÃO CORRETA
 							for(int i = 0; i < vizinho->m; i++){
-								noFolha->pizzas[noFolha->m]->cod = vizinho->pizzas[i]->cod;
-								strcpy(noFolha->pizzas[noFolha->m]->nome, vizinho->pizzas[i]->nome);
-								strcpy(noFolha->pizzas[noFolha->m]->categoria, vizinho->pizzas[i]->categoria);
-								noFolha->pizzas[noFolha->m]->preco = vizinho->pizzas[i]->preco;
+								noFolha->pizzas[noFolha->m + i]->cod = vizinho->pizzas[i]->cod;
+								strcpy(noFolha->pizzas[noFolha->m + i]->nome, vizinho->pizzas[i]->nome);
+								strcpy(noFolha->pizzas[noFolha->m + i]->categoria, vizinho->pizzas[i]->categoria);
+								noFolha->pizzas[noFolha->m + i]->preco = vizinho->pizzas[i]->preco;
 							}
 							
 							printf("\n NO FOLHA 2 : \n");
