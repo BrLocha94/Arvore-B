@@ -1099,7 +1099,7 @@ BEGIN_TESTS();
 		
 		ASSERT_EQUAL(0, pont);
 
-        TMetadados *tabMetadados = metadados(D, 0, 0, 3 * tamanho_no_interno(D), 6 * tamanho_no_folha(D));
+        TMetadados *tabMetadados = metadados(D, 48, 0, 3 * tamanho_no_interno(D), 6 * tamanho_no_folha(D));
         TMetadados *tabMetadadosSaida = le_arq_metadados(NOME_ARQUIVO_METADADOS);
         
 		printf("\n METADADOS CRIADOS NA FUNCAO \n");
