@@ -1263,5 +1263,31 @@ int exclui(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, cha
 
 void carrega_dados(int d, char *nome_arquivo_entrada, char *nome_arquivo_metadados, char *nome_arquivo_indice, char *nome_arquivo_dados)
 {
-    //TODO: Implementar essa funcao
+    FILE* fentrada = fopen(nome_arquivo_entrada, "rb");
+	FILE* findice = fopen(nome_arquivo_indice, "wb");
+	FILE* fdados = fopen(nome_arquivo_dados, "wb");
+	
+	TMetadados *tabMetadados = metadados(d, 0, 1, 0, 1 * tamanho_no_folha(d));
+    salva_arq_metadados(nome_arquivo_metadados, tabMetadados);
+    
+	TNoInterno* noInterno = no_interno_vazio(d);
+    salva_no_interno(d, noInterno, findice);
+    
+	TNoFolha * noFolha = no_folha_vazio(d);
+    salva_no_folha(d, noFolha, fdados);
+   	
+	fclose(findice);
+    fclose(fdados);
+	
+	TPizza* p;
+	p = le_pizza(fentrada);
+
+	while (p!=NULL){
+		
+		p = pizza(p->cod, p->nome, p->categoria, p->preco);
+		insere(p->cod, p->nome, p->categoria, p->preco, nome_arquivo_metadados, nome_arquivo_indice, nome_arquivo_dados, d);
+    	free(p);
+		p = le_pizza(fentrada);
+    }
+    fclose(fentrada);
 }
