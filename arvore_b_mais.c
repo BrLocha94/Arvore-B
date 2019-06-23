@@ -480,6 +480,8 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 						}
 						//RECOMEÇA O LOOP
 						else{
+							printf("\n VOLTOU NO LOOP\n");
+							
 							pont_noInterno = noInterno->pont_pai;
 							noInterno = pai_noInterno;
 						}
