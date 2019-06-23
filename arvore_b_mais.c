@@ -77,9 +77,6 @@ int busca(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, char
 			}
 		}
 	}
-
-	//CASO NÃO SEJA ENCONTRADA A INFORMAÇÃO PROCURADA, RETORNA-SE O INT MAX
-	return INT_MAX;
 }
 
 
@@ -94,15 +91,17 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 	FILE * fd = fopen(nome_arquivo_dados, "rb+");
 	    
 	//TPizza *newPizza = pizza(cod, nome, categoria, preco);
+	
 	fprintf(stderr, "Entrou \n");
 
 	int buscaNo = busca(cod, nome_arquivo_metadados, nome_arquivo_indice, nome_arquivo_dados, d);
 	
-	fprintf(stderr, "%d \n", buscaNo);
+	
 	
 	fseek(fd, buscaNo, SEEK_SET);
 
 	TNoFolha *noFolha = le_no_folha(d, fd);
+
 
 	if(noFolha->m < (2 * d)){
 		
@@ -1372,53 +1371,38 @@ void carrega_dados(int d, char *nome_arquivo_entrada, char *nome_arquivo_metadad
 {
     //Abrindo os arquivos
 
-    FILE* fentrada = fopen(nome_arquivo_entrada, "rb");
-	fclose(fopen(nome_arquivo_metadados, "wb"));
-	fclose(fopen(nome_arquivo_indice, "wb"));
-	fclose(fopen(nome_arquivo_dados, "wb"));
 
+
+
+
+
+
+
+    FILE* fentrada = fopen(nome_arquivo_entrada, "rb");
+	FILE* findice = fopen(nome_arquivo_indice, "wb");
+	FILE* fdados = fopen(nome_arquivo_dados, "wb");
 	TMetadados *tabMetadados = metadados(d, 0, 1, 0, 1 * tamanho_no_folha(d));
     salva_arq_metadados(nome_arquivo_metadados, tabMetadados);
+    TNoInterno* noInterno = no_interno_vazio(d);
+    salva_no_interno(d, noInterno, findice);
+    TNoFolha * noFolha = no_folha_vazio(d);
+    salva_no_folha(d, noFolha, fdados);
+    fclose(findice);
+    fclose(fdados);
+	
 	
 	TPizza* p;
 	TPizza* z = le_pizza(fentrada);
-
-
 	p = pizza(z->cod, z->nome, z->categoria, z->preco);
 	printf("Pizza Impressa:\n" );
 	
 	imprime_pizza(p);
-	
 
 	insere(p->cod, p->nome, p->categoria, p->preco, nome_arquivo_metadados, nome_arquivo_indice, nome_arquivo_dados, d);
     
-    // if(meta->raiz_folha) return meta->pont_raiz; // Se o no raiz (lido no metadado) ja for folha 
-    // else{
-    //     int folha = -1; // Usando -1 pois nunca sera uma posicao dentro do arquivo
-    //     int no_atual = meta->pont_raiz;
-    //     FILE* arq_indices = fopen(nome_arquivo_indice, "rb");
-        
-    //     while(folha == -1){ // Enquanto folha nao for uma posicao dentro do arquivo
-    //         fseek(arq_indices, no_atual, 0);
-    //         TNoInterno* pagina = le_no_interno(d, arq_indices);
-    //         int i;
-    //         for(i = 0; cod >= pagina->chaves[i] && i < pagina->m; i++); // Apenas para conseguir mudar o i (numero para andar no interno)
-    //         if(pagina->aponta_folha) folha = pagina->p[i]; // Se for folha, salva e termina busca
-    //         else no_atual = pagina->p[i]; // Se nao for, continua para o proximo
-    //     }
 	fclose(fentrada);
 
     
-
-
-
-
-
-
-
-
-
-
 
 
 }	
