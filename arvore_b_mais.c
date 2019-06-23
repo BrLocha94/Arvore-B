@@ -378,10 +378,10 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 					//O PAI É UM NOVO NO
 					if(loop == 1){
 						
-						pai_interno->p[0] = pont_noInterno;
-						pai_interno->p[1] = metadados->pont_prox_no_interno_livre;
-						pai_interno->chaves[0] = novo_noInterno->chaves[0];
-						pai_interno->m = 1;
+						pai_noInterno->p[0] = pont_noInterno;
+						pai_noInterno->p[1] = metadados->pont_prox_no_interno_livre;
+						pai_noInterno->chaves[0] = novo_noInterno->chaves[0];
+						pai_noInterno->m = 1;
 						
 						novo_noInterno->pont_pai = metadados->pont_prox_no_interno_livre + tamanho_no_interno(d);
 						fseek(fi, metadados->pont_prox_no_interno_livre, SEEK_SET);
@@ -392,20 +392,20 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 						salva_no_interno(d, noInterno, fi);
 						
 						fseek(fi, metadados->pont_prox_no_interno_livre + tamanho_no_interno(d), SEEK_SET);
-						salva_no_interno(d, pai_interno, fi);
+						salva_no_interno(d, pai_noInterno, fi);
 						
 						metadados->pont_prox_no_interno_livre = metadados->pont_prox_no_interno_livre + 2*tamanho_no_interno(d);
 					
 						free(noInterno);
 						free(novo_noInterno);
-						free(pai_interno);
+						free(pai_noInterno);
 					}
 					else{
 						
 						int aux_pos = -2;
 						
-						for(int i = 0; i < pai_interno->m; i++){
-							if(pai_interno->chaves[i] > noInterno->chaves[0]){
+						for(int i = 0; i < pai_noInterno->m; i++){
+							if(pai_noInterno->chaves[i] > noInterno->chaves[0]){
 								aux_pos = i;
 								break;
 							}
@@ -413,20 +413,20 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 						
 						if(aux_pos != -2){
 							
-							for(int i = pai_interno->m - 1; i > aux_pos; i++){
-								pai_interno->chaves[i + 1] = pai_interno->chaves[i];
-								pai_interno->p[i + 2] = pai_interno->p[i + 1];
+							for(int i = pai_noInterno->m - 1; i > aux_pos; i++){
+								pai_noInterno->chaves[i + 1] = pai_noInterno->chaves[i];
+								pai_noInterno->p[i + 2] = pai_noInterno->p[i + 1];
 							}
 							
-							pai_interno->p[aux_pos + 1] = metadados->pont_prox_no_interno_livre;
-							pai_interno->chaves[aux_pos] = novo_noInterno->chaves[0];
+							pai_noInterno->p[aux_pos + 1] = metadados->pont_prox_no_interno_livre;
+							pai_noInterno->chaves[aux_pos] = novo_noInterno->chaves[0];
 							
 						}
 						//O NO INTERNO É A ULTIMA CHAVE, LOGO É ´SO ADICIONAR NO FINAL
 						else{
-							pai_interno->chaves[pai_interno->m] = novo_noInterno->chaves[0];
-							pai_interno->p[pai_interno->m + 1] = metadados->pont_prox_no_interno_livre;
-							pai_interno->m = pai_interno->m + 1;
+							pai_noInterno->chaves[pai_noInterno->m] = novo_noInterno->chaves[0];
+							pai_noInterno->p[pai_noInterno->m + 1] = metadados->pont_prox_no_interno_livre;
+							pai_noInterno->m = pai_noInterno->m + 1;
 						}
 						
 						novo_noInterno->pont_pai = noInterno->pont_pai;
@@ -437,22 +437,22 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 						salva_no_interno(d, noInterno, fi);
 						
 						fseek(fi, novo_noInterno->pont_pai, SEEK_SET);
-						salva_no_interno(d, pai_interno, fi);
+						salva_no_interno(d, pai_noInterno, fi);
 						
 						metadados->pont_prox_no_interno_livre = metadados->pont_prox_no_interno_livre + tamanho_no_interno(d);
 						
-						if(pai_interno->m < 2*d){
+						if(pai_noInterno->m < 2*d){
 							loop = 1;
 							free(noInterno);
 							free(novo_noInterno);
-							free(pai_interno);
+							free(pai_noInterno);
 						}
 						//RECOMEÇA O LOOP
 						else{
 							pont_noInterno = noInterno->pont_pai;
 							free(noInterno);
 							free(novo_noInterno);
-							noInterno = pai_interno;
+							noInterno = pai_noInterno;
 						}
 					}
 				}
