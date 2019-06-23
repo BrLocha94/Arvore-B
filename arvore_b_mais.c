@@ -94,9 +94,12 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 	FILE * fd = fopen(nome_arquivo_dados, "rb+");
 	    
 	//TPizza *newPizza = pizza(cod, nome, categoria, preco);
+	fprintf(stderr, "Entrou \n");
 
 	int buscaNo = busca(cod, nome_arquivo_metadados, nome_arquivo_indice, nome_arquivo_dados, d);
-
+	
+	fprintf(stderr, "%d \n", buscaNo);
+	
 	fseek(fd, buscaNo, SEEK_SET);
 
 	TNoFolha *noFolha = le_no_folha(d, fd);
@@ -1373,15 +1376,21 @@ void carrega_dados(int d, char *nome_arquivo_entrada, char *nome_arquivo_metadad
 	fclose(fopen(nome_arquivo_metadados, "wb"));
 	fclose(fopen(nome_arquivo_indice, "wb"));
 	fclose(fopen(nome_arquivo_dados, "wb"));
+
+	TMetadados *tabMetadados = metadados(d, 0, 1, 0, 1 * tamanho_no_folha(d));
+    salva_arq_metadados(nome_arquivo_metadados, tabMetadados);
 	
 	TPizza* p;
 	TPizza* z = le_pizza(fentrada);
-	
+
+
 	p = pizza(z->cod, z->nome, z->categoria, z->preco);
 	printf("Pizza Impressa:\n" );
+	
 	imprime_pizza(p);
+	
 
-	insere(10, "Calabresa", "Salgada", 30, nome_arquivo_metadados, nome_arquivo_indice, nome_arquivo_dados, d);
+	insere(p->cod, p->nome, p->categoria, p->preco, nome_arquivo_metadados, nome_arquivo_indice, nome_arquivo_dados, d);
     
     // if(meta->raiz_folha) return meta->pont_raiz; // Se o no raiz (lido no metadado) ja for folha 
     // else{
