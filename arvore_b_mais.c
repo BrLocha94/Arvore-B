@@ -323,7 +323,7 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 			//fclose(fi);
 			
 			//CASO O NO INTERNO ESTEJA CHEIO, PARTICIONA
-			if(noInterno->m == 2 * d){
+			if(noInterno->m >= 2 * d){
 				
 				int pont_noInterno = noFolha->pont_pai;    int loop = 0; 
 				
