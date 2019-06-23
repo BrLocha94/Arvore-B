@@ -365,13 +365,13 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 							fseek(fd, novo_noInterno->p[i + 1], SEEK_SET);
 							TNoFolha * aux_folha = le_no_folha(d, fd);
 							novo_noInterno->chaves[i] = aux_folha->pizzas[0]->cod;
-							free(aux_folha);
+							//free(aux_folha);
 						}
 						else{
 							fseek(fi, novo_noInterno->p[i + 1], SEEK_SET);
 							TNoInterno * aux_interno = le_no_interno(d, fi);
 							novo_noInterno->chaves[i] = aux_interno->chaves[0];
-							free(aux_interno);
+							//free(aux_interno);
 						}
 					}
 					
@@ -470,8 +470,8 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 			//FECHA ARQUIVO DE METADADOS
 			salva_arq_metadados(nome_arquivo_metadados, metadados);
 			
-			free(noFolha);
-			free(novo_noFolha);
+			//free(noFolha);
+			//free(novo_noFolha);
 			
 			return ret;
 			
