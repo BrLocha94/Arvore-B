@@ -461,13 +461,13 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 						salva_no_interno(d, novo_noInterno, fi);
 						
 						printf("\n NO INTERNO\n");
-						imprime_no_interno(d, pai_noInterno);
+						imprime_no_interno(d, noInterno);
 						
 						fseek(fi, pont_noInterno, SEEK_SET);
 						salva_no_interno(d, noInterno, fi);
 						
 						printf("\n NOVO NO INTERNO\n");
-						imprime_no_interno(d, pai_noInterno);
+						imprime_no_interno(d, novo_noInterno);
 						
 						fseek(fi, novo_noInterno->pont_pai, SEEK_SET);
 						salva_no_interno(d, pai_noInterno, fi);
