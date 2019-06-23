@@ -397,9 +397,9 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 						metadados->pont_raiz = metadados->pont_prox_no_interno_livre + tamanho_no_interno(d);
 						metadados->pont_prox_no_interno_livre = metadados->pont_prox_no_interno_livre + 2*tamanho_no_interno(d);
 					
-						free(noInterno);
-						free(novo_noInterno);
-						free(pai_noInterno);
+						//free(noInterno);
+						//free(novo_noInterno);
+						//free(pai_noInterno);
 					}
 					else{
 						
@@ -445,15 +445,15 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 						
 						if(pai_noInterno->m < 2*d){
 							loop = 1;
-							free(noInterno);
-							free(novo_noInterno);
-							free(pai_noInterno);
+							//free(noInterno);
+							//free(novo_noInterno);
+							//free(pai_noInterno);
 						}
 						//RECOMEÇA O LOOP
 						else{
 							pont_noInterno = noInterno->pont_pai;
-							free(noInterno);
-							free(novo_noInterno);
+							//free(noInterno);
+							//free(novo_noInterno);
 							noInterno = pai_noInterno;
 						}
 					}
