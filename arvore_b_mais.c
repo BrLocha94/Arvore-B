@@ -74,9 +74,6 @@ int busca(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, char
 			}
 		}
 	}
-
-	//CASO NÃO SEJA ENCONTRADA A INFORMAÇÃO PROCURADA, RETORNA-SE O INT MAX
-	return INT_MAX;
 }
 
 
@@ -673,9 +670,6 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 			return ret;
 		}
 	}
-	
-    //CASO NÃO SEJA ENCONTRADA A INFORMAÇÃO PROCURADA, RETORNA-SE O INT MAX
-	return INT_MAX;
 }
 
 int exclui(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, char *nome_arquivo_dados, int d)
