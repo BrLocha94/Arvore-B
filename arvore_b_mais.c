@@ -1390,13 +1390,13 @@ void carrega_dados(int d, char *nome_arquivo_entrada, char *nome_arquivo_metadad
 	
 	TPizza* p;
 
-	while (p){
+	while (p !=NULL){
 		
 		p = le_pizza(fentrada);
 		p = pizza(p->cod, p->nome, p->categoria, p->preco);
 		printf("Pizza Impressa:\n" );
 		imprime_pizza(p);
-		insere(p->cod, p->nome, p->categoria, p->preco, nome_arquivo_metadados, nome_arquivo_indice, nome_arquivo_dados, d);
+		//insere(p->cod, p->nome, p->categoria, p->preco, nome_arquivo_metadados, nome_arquivo_indice, nome_arquivo_dados, d);
     
     
     }
