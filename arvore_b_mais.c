@@ -91,8 +91,6 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 	FILE * fd = fopen(nome_arquivo_dados, "rb+");
 	    
 	//TPizza *newPizza = pizza(cod, nome, categoria, preco);
-	
-	fprintf(stderr, "Entrou \n");
 
 	int buscaNo = busca(cod, nome_arquivo_metadados, nome_arquivo_indice, nome_arquivo_dados, d);
 	
@@ -1387,22 +1385,23 @@ void carrega_dados(int d, char *nome_arquivo_entrada, char *nome_arquivo_metadad
     salva_no_interno(d, noInterno, findice);
     TNoFolha * noFolha = no_folha_vazio(d);
     salva_no_folha(d, noFolha, fdados);
-    fclose(findice);
+   	fclose(findice);
     fclose(fdados);
 	
-	
 	TPizza* p;
-	TPizza* z = le_pizza(fentrada);
-	p = pizza(z->cod, z->nome, z->categoria, z->preco);
-	printf("Pizza Impressa:\n" );
-	
-	imprime_pizza(p);
 
-	insere(p->cod, p->nome, p->categoria, p->preco, nome_arquivo_metadados, nome_arquivo_indice, nome_arquivo_dados, d);
+	while (p){
+		
+		p = le_pizza(fentrada);
+		p = pizza(p->cod, p->nome, p->categoria, p->preco);
+		printf("Pizza Impressa:\n" );
+		imprime_pizza(p);
+		insere(p->cod, p->nome, p->categoria, p->preco, nome_arquivo_metadados, nome_arquivo_indice, nome_arquivo_dados, d);
     
-	fclose(fentrada);
+    
+    }
+    fclose(fentrada);
 
-    
 
 
 }	
