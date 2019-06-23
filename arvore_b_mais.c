@@ -394,6 +394,7 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 						fseek(fi, metadados->pont_prox_no_interno_livre + tamanho_no_interno(d), SEEK_SET);
 						salva_no_interno(d, pai_noInterno, fi);
 						
+						metadados->pont_raiz = metadados->pont_prox_no_interno_livre + tamanho_no_interno(d);
 						metadados->pont_prox_no_interno_livre = metadados->pont_prox_no_interno_livre + 2*tamanho_no_interno(d);
 					
 						free(noInterno);
@@ -439,6 +440,7 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 						fseek(fi, novo_noInterno->pont_pai, SEEK_SET);
 						salva_no_interno(d, pai_noInterno, fi);
 						
+						metadados->pont_raiz = novo_noInterno->pont_pai;
 						metadados->pont_prox_no_interno_livre = metadados->pont_prox_no_interno_livre + tamanho_no_interno(d);
 						
 						if(pai_noInterno->m < 2*d){
