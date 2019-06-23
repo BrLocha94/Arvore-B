@@ -1367,5 +1367,49 @@ int exclui(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, cha
 
 void carrega_dados(int d, char *nome_arquivo_entrada, char *nome_arquivo_metadados, char *nome_arquivo_indice, char *nome_arquivo_dados)
 {
-    //TODO: Implementar essa funcao
-}
+    //Abrindo os arquivos
+
+    FILE* fentrada = fopen(nome_arquivo_entrada, "rb");
+	fclose(fopen(nome_arquivo_metadados, "wb"));
+	fclose(fopen(nome_arquivo_indice, "wb"));
+	fclose(fopen(nome_arquivo_dados, "wb"));
+	
+	TPizza* p;
+	TPizza* z = le_pizza(fentrada);
+	
+	p = pizza(z->cod, z->nome, z->categoria, z->preco);
+	printf("Pizza Impressa:\n" );
+	imprime_pizza(p);
+
+	insere(10, "Calabresa", "Salgada", 30, nome_arquivo_metadados, nome_arquivo_indice, nome_arquivo_dados, d);
+    
+    // if(meta->raiz_folha) return meta->pont_raiz; // Se o no raiz (lido no metadado) ja for folha 
+    // else{
+    //     int folha = -1; // Usando -1 pois nunca sera uma posicao dentro do arquivo
+    //     int no_atual = meta->pont_raiz;
+    //     FILE* arq_indices = fopen(nome_arquivo_indice, "rb");
+        
+    //     while(folha == -1){ // Enquanto folha nao for uma posicao dentro do arquivo
+    //         fseek(arq_indices, no_atual, 0);
+    //         TNoInterno* pagina = le_no_interno(d, arq_indices);
+    //         int i;
+    //         for(i = 0; cod >= pagina->chaves[i] && i < pagina->m; i++); // Apenas para conseguir mudar o i (numero para andar no interno)
+    //         if(pagina->aponta_folha) folha = pagina->p[i]; // Se for folha, salva e termina busca
+    //         else no_atual = pagina->p[i]; // Se nao for, continua para o proximo
+    //     }
+	fclose(fentrada);
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+}	

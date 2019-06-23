@@ -1178,7 +1178,7 @@ BEGIN_TESTS();
                                                                   pizza(50, "Marguerita", "Salgada", 28)
                                                     ),
                                                     cria_no_folha(D, 2 * tamanho_no_interno(D), -1, 
-																  3,
+																                                  3,
                                                                   pizza(55, "Morango com Nutella", "Doce Especial", 45),
                                                                   pizza(60, "Presunto, Queijo e Tomate", "Salgada", 31),
                                                                   pizza(70, "Muzzarela", "Salgada", 28)
