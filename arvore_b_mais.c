@@ -323,14 +323,17 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 			//fclose(fi);
 			
 			//CASO O NO INTERNO ESTEJA CHEIO, PARTICIONA
-			if(noInterno->m >= 2 * d){
+			if(noInterno->m > 2 * d){
 				
 				int pont_noInterno = noFolha->pont_pai;    int loop = 0; 
+				int ref_pai = -1;
 				
 				TNoInterno * novo_noInterno;
 				TNoInterno * pai_noInterno;
 				
 				while(loop == 0){
+					
+					ref_pai = noInterno->chaves[d];
 					
 					//CRIA UM NOVO NO VAZIO
 					novo_noInterno = no_interno_vazio(d);
@@ -404,7 +407,7 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 						
 						pai_noInterno->p[0] = pont_noInterno;
 						pai_noInterno->p[1] = metadados->pont_prox_no_interno_livre;
-						pai_noInterno->chaves[0] = novo_noInterno->chaves[0];
+						pai_noInterno->chaves[0] = ref_pai;  //novo_noInterno->chaves[0];
 						pai_noInterno->m = 1;
 						
 						novo_noInterno->pont_pai = metadados->pont_prox_no_interno_livre + tamanho_no_interno(d);
@@ -458,12 +461,12 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 							}
 							
 							pai_noInterno->p[aux_pos + 1] = metadados->pont_prox_no_interno_livre;
-							pai_noInterno->chaves[aux_pos] = novo_noInterno->chaves[0];
+							pai_noInterno->chaves[aux_pos] = ref_pai;
 							
 						}
 						//O NO INTERNO É A ULTIMA CHAVE, LOGO É ´SO ADICIONAR NO FINAL
 						else{
-							pai_noInterno->chaves[pai_noInterno->m] = novo_noInterno->chaves[0];
+							pai_noInterno->chaves[pai_noInterno->m] = ref_pai;
 							pai_noInterno->p[pai_noInterno->m + 1] = metadados->pont_prox_no_interno_livre;
 							pai_noInterno->m = pai_noInterno->m + 1;
 						}
@@ -495,7 +498,7 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 						printf("\n NO PAI \n");
 						imprime_no_interno(d, pai_noInterno);
 						
-						if(pai_noInterno->m < 2*d){
+						if(pai_noInterno->m <= 2*d){
 							loop = 1;
 							//free(noInterno);
 							//free(novo_noInterno);
