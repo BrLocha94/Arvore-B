@@ -349,14 +349,14 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 						pai_noInterno = le_no_interno(d, fi);
 					}
 					
-					printf("\n NO INTERNO INICIAL \n");
-					imprime_no_interno(d, noInterno);
+					//printf("\n NO INTERNO INICIAL \n");
+					//imprime_no_interno(d, noInterno);
 					
-					printf("\n NOVO NO INTERNO INICIAL \n");
-					imprime_no_interno(d, novo_noInterno);
+					//printf("\n NOVO NO INTERNO INICIAL \n");
+					//imprime_no_interno(d, novo_noInterno);
 					
-					printf("\n NO PAI INICIAL \n");
-					imprime_no_interno(d, pai_noInterno);
+					//printf("\n NO PAI INICIAL \n");
+					//imprime_no_interno(d, pai_noInterno);
 					
 					//TRANSFERE OS PONTEIROS PARA O NOVO NO INTERNO E ATUALIZA O NO INTERNO
 					for(int i = d + 1; i <= noInterno->m; i++){
@@ -369,18 +369,18 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 					
 					noInterno->m = d;
 					
-					printf("\n NO INTERNO MOD1 \n");
-					imprime_no_interno(d, noInterno);
+					//printf("\n NO INTERNO MOD1 \n");
+					//imprime_no_interno(d, noInterno);
 					
-					printf("\n NOVO NO INTERNO MOD 1\n");
-					imprime_no_interno(d, novo_noInterno);
+					//printf("\n NOVO NO INTERNO MOD 1\n");
+					//imprime_no_interno(d, novo_noInterno);
 					
 					//COMO O M FOI ESTABELECIDO COM PONTEIROS E SEMPRE TEM M+1 P
 					novo_noInterno->m = novo_noInterno->m - 1;
 					novo_noInterno->aponta_folha = noInterno->aponta_folha;
 					
-					printf("\n NOVO NO INTERNO MOD 2\n");
-					imprime_no_interno(d, novo_noInterno);
+					//printf("\n NOVO NO INTERNO MOD 2\n");
+					//imprime_no_interno(d, novo_noInterno);
 					
 					//ATUALIZA AS CHAVES DO NOVO NO INTERNO
 					for(int i = 0; i < novo_noInterno->m; i++){
@@ -389,18 +389,30 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 							fseek(fd, novo_noInterno->p[i + 1], SEEK_SET);
 							TNoFolha * aux_folha = le_no_folha(d, fd);
 							novo_noInterno->chaves[i] = aux_folha->pizzas[0]->cod;
+							
+							//ATUALIZA PONTEIRO DO PAI DA FOLHA
+							aux_folha->pont_pai = metadados->pont_prox_no_interno_livre;
+							fseek(fd, novo_noInterno->p[i + 1], SEEK_SET);
+							salva_no_folha(d, aux_folha, fd);
+							
 							//free(aux_folha);
 						}
 						else{
 							fseek(fi, novo_noInterno->p[i + 1], SEEK_SET);
 							TNoInterno * aux_interno = le_no_interno(d, fi);
 							novo_noInterno->chaves[i] = aux_interno->chaves[0];
+							
+							//ATUALIZA PONTEIRO DO PAI DO NO INTERNO
+							aux_interno->pont_pai = metadados->pont_prox_no_interno_livre;
+							fseek(fI, novo_noInterno->p[i + 1], SEEK_SET);
+							salva_no_folha(d, aux_interno, fi);
+							
 							//free(aux_interno);
 						}
 					}
 					
-					printf("\n NOVO NO INTERNO MOD 3\n");
-					imprime_no_interno(d, novo_noInterno);
+					//printf("\n NOVO NO INTERNO MOD 3\n");
+					//imprime_no_interno(d, novo_noInterno);
 					
 					//O PAI É UM NOVO NO
 					if(loop == 1){
@@ -424,16 +436,16 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 						metadados->pont_raiz = metadados->pont_prox_no_interno_livre + tamanho_no_interno(d);
 						metadados->pont_prox_no_interno_livre = metadados->pont_prox_no_interno_livre + 2*tamanho_no_interno(d);
 						
-						printf("\n SALVA CASO 1 \n");
+						//printf("\n SALVA CASO 1 \n");
 						
-						printf("\n NO INTERNO \n");
-						imprime_no_interno(d, noInterno);
+						//printf("\n NO INTERNO \n");
+						//imprime_no_interno(d, noInterno);
 					
-						printf("\n NOVO NO INTERNO \n");
-						imprime_no_interno(d, novo_noInterno);
+						//printf("\n NOVO NO INTERNO \n");
+						//imprime_no_interno(d, novo_noInterno);
 					
-						printf("\n NO PAI \n");
-						imprime_no_interno(d, pai_noInterno);
+						//printf("\n NO PAI \n");
+						//imprime_no_interno(d, pai_noInterno);
 						
 						//free(noInterno);
 						//free(novo_noInterno);
@@ -450,8 +462,8 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 							}
 						}
 						
-						printf("\n NO PAI MOD1 \n");
-						imprime_no_interno(d, pai_noInterno);
+						//printf("\n NO PAI MOD1 \n");
+						//imprime_no_interno(d, pai_noInterno);
 						
 						if(aux_pos != -2){
 							
@@ -471,8 +483,8 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 							pai_noInterno->m = pai_noInterno->m + 1;
 						}
 						
-						printf("\n NO PAI MOD2 \n");
-						imprime_no_interno(d, pai_noInterno);
+						//printf("\n NO PAI MOD2 \n");
+						//imprime_no_interno(d, pai_noInterno);
 						
 						novo_noInterno->pont_pai = noInterno->pont_pai;
 						fseek(fi, metadados->pont_prox_no_interno_livre, SEEK_SET);
@@ -487,16 +499,16 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 						metadados->pont_raiz = novo_noInterno->pont_pai;
 						metadados->pont_prox_no_interno_livre = metadados->pont_prox_no_interno_livre + tamanho_no_interno(d);
 						
-						printf("\n SALVA CASO 2 \n");
+						//printf("\n SALVA CASO 2 \n");
 						
-						printf("\n NO INTERNO \n");
-						imprime_no_interno(d, noInterno);
+						//printf("\n NO INTERNO \n");
+						//imprime_no_interno(d, noInterno);
 					
-						printf("\n NOVO NO INTERNO \n");
-						imprime_no_interno(d, novo_noInterno);
+						//printf("\n NOVO NO INTERNO \n");
+						//imprime_no_interno(d, novo_noInterno);
 					
-						printf("\n NO PAI \n");
-						imprime_no_interno(d, pai_noInterno);
+						//printf("\n NO PAI \n");
+						//imprime_no_interno(d, pai_noInterno);
 						
 						if(pai_noInterno->m <= 2*d){
 							loop = 1;
