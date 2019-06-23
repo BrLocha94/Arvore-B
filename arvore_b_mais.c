@@ -356,13 +356,18 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 					imprime_no_interno(d, pai_noInterno);
 					
 					//TRANSFERE OS PONTEIROS PARA O NOVO NO INTERNO E ATUALIZA O NO INTERNO
-					for(int i = d + 1; i <= 2 * d; i++){
+					for(int i = d + 1; i <= noInterno->m; i++){
 					
 						novo_noInterno->p[i - d - 1] = noInterno->p[i];
 						noInterno->p[i] = -1;
 						noInterno->chaves[i - 1] = -1;
 						novo_noInterno->m = novo_noInterno->m + 1;
 					}
+					
+					noInterno->m = d;
+					
+					printf("\n NO INTERNO MOD1 \n");
+					imprime_no_interno(d, noInterno);
 					
 					printf("\n NOVO NO INTERNO MOD 1\n");
 					imprime_no_interno(d, novo_noInterno);
