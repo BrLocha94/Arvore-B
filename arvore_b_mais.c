@@ -420,6 +420,9 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 					}
 					else{
 						
+						printf("\n NO PAI \n");
+						imprime_no_interno(d, pai_noInterno);
+						
 						int aux_pos = -2;
 						
 						for(int i = 0; i < pai_noInterno->m; i++){
@@ -430,6 +433,7 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 						}
 						
 						if(aux_pos != -2){
+							printf("\n CASO 1\n");
 							
 							for(int i = pai_noInterno->m - 1; i > aux_pos; i++){
 								pai_noInterno->chaves[i + 1] = pai_noInterno->chaves[i];
@@ -442,17 +446,28 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 						}
 						//O NO INTERNO É A ULTIMA CHAVE, LOGO É ´SO ADICIONAR NO FINAL
 						else{
+							printf("\n CASO 2\n");
+							
 							pai_noInterno->chaves[pai_noInterno->m] = ref_pai;
 							pai_noInterno->p[pai_noInterno->m + 1] = metadados->pont_prox_no_interno_livre;
 							pai_noInterno->m = pai_noInterno->m + 1;
 						}
 						
+						printf("\n NO PAI DEPOIS\n");
+						imprime_no_interno(d, pai_noInterno);
+						
 						novo_noInterno->pont_pai = noInterno->pont_pai;
 						fseek(fi, metadados->pont_prox_no_interno_livre, SEEK_SET);
 						salva_no_interno(d, novo_noInterno, fi);
 						
+						printf("\n NO INTERNO\n");
+						imprime_no_interno(d, pai_noInterno);
+						
 						fseek(fi, pont_noInterno, SEEK_SET);
 						salva_no_interno(d, noInterno, fi);
+						
+						printf("\n NOVO NO INTERNO\n");
+						imprime_no_interno(d, pai_noInterno);
 						
 						fseek(fi, novo_noInterno->pont_pai, SEEK_SET);
 						salva_no_interno(d, pai_noInterno, fi);
