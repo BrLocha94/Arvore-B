@@ -358,7 +358,7 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 					
 						novo_noInterno->p[i - d - 1] = noInterno->p[i];
 						noInterno->p[i] = -1;
-						if(noInterno->aponta_folha == 1 && i < noInterno->m){
+						if(noInterno->aponta_folha == 0 && i < noInterno->m){
 							novo_noInterno->chaves[i - d - 1] = noInterno->chaves[i - 1];
 						}
 						noInterno->chaves[i - 1] = -1;
