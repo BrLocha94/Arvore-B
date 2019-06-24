@@ -327,6 +327,8 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 					
 					ref_pai = noInterno->chaves[d];
 					
+					printf("\n REF PAI : %i\n", ref_pai);
+					
 					//CRIA UM NOVO NO VAZIO
 					novo_noInterno = no_interno_vazio(d);
 					
@@ -461,20 +463,20 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 						metadados->pont_prox_no_interno_livre = metadados->pont_prox_no_interno_livre + 2*tamanho_no_interno(d);
 					
 						if(flag_print == 1){
-						printf("\n CASO ESPECIAL 5\n");
-						printf("\n NO INTERNO PAI\n");
-						imprime_no_interno(d, noInterno);
-						printf("\n NOVO INTERNO\n");
-						imprime_no_interno(d, novo_noInterno);
-						printf("\n NO INTERNO PAI\n");
-						imprime_no_interno(d, pai_noInterno);
-					}
+							printf("\n CASO ESPECIAL 5\n");
+							printf("\n NO INTERNO PAI\n");
+							imprime_no_interno(d, noInterno);
+							printf("\n NOVO INTERNO\n");
+							imprime_no_interno(d, novo_noInterno);
+							printf("\n NO INTERNO PAI\n");
+							imprime_no_interno(d, pai_noInterno);
+						}
 					
 					}
 					else{
 						
-						printf("\n NO PAI \n");
-						imprime_no_interno(d, pai_noInterno);
+						//printf("\n NO PAI \n");
+						//imprime_no_interno(d, pai_noInterno);
 						
 						int aux_pos = -2;
 						
@@ -515,22 +517,22 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 							printf("\n NO INTERNO PAI\n");
 							imprime_no_interno(d, pai_noInterno);
 						}
-						
-						printf("\n NO PAI DEPOIS\n");
-						imprime_no_interno(d, pai_noInterno);
+						 
+						//printf("\n NO PAI DEPOIS\n");
+						//imprime_no_interno(d, pai_noInterno);
 						
 						novo_noInterno->pont_pai = noInterno->pont_pai;
 						fseek(fi, metadados->pont_prox_no_interno_livre, SEEK_SET);
 						salva_no_interno(d, novo_noInterno, fi);
 						
-						printf("\n NO INTERNO\n");
-						imprime_no_interno(d, noInterno);
+						//printf("\n NO INTERNO\n");
+						//imprime_no_interno(d, noInterno);
 						
 						fseek(fi, pont_noInterno, SEEK_SET);
 						salva_no_interno(d, noInterno, fi);
 						
-						printf("\n NOVO NO INTERNO\n");
-						imprime_no_interno(d, novo_noInterno);
+						//printf("\n NOVO NO INTERNO\n");
+						//imprime_no_interno(d, novo_noInterno);
 						
 						fseek(fi, novo_noInterno->pont_pai, SEEK_SET);
 						salva_no_interno(d, pai_noInterno, fi);
