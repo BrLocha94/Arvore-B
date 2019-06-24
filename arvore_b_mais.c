@@ -466,7 +466,10 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 						
 						metadados->pont_raiz = metadados->pont_prox_no_interno_livre + tamanho_no_interno(d);
 						metadados->pont_prox_no_interno_livre = metadados->pont_prox_no_interno_livre + (2*tamanho_no_interno(d));
-					
+						
+						printf("\n METADADOS \n");
+						imprime_metadados(metadados);
+						
 						if(flag_print == 1){
 							printf("\n CASO ESPECIAL 5\n");
 							printf("\n NO INTERNO PAI\n");
@@ -579,6 +582,7 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 			
 			fclose(fi);
 			fclose(fd);
+			
 			//FECHA ARQUIVO DE METADADOS
 			salva_arq_metadados(nome_arquivo_metadados, metadados);
 			
