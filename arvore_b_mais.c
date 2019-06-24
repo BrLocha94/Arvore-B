@@ -310,7 +310,7 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 			}
 			
 			//FLAG DO LOOP
-			int flag = 0;
+			int flag_loop = 0;
 			
 			//ATUALIZAR ARQUIVO METADADOS
 			metadados->pont_prox_no_folha_livre = noFolha->pont_prox + tamanho_no_folha(d);
@@ -342,7 +342,7 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 						pai_noInterno = le_no_interno(d, fi);
 					}
 					
-					if(flag == 1){
+					if(flag_loop == 1){
 						printf("\n CASO ESPECIAL 1\n");
 						printf("\n NO INTERNO PAI\n");
 						imprime_no_interno(d, noInterno);
@@ -366,7 +366,7 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 					
 					noInterno->m = d;
 					
-					if(flag == 1){
+					if(flag_loop == 1){
 						printf("\n CASO ESPECIAL 2\n");
 						printf("\n NO INTERNO PAI\n");
 						imprime_no_interno(d, noInterno);
@@ -397,7 +397,7 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 						*/
 					}
 					
-					if(flag == 1){
+					if(flag_loop == 1){
 						printf("\n CASO ESPECIAL 3\n");
 						printf("\n NO INTERNO PAI\n");
 						imprime_no_interno(d, noInterno);
@@ -434,7 +434,7 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 						}
 					}
 					
-					if(flag == 1){
+					if(flag_loop == 1){
 						printf("\n CASO ESPECIAL 4\n");
 						printf("\n NO INTERNO PAI\n");
 						imprime_no_interno(d, noInterno);
@@ -468,7 +468,7 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 						
 						salva_arq_metadados(nome_arquivo_metadados, metadados);
 						
-						if(flag == 1){
+						if(flag_loop == 1){
 							printf("\n CASO ESPECIAL 5\n");
 							printf("\n METADADOS \n");
 							imprime_metadados(metadados);
@@ -516,7 +516,7 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 							pai_noInterno->m = pai_noInterno->m + 1;
 						}
 						
-						if(flag == 1){
+						if(flag_loop == 1){
 							printf("\n CASO ESPECIAL 6\n");
 							printf("\n NO INTERNO PAI\n");
 							imprime_no_interno(d, noInterno);
@@ -548,7 +548,7 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 						metadados->pont_raiz = noInterno->pont_pai;
 						metadados->pont_prox_no_interno_livre = metadados->pont_prox_no_interno_livre + tamanho_no_interno(d);
 						
-						if(flag == 1){
+						if(flag_loop == 1){
 							printf("\n CASO ESPECIAL 7\n");
 							printf("\n NO INTERNO PAI\n");
 							imprime_no_interno(d, noInterno);
@@ -581,7 +581,7 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 			fclose(fi);
 			fclose(fd);
 			
-			if(flag == 0){
+			if(flag_loop == 0){
 				//FECHA ARQUIVO DE METADADOS
 				salva_arq_metadados(nome_arquivo_metadados, metadados);
 			}
