@@ -1,7 +1,7 @@
 #ifdef _MSC_VER
 #define _CRT_SECURE_NO_WARNINGS
 #endif
- 
+
 #include <limits.h>
 #include <string.h>
 #include <stdlib.h>
@@ -1148,3 +1148,101 @@ void carrega_dados(int d, char *nome_arquivo_entrada, char *nome_arquivo_metadad
     }
     fclose(fentrada);
 }
+
+void print_menu(){
+
+	printf("---Pizzaria do Makon---\n");
+	printf("Digite a opção desejada: \n");
+	printf("(1) Entrar como cliente. \n");
+	printf("(2) Entrar como garçom. \n");
+	printf("(3) Entrar como gerente. \n");
+	printf("(0) Sair. \n");
+	printf("-------------------------\n");
+
+}
+
+
+int main(){
+	carrega_dados();
+
+	printf("        d8b                                  ...\n");
+	printf("        Y8P                                .....\n");
+	printf("                                          ......===\n");
+	printf("88888b. 8888888888888888888 8888b.       .....=======\n");
+	printf("888 888b888   d88P    d88P     888b     .....==========\n");
+	printf("888  888888  d88P    d88P  .d888888    ....=============\n");
+	printf("888 d88P888 d88P    d88P   888  888   ....================\n");
+	printf("88888P 8888888888888888888 Y888888  .....==================\n");
+	printf("888                                .....====================\n");
+	printf("888                                ....=======================\n");
+	printf("888                               ....=========================\n");
+	printf("                                 ....=============================\n");
+	printf("                                 ....==============================\n");
+	printf("                                 ....================================\n");
+	printf("                                 .....================================\n");
+	printf("\n");
+
+
+
+	char senhaAdm[6]  = "123456";
+	char senhaGar[6]  = "123456";
+	char senha[6] = "000000";
+
+	print_menu();
+	int continuar = 1;
+	
+	while(continuar){
+
+		switch (continuar){
+
+		    case 1 :
+		    int opc;
+		    printf ("-----------Bem Vindo!-----------\n");
+		    printf("Ver Menu: \n");
+		    printf("(1) Menu Completo: \n");
+		    printf("(2) Pizzas Salgadas: \n");
+		    printf("(3) Pizzas Doces: \n");
+		    scanf("%d", opc);
+
+		    switch (opc){
+		    	case 1:
+		    	break;
+
+		    	case 2:
+		    	break;
+
+		    	case 3:
+		    	break;
+
+		    	default:
+		    	printf("Invalid input. Try again. \n");
+		    	scanf("%d", opc);
+
+		    }
+
+		    break;
+		    
+		    case 2 :
+		    int code;
+		    printf ("Garçom");
+		    printf("Search a pizza by code: \n");
+		    scanf ("%d", code);
+		    
+		    break;
+		    
+		    case 3 :
+		    printf ("Terça\n");
+		    break;
+		    
+		    default :
+		    print_menu();
+  	}
+
+  	print_menu();
+	return 0;
+
+ }
+}
+
+	
+
