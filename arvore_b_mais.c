@@ -348,7 +348,7 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 						printf("\n NOVO INTERNO\n");
 						imprime_no_interno(d, novo_noInterno);
 						printf("\n NO INTERNO PAI\n");
-						imprime_no_interno(d, pai_interno);
+						imprime_no_interno(d, pai_noInterno);
 					}
 					
 					//TRANSFERE OS PONTEIROS PARA O NOVO NO INTERNO E ATUALIZA O NO INTERNO
@@ -369,7 +369,7 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 						printf("\n NOVO INTERNO\n");
 						imprime_no_interno(d, novo_noInterno);
 						printf("\n NO INTERNO PAI\n");
-						imprime_no_interno(d, pai_interno);
+						imprime_no_interno(d, pai_noInterno);
 					}
 					
 					//COMO O M FOI ESTABELECIDO COM PONTEIROS E SEMPRE TEM M+1 P
@@ -398,7 +398,7 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 						printf("\n NOVO INTERNO\n");
 						imprime_no_interno(d, novo_noInterno);
 						printf("\n NO INTERNO PAI\n");
-						imprime_no_interno(d, pai_interno);
+						imprime_no_interno(d, pai_noInterno);
 					}
 					
 					//ATUALIZA OS PONTEIROS PAI DOS NO FOLHAS/INTERNOS
@@ -435,7 +435,7 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 						printf("\n NOVO INTERNO\n");
 						imprime_no_interno(d, novo_noInterno);
 						printf("\n NO INTERNO PAI\n");
-						imprime_no_interno(d, pai_interno);
+						imprime_no_interno(d, pai_noInterno);
 					}
 					
 					//O PAI É UM NOVO NO
@@ -467,7 +467,7 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 						printf("\n NOVO INTERNO\n");
 						imprime_no_interno(d, novo_noInterno);
 						printf("\n NO INTERNO PAI\n");
-						imprime_no_interno(d, pai_interno);
+						imprime_no_interno(d, pai_noInterno);
 					}
 					
 					}
@@ -513,7 +513,7 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 							printf("\n NOVO INTERNO\n");
 							imprime_no_interno(d, novo_noInterno);
 							printf("\n NO INTERNO PAI\n");
-							imprime_no_interno(d, pai_interno);
+							imprime_no_interno(d, pai_noInterno);
 						}
 						
 						printf("\n NO PAI DEPOIS\n");
@@ -545,7 +545,7 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 							printf("\n NOVO INTERNO\n");
 							imprime_no_interno(d, novo_noInterno);
 							printf("\n NO INTERNO PAI\n");
-							imprime_no_interno(d, pai_interno);
+							imprime_no_interno(d, pai_noInterno);
 						}
 						
 						if(pai_noInterno->m <= 2*d){
