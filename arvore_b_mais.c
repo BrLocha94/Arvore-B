@@ -358,6 +358,9 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 					
 						novo_noInterno->p[i - d - 1] = noInterno->p[i];
 						noInterno->p[i] = -1;
+						if(noInterno->aponta_folha == 1 && i < noInterno->m){
+							novo_noInterno->chaves[i - d - 1] = noInterno->chaves[i - 1];
+						}
 						noInterno->chaves[i - 1] = -1;
 						novo_noInterno->m = novo_noInterno->m + 1;
 					}
@@ -386,11 +389,13 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 							TNoFolha * aux_folha = le_no_folha(d, fd);
 							novo_noInterno->chaves[i] = aux_folha->pizzas[0]->cod;
 						}
+						/*
 						else{
 							fseek(fi, novo_noInterno->p[i + 1], SEEK_SET);
 							TNoInterno * aux_interno = le_no_interno(d, fi);
 							novo_noInterno->chaves[i] = aux_interno->chaves[0];
 						}
+						*/
 					}
 					
 					if(flag_print == 1){
