@@ -470,6 +470,8 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 						printf("\n METADADOS \n");
 						imprime_metadados(metadados);
 						
+						salva_arq_metadados(nome_arquivo_metadados, metadados);
+						
 						if(flag_print == 1){
 							printf("\n CASO ESPECIAL 5\n");
 							printf("\n NO INTERNO PAI\n");
