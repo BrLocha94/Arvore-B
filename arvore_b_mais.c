@@ -1163,7 +1163,7 @@ void print_menu(){
 
 
 int main(){
-	carrega_dados();
+	//carrega_dados();
 
 	printf("        d8b                                  ...\n");
 	printf("        Y8P                                .....\n");
@@ -1188,60 +1188,112 @@ int main(){
 	char senhaGar[6]  = "123456";
 	char senha[6] = "000000";
 
+	int user;
+	int continuar;
+	int opc;
+	int code;
 	print_menu();
-	int continuar = 1;
-	
-	while(continuar){
+	scanf("%d", &user);
 
-		switch (continuar){
+	while(user){
+
+		switch(user){
 
 		    case 1 :
-		    int opc;
-		    printf ("-----------Bem Vindo!-----------\n");
-		    printf("Ver Menu: \n");
-		    printf("(1) Menu Completo: \n");
-		    printf("(2) Pizzas Salgadas: \n");
-		    printf("(3) Pizzas Doces: \n");
-		    scanf("%d", opc);
+				continuar = 1;
+				while(continuar){
+					printf ("-----------Bem Vindo!-----------\n");
+					printf("Ver Menu: \n");
+					printf("(1) Menu Completo: \n");
+					printf("(2) Pizzas Salgadas: \n");
+					printf("(3) Pizzas Doces: \n");
+					printf("(0) Deslogar:\n");
+					scanf("%d", &opc);
 
-		    switch (opc){
-		    	case 1:
+					switch (opc){
+						case 1:
+							break;
+
+						case 2:
+							break;
+
+						case 3:
+							break;
+						
+						case 0:
+							continuar = 0;
+							break;
+
+						default:
+							printf("Invalid input. Try again. \n");
+							scanf("%d", &opc);
+
+					}	
+				}
+				
 		    	break;
-
-		    	case 2:
-		    	break;
-
-		    	case 3:
-		    	break;
-
-		    	default:
-		    	printf("Invalid input. Try again. \n");
-		    	scanf("%d", opc);
-
-		    }
-
-		    break;
 		    
 		    case 2 :
-		    int code;
-		    printf ("Garçom");
-		    printf("Search a pizza by code: \n");
-		    scanf ("%d", code);
-		    
-		    break;
-		    
+				continuar = 1;
+				while(continuar){
+					printf ("-----------Bem Vindo, Garcom!-----------\n");
+					printf("Ver Menu: \n");
+					printf("(1) Buscar Pizza: \n");
+					printf("(0) Deslogar: \n");
+					scanf("%d", &opc);
+					
+					switch(opc){
+						case 1:
+							printf("Digite o codigo da pizza: \n");
+							scanf("%d", &code);
+						case 0:
+							continuar = 0;
+							break;
+						default:
+							printf("Invalid input. Try again. \n");
+							scanf("%d", &opc);							
+					}
+				}
+
+				break;
+				
 		    case 3 :
-		    printf ("Terça\n");
-		    break;
-		    
+				continuar = 1;
+				while(continuar){
+					printf ("-----------Bem Vindo, Gerente!-----------\n");
+					printf("Ver Menu: \n");
+					printf("(1) Adicionar Pizza: \n");
+					printf("(2) Remover Pizza: \n");
+					printf("(0) Deslogar: \n");
+					scanf("%d", &opc);
+
+					switch(opc){
+						case 1:
+							printf("Pizza adicionada com sucesso!\n");
+							break;
+						case 2:
+							printf("Pizza removida com sucesso!\n");
+							break;
+						case 0:
+							continuar = 0;
+							break;
+						default:
+							printf("Invalid input. Try again. \n");
+							scanf("%d", &opc);
+					}
+				}
+				break;
+				
 		    default :
-		    print_menu();
-  	}
+		    	printf("Invalid input. Try again. \n");
+				break;
+  		}
 
-  	print_menu();
+  		print_menu();
+		scanf("%d", &user);
+ 	}
+	
 	return 0;
-
- }
 }
 
 	
