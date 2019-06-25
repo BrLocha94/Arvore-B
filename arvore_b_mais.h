@@ -1,5 +1,10 @@
-
-
+#include <limits.h>
+#include <string.h>
+#include <stdlib.h>
+#include "no_interno.h"
+#include "no_folha.h"
+#include "pizza.h"
+#include "metadados.h"
 
 // Executa busca em Arquivos utilizando Arvore B+
 // Assumir que ponteiro para prpximo noh eh igual a -1 quando nao houver proximo noh
@@ -38,3 +43,9 @@ int exclui(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, cha
 // nome_arquivo_indice: nome do arquivo para guardar o indice (nohs internos da arvore B+)
 // nome_arquivo_dados: nome do arquivo para guardar os dados (nohs folhas da arvore B+)
 void carrega_dados(int d, char *nome_arquivo_entrada, char *nome_arquivo_metadados, char *nome_arquivo_indice, char *nome_arquivo_dados);
+
+//Busca a pizza dado o codigo
+TPizza * busca_pizza(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, char *nome_arquivo_dados, int d);
+
+//Altera a pizza dado o codigo e os novos parametros
+TPizza * altera_pizza(int cod, char *nome, char *categoria, float preco, char *nome_arquivo_metadados, char *nome_arquivo_indice, char *nome_arquivo_dados, int d);

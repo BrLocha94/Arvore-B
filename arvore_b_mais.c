@@ -2,15 +2,7 @@
 #define _CRT_SECURE_NO_WARNINGS
 #endif
 
-#include <limits.h>
-#include <string.h>
-#include <stdlib.h>
-#include "no_interno.h"
-#include "no_folha.h"
-#include "pizza.h"
-#include "metadados.h"
 #include "arvore_b_mais.h"
-
 
 int busca(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, char *nome_arquivo_dados, int d)
 {
@@ -1147,6 +1139,45 @@ void carrega_dados(int d, char *nome_arquivo_entrada, char *nome_arquivo_metadad
 		p = le_pizza(fentrada);
     }
     fclose(fentrada);
+}
+
+
+
+
+//Busca das informações subordinadas, dada a chave primária;
+TPizza * busca_pizza(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, char *nome_arquivo_dados, int d){
+	
+	//ABRE O ARQUIVO DE DADOS
+	FILE * fd = fopen(nome_arquivo_dados, "rb+");
+	
+	//CRIA UM PONTEIRO PARA RECEBER O RESULTADO DA FUNÇÃO DE BUSCA DA ARVORE
+	int pont_folha;
+	pont_folha = busca(cod, nome_arquivo_metadados, nome_arquivo_indice, nome_arquivo_dados, d);
+	
+	//LE O NO FOLHA CORRESPONDENTE
+	fseek(fd, pont_folha, SEEK_SET);
+	TNoFolha *noFolha = le_no_folha(d, fd);
+	
+	TPizza * pizza = NULL;
+	
+	//PROCURA A PIZZA DESEJADA NO NÓ
+	for(int i = 0; i < noFolha->m; i++){
+		
+		//CASO ACHE, CRIA UMA NOVA PIZZA COM AS INFORMAÇÕES DESEJADAS
+		if(noFolha->pizzas[i]->cod == cod){
+		
+			pizza = pizza(noFolha->pizzas[i]->cod, noFolha->pizzas[i]->nome,
+						  noFolha->pizzas[i]->categoria, noFolha->pizzas[i]->preco);
+			break;
+		}
+	}
+	
+	//LIBERA A MEMORIA E FECHA O ARQUIVO
+	free(noFolha);
+	fclose(fd);
+	
+	//RETORNA A PIZZA ENCONTRADA, OU NULL
+	return pizza;
 }
 
 void print_menu(){
