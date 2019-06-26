@@ -1176,25 +1176,15 @@ TPizza* busca_pizza(int cod, char *nome_arquivo_metadados, char *nome_arquivo_in
 		
 			p = pizza(noFolha->pizzas[i]->cod, noFolha->pizzas[i]->nome,
 						  noFolha->pizzas[i]->categoria, noFolha->pizzas[i]->preco);
-			break;
+			return p;
 		}
-	}
-	
-	//LIBERA A MEMORIA E FECHA O ARQUIVO
-	if(p != NULL){
-		imprime_pizza(p);
-		return p;
-
-	} else{
-		
-		return NULL;
-
 	}
 
 	free(noFolha);
 	fclose(fd);
 	
-	//RETORNA A PIZZA ENCONTRADA, OU NULL
+	//RETORNA NULL
+	return NULL
 }
 
 //RETORNA 1 CASO SEJA ALTERADO E 0 CASO CONTRÁRIO 
