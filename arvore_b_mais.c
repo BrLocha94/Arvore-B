@@ -1224,7 +1224,87 @@ int altera_pizza(int cod, char *nome, char *categoria, float preco, char *nome_a
 	
 	//RETORNA MENSAGEM DE FALHA
 	return 0;
+}
 
+void busca_por_categoria(char *categoria, char *nome_arquivo_metadados, char *nome_arquivo_indice, char *nome_arquivo_dados, int d){
+
+	//ABRE O ARQUIVO DE DADOS
+	FILE * fi = fopen(nome_arquivo_indice, "rb");
+	FILE * fd = fopen(nome_arquivo_dados, "rb+");
+	
+	TNoFolha * noFolha;
+	TNoInterno * noInterno;
+	
+	//RECEBE O METADADOS
+	TMetadados *metadados = le_arq_metadados(nome_arquivo_metadados);
+	
+	int loop = 0;
+	
+	//CASO O METADADOS SEJA FOLHA, JÁ LÊ DIRETO
+	if(metadados->raiz_folha == 1){
+		
+		//LE O NO FOLHA CORRESPONDENTE
+		fseek(fd, metadados->pont_raiz, SEEK_SET);
+		noFolha = le_no_folha(d, fd);
+	}
+	//CASO CONTRÁRIO, PERCORRE O INDICE ATÉ CHEGAR NA FOLHA
+	else{
+		
+		//LE O NO FOLHA CORRESPONDENTE
+		fseek(fi, metadados->pont_raiz, SEEK_SET);
+		noInterno = le_no_interno(d, fi);
+		TNoInterno * aux_interno;
+				
+		while(loop == 0){
+		
+			if(noInterno->aponta_folha == 1){
+				
+				fseek(fd, noInterno->p[0], SEEK_SET);
+				noFolha = le_no_folha(d, fd);
+				loop = 1;
+			}
+			else{
+			
+				fseek(fi, noInterno->p[0], SEEK_SET);
+				aux_interno = le_no_interno(d, fi);
+				free(noInterno);
+				noInterno = aux_interno;
+			}
+		}
+		
+		free(noInterno);
+		loop = 0;
+	}
+	
+	TNoFolha * aux_folha;
+	
+	//IMPRIME TODAS AS PIZZAS DE CERTA CATEGORIA
+	while(loop == 0){
+		
+		for(int i = 0; i < noFolha->m; i++){
+				//COMPARA AS STRINGS DE CATEGORIA
+				if(strcmp(noFolha->pizzas[i]->categoria, categoria) == 0){				
+					imprime_pizza(noFolha->pizzas[i]);
+				}
+		}
+		
+		//CASO NÃO TENHA PROXIMO
+		if(noFolha->pont_prox == -1){
+			free(noFolha);
+			loop = 1;
+			break;
+		}
+		else{
+			//PASSA PARA A PROXIMA FOLHA A SER LIDA
+			fseek(fd, noFolha->pont_prox, SEEK_SET);
+			aux_folha = le_no_folha(d, fd);
+			free(noFolha);
+			noFolha = aux_folha;
+		}
+	}
+	
+	fclose(fi);
+	fclose(fd);
 }
 
 void print_menu(){
