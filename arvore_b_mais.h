@@ -48,4 +48,4 @@ void carrega_dados(int d, char *nome_arquivo_entrada, char *nome_arquivo_metadad
 TPizza * busca_pizza(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, char *nome_arquivo_dados, int d);
 
 //Altera a pizza dado o codigo e os novos parametros
-void altera_pizza(int cod, char *nome, char *categoria, float preco, char *nome_arquivo_metadados, char *nome_arquivo_indice, char *nome_arquivo_dados, int d);
+int altera_pizza(int cod, char *nome, char *categoria, float preco, char *nome_arquivo_metadados, char *nome_arquivo_indice, char *nome_arquivo_dados, int d);

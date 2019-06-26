@@ -1158,7 +1158,7 @@ TPizza * busca_pizza(int cod, char *nome_arquivo_metadados, char *nome_arquivo_i
 	fseek(fd, pont_folha, SEEK_SET);
 	TNoFolha *noFolha = le_no_folha(d, fd);
 	
-	TPizza * pizza = NULL;
+	TPizza * p = NULL;
 	
 	//PROCURA A PIZZA DESEJADA NO NÓ
 	for(int i = 0; i < noFolha->m; i++){
@@ -1166,7 +1166,7 @@ TPizza * busca_pizza(int cod, char *nome_arquivo_metadados, char *nome_arquivo_i
 		//CASO ACHE, CRIA UMA NOVA PIZZA COM AS INFORMAÇÕES DESEJADAS
 		if(noFolha->pizzas[i]->cod == cod){
 		
-			pizza = pizza(noFolha->pizzas[i]->cod, noFolha->pizzas[i]->nome,
+			p = pizza(noFolha->pizzas[i]->cod, noFolha->pizzas[i]->nome,
 						  noFolha->pizzas[i]->categoria, noFolha->pizzas[i]->preco);
 			break;
 		}
@@ -1177,7 +1177,7 @@ TPizza * busca_pizza(int cod, char *nome_arquivo_metadados, char *nome_arquivo_i
 	fclose(fd);
 	
 	//RETORNA A PIZZA ENCONTRADA, OU NULL
-	return pizza;
+	return p;
 }
 
 //RETORNA 1 CASO SEJA ALTERADO E 0 CASO CONTRÁRIO 
