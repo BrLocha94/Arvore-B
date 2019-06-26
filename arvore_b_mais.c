@@ -1756,12 +1756,9 @@ int main(){
 
   				}else printf("Senha Inválida. \n");
 
-
-
-  		print_menu();
-		scanf("%d", &user);
 		}
-	
+		print_menu();
+		scanf("%d", &user);
 	}
 	
 	return 0;
