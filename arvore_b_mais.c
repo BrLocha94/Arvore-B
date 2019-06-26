@@ -532,7 +532,8 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 		}
 	}
 }
-
+ 
+ 
 int exclui(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, char *nome_arquivo_dados, int d)
 {
 	//ABRE O ARQUIVO DE INDICE
