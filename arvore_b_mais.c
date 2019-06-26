@@ -1363,12 +1363,12 @@ void remove_por_categoria(char *categoria, char *nome_arquivo_metadados, char *n
 			
 				fseek(fi, noInterno->p[0], SEEK_SET);
 				aux_interno = le_no_interno(d, fi);
-				free(noInterno);
+				//free(noInterno);
 				noInterno = aux_interno;
 			}
 		}
 		
-		free(noInterno);
+		//free(noInterno);
 		loop = 0;
 	}
 	
@@ -1389,7 +1389,7 @@ void remove_por_categoria(char *categoria, char *nome_arquivo_metadados, char *n
 		
 		//CASO NÃO TENHA PROXIMO
 		if(noFolha->pont_prox == -1){
-			free(noFolha);
+			//free(noFolha);
 			loop = 1;
 			break;
 		}
@@ -1397,7 +1397,7 @@ void remove_por_categoria(char *categoria, char *nome_arquivo_metadados, char *n
 			//PASSA PARA A PROXIMA FOLHA A SER LIDA
 			fseek(fd, noFolha->pont_prox, SEEK_SET);
 			aux_folha = le_no_folha(d, fd);
-			free(noFolha);
+			//free(noFolha);
 			noFolha = aux_folha;
 		}
 	}
