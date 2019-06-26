@@ -52,3 +52,6 @@ int altera_pizza(int cod, char *nome, char *categoria, float preco, char *nome_a
 
 //Mostra todas as pizzas de determinada categoria
 void busca_por_categoria(char *categoria, char *nome_arquivo_metadados, char *nome_arquivo_indice, char *nome_arquivo_dados, int d);
+
+//REMOVE TODAS AS PIZZAS DE DETERMINADA CATEGORIA
+void remove_por_categoria(char *categoria, char *nome_arquivo_metadados, char *nome_arquivo_indice, char *nome_arquivo_dados, int d);
