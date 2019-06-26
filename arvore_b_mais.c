@@ -1510,6 +1510,8 @@ int main(){
 
 							printf("Invalid input. Try again. \n");
 							scanf("%d", &opc);
+							
+							break;
 					}	
 				}
 				
@@ -1517,7 +1519,7 @@ int main(){
 		    
 		    case 2 :
 				continuar = 1;
-				while(continuar){
+				while(continuar == 1){
 					printf ("\n -----------Bem Vindo, Sr. Garcom!-----------\n");
 					printf("Ver Menu. \n");
 					printf("(1) Buscar Pizza. \n");
