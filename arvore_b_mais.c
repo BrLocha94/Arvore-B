@@ -2,6 +2,12 @@
 #define _CRT_SECURE_NO_WARNINGS
 #endif
 
+#define NOME_ARQUIVO_METADADOS "metadados.dat"
+#define NOME_ARQUIVO_INDICE "indice.dat"
+#define NOME_ARQUIVO_DADOS "clientes.dat"
+#define NOME_ARQUIVO_INICIAL "dados_iniciais.dat"
+#define D 2
+
 #include "arvore_b_mais.h"
 
 int busca(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, char *nome_arquivo_dados, int d)
@@ -1112,6 +1118,7 @@ int exclui(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, cha
 
 void carrega_dados(int d, char *nome_arquivo_entrada, char *nome_arquivo_metadados, char *nome_arquivo_indice, char *nome_arquivo_dados)
 {
+
     FILE* fentrada = fopen(nome_arquivo_entrada, "rb");
 	FILE* findice = fopen(nome_arquivo_indice, "wb");
 	FILE* fdados = fopen(nome_arquivo_dados, "wb");
@@ -1145,7 +1152,7 @@ void carrega_dados(int d, char *nome_arquivo_entrada, char *nome_arquivo_metadad
 
 
 //Busca das informações subordinadas, dada a chave primária;
-TPizza * busca_pizza(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, char *nome_arquivo_dados, int d){
+int busca_pizza(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, char *nome_arquivo_dados, int d){
 	
 	//ABRE O ARQUIVO DE DADOS
 	FILE * fd = fopen(nome_arquivo_dados, "rb+");
@@ -1173,11 +1180,20 @@ TPizza * busca_pizza(int cod, char *nome_arquivo_metadados, char *nome_arquivo_i
 	}
 	
 	//LIBERA A MEMORIA E FECHA O ARQUIVO
+	if(p != NULL){
+		
+		imprime_pizza(p);
+
+	} else{
+		
+		return -1;
+
+	}
+
 	free(noFolha);
 	fclose(fd);
 	
 	//RETORNA A PIZZA ENCONTRADA, OU NULL
-	return p;
 }
 
 //RETORNA 1 CASO SEJA ALTERADO E 0 CASO CONTRÁRIO 
@@ -1223,8 +1239,186 @@ int altera_pizza(int cod, char *nome, char *categoria, float preco, char *nome_a
 	fclose(fd);
 	
 	//RETORNA MENSAGEM DE FALHA
-	return 0;
+	return -1;
 
+}
+
+void busca_por_categoria(char *categoria, char *nome_arquivo_metadados, char *nome_arquivo_indice, char *nome_arquivo_dados, int d){
+
+	//ABRE O ARQUIVO DE DADOS
+	FILE * fi = fopen(nome_arquivo_indice, "rb");
+	FILE * fd = fopen(nome_arquivo_dados, "rb+");
+	
+	TNoFolha * noFolha;
+	TNoInterno * noInterno;
+	
+	//RECEBE O METADADOS
+	TMetadados *metadados = le_arq_metadados(nome_arquivo_metadados);
+	
+	int loop = 0;
+	
+	//CASO O METADADOS SEJA FOLHA, JÁ LÊ DIRETO
+	if(metadados->raiz_folha == 1){
+		
+		//LE O NO FOLHA CORRESPONDENTE
+		fseek(fd, metadados->pont_raiz, SEEK_SET);
+		noFolha = le_no_folha(d, fd);
+	}
+	//CASO CONTRÁRIO, PERCORRE O INDICE ATÉ CHEGAR NA FOLHA
+	else{
+		
+		//LE O NO FOLHA CORRESPONDENTE
+		fseek(fi, metadados->pont_raiz, SEEK_SET);
+		noInterno = le_no_interno(d, fi);
+		TNoInterno * aux_interno;
+				
+		while(loop == 0){
+		
+			if(noInterno->aponta_folha == 1){
+				
+				fseek(fd, noInterno->p[0], SEEK_SET);
+				noFolha = le_no_folha(d, fd);
+				loop = 1;
+			}
+			else{
+			
+				fseek(fi, noInterno->p[0], SEEK_SET);
+				aux_interno = le_no_interno(d, fi);
+				free(noInterno);
+				noInterno = aux_interno;
+			}
+		}
+		
+		free(noInterno);
+		loop = 0;
+	}
+	
+	TNoFolha * aux_folha;
+	
+	//IMPRIME TODAS AS PIZZAS DE CERTA CATEGORIA
+	while(loop == 0){
+		
+		for(int i = 0; i < noFolha->m; i++){
+				//COMPARA AS STRINGS DE CATEGORIA
+				if(strcmp(noFolha->pizzas[i]->categoria, categoria) == 0){
+					printf("|");				
+					imprime_pizza(noFolha->pizzas[i]);
+
+				}
+		}
+		
+		//CASO NÃO TENHA PROXIMO
+		if(noFolha->pont_prox == -1){
+			free(noFolha);
+			loop = 1;
+			break;
+		}
+		else{
+			//PASSA PARA A PROXIMA FOLHA A SER LIDA
+			fseek(fd, noFolha->pont_prox, SEEK_SET);
+			aux_folha = le_no_folha(d, fd);
+			free(noFolha);
+			noFolha = aux_folha;
+		}
+	}
+	
+	fclose(fi);
+	fclose(fd);
+}
+
+void remove_por_categoria(char *categoria, char *nome_arquivo_metadados, char *nome_arquivo_indice, char *nome_arquivo_dados, int d){
+	
+	//INICIALIZA O ARRAY DE INTEIROS QUE RECEBE OS INPUTS
+	int tamanho = 100; int count = 0;
+	int array [tamanho];
+	
+	
+	//ABRE O ARQUIVO DE DADOS
+	FILE * fi = fopen(nome_arquivo_indice, "rb");
+	FILE * fd = fopen(nome_arquivo_dados, "rb+");
+	
+	TNoFolha * noFolha;
+	TNoInterno * noInterno;
+	
+	//RECEBE O METADADOS
+	TMetadados *metadados = le_arq_metadados(nome_arquivo_metadados);
+	
+	int loop = 0;
+	
+	//CASO O METADADOS SEJA FOLHA, JÁ LÊ DIRETO
+	if(metadados->raiz_folha == 1){
+		
+		//LE O NO FOLHA CORRESPONDENTE
+		fseek(fd, metadados->pont_raiz, SEEK_SET);
+		noFolha = le_no_folha(d, fd);
+	}
+	//CASO CONTRÁRIO, PERCORRE O INDICE ATÉ CHEGAR NA FOLHA
+	else{
+		
+		//LE O NO FOLHA CORRESPONDENTE
+		fseek(fi, metadados->pont_raiz, SEEK_SET);
+		noInterno = le_no_interno(d, fi);
+		TNoInterno * aux_interno;
+				
+		while(loop == 0){
+		
+			if(noInterno->aponta_folha == 1){
+				
+				fseek(fd, noInterno->p[0], SEEK_SET);
+				noFolha = le_no_folha(d, fd);
+				loop = 1;
+			}
+			else{
+			
+				fseek(fi, noInterno->p[0], SEEK_SET);
+				aux_interno = le_no_interno(d, fi);
+				free(noInterno);
+				noInterno = aux_interno;
+			}
+		}
+		
+		free(noInterno);
+		loop = 0;
+	}
+	
+	TNoFolha * aux_folha;
+	
+	//IMPRIME TODAS AS PIZZAS DE CERTA CATEGORIA
+	while(loop == 0){
+		
+		for(int i = 0; i < noFolha->m; i++){
+				//COMPARA AS STRINGS DE CATEGORIA
+				if(strcmp(noFolha->pizzas[i]->categoria, categoria) == 0){				
+					
+					//CASO SEJA IGUAL, ADICIONA O CODIGO NO VETOR
+					array[count] = noFolha->pizzas[i]->cod;
+					count ++;
+				}
+		}
+		
+		//CASO NÃO TENHA PROXIMO
+		if(noFolha->pont_prox == -1){
+			free(noFolha);
+			loop = 1;
+			break;
+		}
+		else{
+			//PASSA PARA A PROXIMA FOLHA A SER LIDA
+			fseek(fd, noFolha->pont_prox, SEEK_SET);
+			aux_folha = le_no_folha(d, fd);
+			free(noFolha);
+			noFolha = aux_folha;
+		}
+	}
+	
+	fclose(fi);
+	fclose(fd);
+	
+	//REMOVE TODAS AS PIZZAS ACHADAS ACIMA
+	for(int i = 0; i < count; i++){
+	
+		exclui(array[i], nome_arquivo_metadados, nome_arquivo_indice, nome_arquivo_dados, d);
+	}
 }
 
 void print_menu(){
@@ -1241,36 +1435,38 @@ void print_menu(){
 
 
 int main(){
-	//carrega_dados();
 
-	printf("        d8b                                  ...\n");
-	printf("        Y8P                                .....\n");
-	printf("                                          ......===\n");
-	printf("88888b. 8888888888888888888 8888b.       .....=======\n");
-	printf("888 888b888   d88P    d88P     888b     .....==========\n");
-	printf("888  888888  d88P    d88P  .d888888    ....=============\n");
-	printf("888 d88P888 d88P    d88P   888  888   ....================\n");
-	printf("88888P 8888888888888888888 Y888888  .....==================\n");
-	printf("888                                .....====================\n");
-	printf("888                                ....=======================\n");
-	printf("888                               ....=========================\n");
-	printf("                                 ....=============================\n");
-	printf("                                 ....==============================\n");
-	printf("                                 ....================================\n");
-	printf("                                 .....================================\n");
+	carrega_dados (2, NOME_ARQUIVO_INICIAL, NOME_ARQUIVO_METADADOS, NOME_ARQUIVO_INDICE, NOME_ARQUIVO_DADOS);
+
+	printf("        d8b                                   ...\n");
+	printf("        Y8P                                 .....\n");
+	printf("                                           ......===\n");
+	printf("88888b. 8888888888888888888 8888b.        .....=======\n");
+	printf("888 888b888   d88P    d88P     888b      .....==========\n");
+	printf("888  888888  d88P    d88P  .d888888     ....=============\n");
+	printf("888 d88P888 d88P    d88P   888  888    ....================\n");
+	printf("88888P 8888888888888888888 Y888888   .....==================\n");
+	printf("888                                 .....====================\n");
+	printf("888                                 ....=======================\n");
+	printf("888                                ....=========================\n");
+	printf("                                  ....=============================\n");
+	printf("                                  ....==============================\n");
+	printf("                                  ....================================\n");
+	printf("                                  .....================================\n");
 	printf("\n");
 
 
 
-	char senhaAdm[6]  = "123456";
-	char senhaGar[6]  = "123456";
-	char senha[6] = "000000";
+	char senhaAdm[7];
+	strcpy(senhaAdm, "123456");
+	char senha[7];
 
 	int user;
 	int continuar;
 	int opc;
 	int code;
 	print_menu();
+	printf(">> Digite: ");
 	scanf("%d", &user);
 
 	while(user){
@@ -1280,32 +1476,49 @@ int main(){
 		    case 1 :
 				continuar = 1;
 				while(continuar){
-					printf ("-----------Bem Vindo!-----------\n");
+					printf (" \n ----------- Bem Vindo a Pizzaria mais tecnologica desse bairro! -----------\n");
 					printf("Ver Menu: \n");
-					printf("(1) Menu Completo: \n");
-					printf("(2) Pizzas Salgadas: \n");
-					printf("(3) Pizzas Doces: \n");
-					printf("(0) Deslogar:\n");
+					printf("(1) Menu Completo. \n");
+					printf("(2) Pizzas Salgadas. \n");
+					printf("(3) Pizzas Doces. \n");
+					printf("(0) Sair.\n");
+					printf(">> Digite: ");
 					scanf("%d", &opc);
 
 					switch (opc){
 						case 1:
+
+							printf("{ PIZZAS SALGADAS } \n \n");
+							busca_por_categoria("Salgada", NOME_ARQUIVO_METADADOS, NOME_ARQUIVO_INDICE, NOME_ARQUIVO_DADOS, D);
+							printf("\n");
+							printf("{ PIZZAS DOCES } \n \n");
+							busca_por_categoria("Doce", NOME_ARQUIVO_METADADOS, NOME_ARQUIVO_INDICE, NOME_ARQUIVO_DADOS, D);
+						
 							break;
 
 						case 2:
+							
+							printf("{ PIZZAS SALGADAS } \n \n");
+							busca_por_categoria("Salgada", NOME_ARQUIVO_METADADOS, NOME_ARQUIVO_INDICE, NOME_ARQUIVO_DADOS, D);
+
 							break;
 
 						case 3:
+							
+							printf("{ PIZZAS DOCES } \n \n");
+							busca_por_categoria("Doce", NOME_ARQUIVO_METADADOS, NOME_ARQUIVO_INDICE, NOME_ARQUIVO_DADOS, D);
+
 							break;
 						
 						case 0:
+
 							continuar = 0;
 							break;
 
 						default:
+
 							printf("Invalid input. Try again. \n");
 							scanf("%d", &opc);
-
 					}	
 				}
 				
@@ -1314,16 +1527,23 @@ int main(){
 		    case 2 :
 				continuar = 1;
 				while(continuar){
-					printf ("-----------Bem Vindo, Garcom!-----------\n");
-					printf("Ver Menu: \n");
-					printf("(1) Buscar Pizza: \n");
-					printf("(0) Deslogar: \n");
+					printf ("\n -----------Bem Vindo, Sr. Garcom!-----------\n");
+					printf("Ver Menu. \n");
+					printf("(1) Buscar Pizza. \n");
+					printf("(0) Deslogar. \n");
+					printf(">> Digite: ");
 					scanf("%d", &opc);
 					
 					switch(opc){
+
 						case 1:
 							printf("Digite o codigo da pizza: \n");
 							scanf("%d", &code);
+							if (busca_pizza(code, NOME_ARQUIVO_METADADOS, NOME_ARQUIVO_INDICE, NOME_ARQUIVO_DADOS, D) == -1){
+								printf("Pizza não encontrada. \n");
+							}
+							break;
+
 						case 0:
 							continuar = 0;
 							break;
@@ -1336,40 +1556,201 @@ int main(){
 				break;
 				
 		    case 3 :
-				continuar = 1;
+
+		    	printf("Digite a senha: \n");
+				scanf(" %s", senha);
+				printf("%s\n", senhaAdm );
+			    	if (strcmp(senha, senhaAdm) == 0){
+						printf("Igual\n");
+						continuar = 1;
+					}
+		    	
+
 				while(continuar){
-					printf ("-----------Bem Vindo, Gerente!-----------\n");
+					printf ("-----------Bem Vindo, Sr. Gerente!-----------\n");
 					printf("Ver Menu: \n");
-					printf("(1) Adicionar Pizza: \n");
-					printf("(2) Remover Pizza: \n");
-					printf("(0) Deslogar: \n");
+					printf("(1) Adicionar Pizza. \n");
+					printf("(2) Remover Pizza. \n");
+					printf("(3) Alterar Pizza. \n");
+					printf("(4) Buscar Pizza. \n");
+					printf("(5) Remover Categoria. \n");
+					printf("(6) Trocar Senha. \n");
+					printf("(0) Deslogar. \n");
+					printf(">> Digite: ");	
 					scanf("%d", &opc);
 
 					switch(opc){
+
 						case 1:
-							printf("Pizza adicionada com sucesso!\n");
-							break;
+						{
+							int tam = 100;
+							char nomePizza[tam];
+							char pizzaAux[tam]; 
+							char categoria [20];
+							int categoriaAux = 0;
+							float preco = 0.0;
+							float precoAux= 0.0;
+							int again = 1;
+
+							while(again){
+								
+								printf("Digite o nome da Pizza: \n");
+								printf(">> Digite: ");
+								scanf(" %s", pizzaAux);
+
+								if (strlen(pizzaAux) < tam){
+								strcpy(nomePizza, pizzaAux);
+								again = 0;
+								
+								} else printf("Número de Caracteres Excedido! Tente Novamente. \n");
+							}
+
+							again = 1;
+							
+							while(again){
+									
+									printf("Escolha o Tipo da Pizza: \n");
+									printf("(1) Salgada. \n");
+									printf("(2) Doce. \n");
+									printf(">> Digite: ");									
+									scanf("%d", &categoriaAux);
+								if (categoriaAux == 1){
+									strcpy(categoria, "Salgada");
+									again = 0;
+									
+								} else if (categoriaAux == 2){
+										strcpy(categoria, "Doce");
+										again = 0;
+								} else printf("Opção Inválida! Tente novamente. \n");											
+							}
+
+							again = 1;
+							while(again){
+								
+								printf("Digite o preço da pizza: \n");
+								printf(">> Digite: ");
+								scanf("%f", &precoAux);
+
+								if (precoAux >= 0.0){
+									preco = precoAux;	
+									again = 0;
+								
+								} else printf("Preço Inválido! Tente Novamente. \n");
+							}
+								
+								printf("Digite um Código: \n");
+								printf(">> Digite: ");
+								scanf("%d", &code);
+
+
+							while(insere(code, nomePizza, categoria, preco, NOME_ARQUIVO_METADADOS, NOME_ARQUIVO_INDICE, NOME_ARQUIVO_DADOS, D) == -1) {
+								printf("Digite um Código: \n");
+								printf(">> Digite: ");
+								scanf("%d", &code);
+
+							}
+							
+							printf("Pizza Adicionada com Sucesso! \n");
+						} break;
+							
+
 						case 2:
+						{
+							printf("Digite um Código: \n");
+							printf(">> Digite: ");
+							scanf("%d", &code);
+
+
+							while(exclui(code, NOME_ARQUIVO_METADADOS, NOME_ARQUIVO_INDICE, NOME_ARQUIVO_DADOS, D) == -1) {
+								printf("Digite um Código: \n");
+								printf(">> Digite: ");
+								scanf("%d", &code);
+
+							}
+							
 							printf("Pizza removida com sucesso!\n");
+						}
 							break;
+
+						case 3: //Faza busca, a busca retorna uma pizza e só altera o necessário.
+							printf("Digite o codigo da pizza: \n");
+							scanf("%d", &code);
+							if(busca_pizza(code, NOME_ARQUIVO_METADADOS, NOME_ARQUIVO_INDICE, NOME_ARQUIVO_DADOS, D) == -1){
+								printf("Pizza não encontrada.\n");
+							}
+							printf("O que deseja alterar?: \n");
+									printf("(1) Nome. \n");
+									printf("(2) Categoria. \n");
+									printf("(3) Preço. \n");
+									printf(">> Digite: ");
+
+							//altera_pizza(int code, char *nome, char *categoria, float preco, NOME_ARQUIVO_METADADOS, NOME_ARQUIVO_INDICE, NOME_ARQUIVO_DADOS, D);
+							break;
+
+							case 4: //Busca Pizza
+							printf("Digite o codigo da pizza: \n");
+							scanf("%d", &code);
+							if(busca_pizza(code, NOME_ARQUIVO_METADADOS, NOME_ARQUIVO_INDICE, NOME_ARQUIVO_DADOS, D) == -1){
+								printf("Pizza não encontrada.\n");
+							}
+
+							break;
+							
+						case 5:
+							{
+								int again = 1;
+								int categoriaAux = 0;
+								while(again){
+									
+									printf("Escolha o Tipo da Pizza: \n");
+									printf("(1) Salgada. \n");
+									printf("(2) Doce. \n");
+									printf(">> Digite: ");									
+									scanf("%d", &categoriaAux);
+								if (categoriaAux == 1){
+									remove_por_categoria("Salgada", NOME_ARQUIVO_METADADOS, NOME_ARQUIVO_INDICE, NOME_ARQUIVO_DADOS, D);
+									again = 0;
+									
+								} else if (categoriaAux == 2){
+									remove_por_categoria("Doce", NOME_ARQUIVO_METADADOS, NOME_ARQUIVO_INDICE, NOME_ARQUIVO_DADOS, D);
+									again = 0;
+								} else printf("Opção Inválida! Tente novamente. \n");											
+							}
+							
+							printf("Categoria removida com sucesso!\n");}							
+							break;
+						case 6:
+							printf("Digite uma nova senha de 6 dígitos: \n");
+							char senhaAux[6];
+							scanf("%s", senhaAux);
+
+							if (strlen(senhaAux) == 6){
+								strcpy(senhaAdm, senhaAux);
+								printf("Senha Trocada com Sucesso.\n");
+								printf("Nova Senha: %s \n", senhaAdm);
+							} else printf("Senha Inválida.\n");
+							break;
+
 						case 0:
 							continuar = 0;
 							break;
+
 						default:
 							printf("Invalid input. Try again. \n");
 							scanf("%d", &opc);
 					}
-				}
-				break;
-				
+
+					break;
+				}	
 		    default :
 		    	printf("Invalid input. Try again. \n");
 				break;
-  		}
+  			}
+
 
   		print_menu();
 		scanf("%d", &user);
- 	}
+}
 	
 	return 0;
 }
