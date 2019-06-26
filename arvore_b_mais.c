@@ -1184,7 +1184,7 @@ TPizza* busca_pizza(int cod, char *nome_arquivo_metadados, char *nome_arquivo_in
 	fclose(fd);
 	
 	//RETORNA NULL
-	return NULL
+	return NULL;
 }
 
 //RETORNA 1 CASO SEJA ALTERADO E 0 CASO CONTRÁRIO 
