@@ -587,7 +587,7 @@ int exclui(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, cha
 			fseek(fd, buscaNo, SEEK_SET);
 			salva_no_folha(d, noFolha, fd);
 			
-			free(noFolha);
+			//free(noFolha);
 			
 			//FECHA OS ARQUIVOS ABERTOS
 			fclose(fd);
@@ -623,7 +623,7 @@ int exclui(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, cha
 				fseek(fd, buscaNo, SEEK_SET);
 				salva_no_folha(d, noFolha, fd);
 				
-				free(noFolha);
+				//free(noFolha);
 				
 			}
 			//CHECA OS CASOS DE EXCLUSÃO COM INDICE
@@ -845,9 +845,9 @@ int exclui(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, cha
 					fseek(fi, noFolha->pont_pai, SEEK_SET);
 					salva_no_interno(d, noInterno, fi);
 					
-					free(noFolha);
-					free(vizinho);
-					free(noInterno);
+					//free(noFolha);
+					//free(vizinho);
+					//free(noInterno);
 				}
 				else{
 				
@@ -884,7 +884,7 @@ int exclui(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, cha
 								fseek(fd, noInterno->p[noInterno->m + 1], SEEK_SET);
 								aux_folha = le_no_folha(d, fd);
 								noInterno->chaves[noInterno->m] = aux_folha->pizzas[0]->cod;
-								free(aux_folha);
+								//free(aux_folha);
 								
 								noInterno->m = noInterno->m + 1;
 								
@@ -931,7 +931,7 @@ int exclui(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, cha
 										fseek(fd, noInterno->p[i], SEEK_SET);
 										aux_folha = le_no_folha(d, fd);
 										noInterno->chaves[i - 1] = aux_folha->pizzas[0]->cod;
-										free(aux_folha);
+										//free(aux_folha);
 									}
 								}
 								else{
@@ -940,7 +940,7 @@ int exclui(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, cha
 										fseek(fi, noInterno->p[i], SEEK_SET);
 										aux_interno = le_no_interno(d, fi);
 										noInterno->chaves[i - 1] = aux_interno->chaves[0];
-										free(aux_interno);
+										//free(aux_interno);
 									}
 								}
 								//ACERTA AS CHAVES E OS PONTEIROS EXTRAS DO PAI
@@ -1006,7 +1006,7 @@ int exclui(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, cha
 								fseek(fd, noInterno->p[0], SEEK_SET);
 								aux_folha = le_no_folha(d, fd);
 								noInterno->chaves[0] = aux_folha->pizzas[0]->cod;
-								free(aux_folha);
+								//free(aux_folha);
 								
 								noInterno->m = noInterno->m + 1;
 								
@@ -1046,7 +1046,7 @@ int exclui(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, cha
 										fseek(fd, vizinho_interno->p[i], SEEK_SET);
 										aux_folha = le_no_folha(d, fd);
 										vizinho_interno->chaves[i - 1] = aux_folha->pizzas[0]->cod;
-										free(aux_folha);
+										//free(aux_folha);
 									}
 								}
 								else{
@@ -1056,7 +1056,7 @@ int exclui(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, cha
 										fseek(fi, vizinho_interno->p[i], SEEK_SET);
 										aux_interno = le_no_interno(d, fi);
 										vizinho_interno->chaves[i - 1] = aux_interno->chaves[0];
-										free(aux_interno);
+										//free(aux_interno);
 									}
 								}
 								
