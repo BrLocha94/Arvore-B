@@ -1153,7 +1153,7 @@ void carrega_dados(int d, char *nome_arquivo_entrada, char *nome_arquivo_metadad
 
 
 //Busca das informações subordinadas, dada a chave primária;
-int busca_pizza(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, char *nome_arquivo_dados, int d){
+TPizza* busca_pizza(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, char *nome_arquivo_dados, int d){
 	
 	//ABRE O ARQUIVO DE DADOS
 	FILE * fd = fopen(nome_arquivo_dados, "rb+");
@@ -1166,7 +1166,7 @@ int busca_pizza(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice
 	fseek(fd, pont_folha, SEEK_SET);
 	TNoFolha *noFolha = le_no_folha(d, fd);
 	
-	TPizza * p = NULL;
+	TPizza *p = NULL;
 	
 	//PROCURA A PIZZA DESEJADA NO NÓ
 	for(int i = 0; i < noFolha->m; i++){
@@ -1182,12 +1182,12 @@ int busca_pizza(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice
 	
 	//LIBERA A MEMORIA E FECHA O ARQUIVO
 	if(p != NULL){
-		
 		imprime_pizza(p);
+		return p;
 
 	} else{
 		
-		return -1;
+		return NULL;
 
 	}
 
@@ -1240,7 +1240,7 @@ int altera_pizza(int cod, char *nome, char *categoria, float preco, char *nome_a
 	fclose(fd);
 	
 	//RETORNA MENSAGEM DE FALHA
-	return -1;
+	return 0;
 
 }
 
@@ -1499,7 +1499,7 @@ int main(){
 
 						case 2:
 							
-							printf("{ PIZZAS SALGADAS } \n \n");
+							printf("{ PIZZAS SALGADAS } \n \n"); 
 							busca_por_categoria("Salgada", NOME_ARQUIVO_METADADOS, NOME_ARQUIVO_INDICE, NOME_ARQUIVO_DADOS, D);
 
 							break;
@@ -1538,13 +1538,15 @@ int main(){
 					switch(opc){
 
 						case 1:
+						{
 							printf("Digite o codigo da pizza: \n");
 							scanf("%d", &code);
-							if (busca_pizza(code, NOME_ARQUIVO_METADADOS, NOME_ARQUIVO_INDICE, NOME_ARQUIVO_DADOS, D) == -1){
+						
+							if (!(busca_pizza(code, NOME_ARQUIVO_METADADOS, NOME_ARQUIVO_INDICE, NOME_ARQUIVO_DADOS, D))){
 								printf("Pizza não encontrada. \n");
 							}
 							break;
-
+							}
 						case 0:
 							continuar = 0;
 							break;
@@ -1557,17 +1559,17 @@ int main(){
 				break;
 				
 		    case 3 :
-
+		    	continuar = 1;
 		    	printf("Digite a senha: \n");
 				scanf(" %s", senha);
-				printf("%s\n", senhaAdm );
-			    	if (strcmp(senha, senhaAdm) == 0){
-						printf("Igual\n");
-						continuar = 1;
-					}
+
+			    if (strcmp(senha, senhaAdm) == 0){
+					printf("Igual\n");
+						
+					
 		    	
 
-				while(continuar){
+					while(continuar){
 					printf ("-----------Bem Vindo, Sr. Gerente!-----------\n");
 					printf("Ver Menu: \n");
 					printf("(1) Adicionar Pizza. \n");
@@ -1652,6 +1654,7 @@ int main(){
 							}
 							
 							printf("Pizza Adicionada com Sucesso! \n");
+							// continuar = 1;
 						} break;
 							
 
@@ -1670,29 +1673,40 @@ int main(){
 							}
 							
 							printf("Pizza removida com sucesso!\n");
+							// continuar = 1;
 						}
 							break;
 
 						case 3: //Faza busca, a busca retorna uma pizza e só altera o necessário.
-							printf("Digite o codigo da pizza: \n");
-							scanf("%d", &code);
-							if(busca_pizza(code, NOME_ARQUIVO_METADADOS, NOME_ARQUIVO_INDICE, NOME_ARQUIVO_DADOS, D) == -1){
-								printf("Pizza não encontrada.\n");
+							{
+					
+								int alteraAux;
+							
+								printf("Digite o codigo da pizza: \n");
+								scanf("%d", &code);
+								if(!(busca_pizza(code, NOME_ARQUIVO_METADADOS, NOME_ARQUIVO_INDICE, NOME_ARQUIVO_DADOS, D))){
+									printf("Pizza não encontrada.\n");
+								}else{
+										printf("O que deseja alterar?: \n");
+										printf("(1) Nome. \n");
+										printf("(2) Categoria. \n");
+										printf("(3) Preço. \n");
+										printf(">> Digite: ");
+							
 							}
-							printf("O que deseja alterar?: \n");
-									printf("(1) Nome. \n");
-									printf("(2) Categoria. \n");
-									printf("(3) Preço. \n");
-									printf(">> Digite: ");
 
-							//altera_pizza(int code, char *nome, char *categoria, float preco, NOME_ARQUIVO_METADADOS, NOME_ARQUIVO_INDICE, NOME_ARQUIVO_DADOS, D);
+
+							//	altera_pizza(int code, char *nome, char *categoria, float preco, NOME_ARQUIVO_METADADOS, NOME_ARQUIVO_INDICE, NOME_ARQUIVO_DADOS, D);
+							}
+							// continuar = 1;
 							break;
 
 							case 4: //Busca Pizza
 							printf("Digite o codigo da pizza: \n");
 							scanf("%d", &code);
-							if(busca_pizza(code, NOME_ARQUIVO_METADADOS, NOME_ARQUIVO_INDICE, NOME_ARQUIVO_DADOS, D) == -1){
+							if(!(busca_pizza(code, NOME_ARQUIVO_METADADOS, NOME_ARQUIVO_INDICE, NOME_ARQUIVO_DADOS, D))){
 								printf("Pizza não encontrada.\n");
+								continuar = 1;
 							}
 
 							break;
@@ -1718,7 +1732,9 @@ int main(){
 								} else printf("Opção Inválida! Tente novamente. \n");											
 							}
 							
-							printf("Categoria removida com sucesso!\n");}							
+							printf("Categoria removida com sucesso!\n");
+							continuar = 1;
+						}							
 							break;
 						case 6:
 							printf("Digite uma nova senha de 6 dígitos: \n");
@@ -1730,6 +1746,7 @@ int main(){
 								printf("Senha Trocada com Sucesso.\n");
 								printf("Nova Senha: %s \n", senhaAdm);
 							} else printf("Senha Inválida.\n");
+							continuar = 1;
 							break;
 
 						case 0:
@@ -1741,17 +1758,19 @@ int main(){
 							scanf("%d", &opc);
 					}
 
-					break;
-				}	
-		    default :
-		    	printf("Invalid input. Try again. \n");
-				break;
-  			}
+				
+			   
+  					}
+
+  				}else printf("Senha Inválida. \n");
+
 
 
   		print_menu();
 		scanf("%d", &user);
-}
+		}
+	
+	}
 	
 	return 0;
 }
