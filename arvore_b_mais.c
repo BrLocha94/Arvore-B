@@ -1180,6 +1180,53 @@ TPizza * busca_pizza(int cod, char *nome_arquivo_metadados, char *nome_arquivo_i
 	return pizza;
 }
 
+//RETORNA 1 CASO SEJA ALTERADO E 0 CASO CONTRÁRIO 
+int altera_pizza(int cod, char *nome, char *categoria, float preco, char *nome_arquivo_metadados, char *nome_arquivo_indice, char *nome_arquivo_dados, int d){
+
+	//ABRE O ARQUIVO DE DADOS
+	FILE * fd = fopen(nome_arquivo_dados, "rb+");
+	
+	//CRIA UM PONTEIRO PARA RECEBER O RESULTADO DA FUNÇÃO DE BUSCA DA ARVORE
+	int pont_folha;
+	pont_folha = busca(cod, nome_arquivo_metadados, nome_arquivo_indice, nome_arquivo_dados, d);
+	
+	//LE O NO FOLHA CORRESPONDENTE
+	fseek(fd, pont_folha, SEEK_SET);
+	TNoFolha *noFolha = le_no_folha(d, fd);
+
+	//PROCURA A PIZZA DESEJADA NO NÓ
+	for(int i = 0; i < noFolha->m; i++){
+		
+		//CASO ACHE, CRIA UMA NOVA PIZZA COM AS INFORMAÇÕES DESEJADAS
+		if(noFolha->pizzas[i]->cod == cod){
+			
+			//TROCA O VALOR DA PIZZA
+			strcpy(noFolha->pizzas[i]->nome, nome);
+			strcpy(noFolha->pizzas[i]->categoria, categoria);
+			noFolha->pizzas[i]->preco = preco;
+			
+			//SALVA O NO FOLHA COM OS NOVOS VALORES DA PIZZA
+			fseek(fd, pont_folha, SEEK_SET);
+			salva_no_folha(d, noFolha, fd);
+			
+			//LIBERA A MEMORIA E FECHA O ARQUIVO
+			free(noFolha);
+			fclose(fd);
+			
+			//RETORNA MENSAGEM DE SUCESSO
+			return 1;
+		}
+	}
+
+	//LIBERA A MEMORIA E FECHA O ARQUIVO
+	free(noFolha);
+	fclose(fd);
+	
+	//RETORNA MENSAGEM DE FALHA
+	return 0;
+
+}
+
 void print_menu(){
 
 	printf("---Pizzaria do Makon---\n");
