@@ -1568,7 +1568,7 @@ int main(){
 
 
 					while(continuar){
-						printf ("-----------Bem Vindo, Sr. Gerente!------------\n");
+						printf ("-----------Bem Vindo, Sr. Gerente!-----------\n");
 						printf("Ver Menu: \n");
 						printf("(1) Adicionar Pizza. \n");
 						printf("(2) Remover Pizza. \n");
@@ -1720,8 +1720,9 @@ int main(){
 														again = 0;
 												
 													} else printf("Número de Caracteres Excedido! Tente Novamente. \n");
+												}
 											}
-
+											
 											again = 1;
 
 											if (alteraAux == 2){
@@ -1757,11 +1758,6 @@ int main(){
 												printf("Preco antigo: %f\nPreco novo:%f", precoAux, p->preco);
 											}
 										}
-
-
-									}
-
-
 								
 								}
 								// continuar = 1;
