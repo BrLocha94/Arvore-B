@@ -2,12 +2,6 @@
 #define _CRT_SECURE_NO_WARNINGS
 #endif
 
-#define NOME_ARQUIVO_METADADOS "metadados.dat"
-#define NOME_ARQUIVO_INDICE "indice.dat"
-#define NOME_ARQUIVO_DADOS "clientes.dat"
-#define NOME_ARQUIVO_INICIAL "dados_iniciais.dat"
-#define D 2
-
 #include "arvore_b_mais.h"
 
 int busca(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, char *nome_arquivo_dados, int d)
