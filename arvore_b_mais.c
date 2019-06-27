@@ -1115,10 +1115,15 @@ void carrega_dados(int d, char *nome_arquivo_entrada, char *nome_arquivo_metadad
 {
     printf("1\n");
     FILE* fentrada = fopen(nome_arquivo_entrada, "rb");
+
+	if(fentrada == NULL){
+		printf("falha ao abrir arquivo.\n");
+		return;
+	}
     printf("2\n");
-	FILE* findice = fopen(nome_arquivo_indice, "wb+");
+	FILE* findice = fopen(nome_arquivo_indice, "ab+");
     printf("3\n");
-	FILE* fdados = fopen(nome_arquivo_dados, "wb+");
+	FILE* fdados = fopen(nome_arquivo_dados, "ab+");
 	printf("4\n");
 
 
@@ -1145,6 +1150,9 @@ void carrega_dados(int d, char *nome_arquivo_entrada, char *nome_arquivo_metadad
 	//TPizza *p = NULL;
     printf("13\n");
 	TPizza * p = le_pizza(fentrada);
+	if(le_pizza(fentrada)){
+		printf("aiaiaiaiaiaiaiai\n");
+	}
     printf("14\n");
 
 	while (p!=NULL){

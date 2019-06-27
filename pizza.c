@@ -39,6 +39,7 @@ TPizza *le_pizza(FILE *in)
 	printf("LE PIZZA MOD 2\n");
 	if (0 >= fread(&p->cod, sizeof(int), 1, in)) {
 		printf("LE PIZZA MOD 3\n");
+		//printf("\n %i \n", p->cod);
 		free(p);
 		printf("LE PIZZA MOD 4\n");
 		return NULL;

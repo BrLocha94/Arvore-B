@@ -27,7 +27,7 @@ void print_menu(){
 int main(){
 
     printf("entreeeeeeeeeeeiiii\n");
-	carrega_dados(2, NOME_ARQUIVO_INICIAL, NOME_ARQUIVO_METADADOS, NOME_ARQUIVO_INDICE, NOME_ARQUIVO_DADOS);
+	carrega_dados(D, NOME_ARQUIVO_INICIAL, NOME_ARQUIVO_METADADOS, NOME_ARQUIVO_INDICE, NOME_ARQUIVO_DADOS);
     printf("saíiii");
 
 	printf("        d8b                                   ...\n");
