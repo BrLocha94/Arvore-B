@@ -1568,7 +1568,7 @@ int main(){
 
 
 					while(continuar){
-						printf ("-----------Bem Vindo, Sr. Gerente!-----------\n");
+						printf ("-----------Bem Vindo, Sr. Gerente!------------\n");
 						printf("Ver Menu: \n");
 						printf("(1) Adicionar Pizza. \n");
 						printf("(2) Remover Pizza. \n");
