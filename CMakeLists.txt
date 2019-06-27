@@ -17,6 +17,7 @@ add_executable(cardapio_pizza
         lista_nos_internos.c
         lista_nos_internos.h
         Makefile
+	main.c
         metadados.c
         metadados.h
         no_folha.c

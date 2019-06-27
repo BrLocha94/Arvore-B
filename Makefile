@@ -25,7 +25,7 @@ CFLAGS=-I$(IDIR)
 _DEPS = arvore_b_mais.h pizza.h lista_pizzas.h metadados.h no_folha.h no_interno.h lista_nos_folhas.h lista_nos_internos.h ufftest.h
 DEPS = $(patsubst %,$(IDIR)$(SEP)%,$(_DEPS))
 
-_OBJ = arvore_b_mais.o pizza.o lista_pizzas.o metadados.o no_folha.o no_interno.o lista_nos_folhas.o lista_nos_internos.o test_arvore_b_mais.o
+_OBJ = main.o arvore_b_mais.o pizza.o lista_pizzas.o metadados.o no_folha.o no_interno.o lista_nos_folhas.o lista_nos_internos.o test_arvore_b_mais.o
 OBJ = $(patsubst %,$(ODIR)$(SEP)%,$(_OBJ))
 
 $(ODIR)$(SEP)%.o: $(IDIR)$(SEP)%.c $(DEPS)

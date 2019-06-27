@@ -49,3 +49,9 @@ TPizza* busca_pizza(int cod, char *nome_arquivo_metadados, char *nome_arquivo_in
 
 //Altera a pizza dado o codigo e os novos parametros
 int altera_pizza(int cod, char *nome, char *categoria, float preco, char *nome_arquivo_metadados, char *nome_arquivo_indice, char *nome_arquivo_dados, int d);
+
+//Busca por categoria
+void busca_por_categoria(char *categoria, char *nome_arquivo_metadados, char *nome_arquivo_indice, char *nome_arquivo_dados, int d);
+
+//Remove por categoria
+void remove_por_categoria(char *categoria, char *nome_arquivo_metadados, char *nome_arquivo_indice, char *nome_arquivo_dados, int d);
