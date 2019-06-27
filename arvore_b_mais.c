@@ -1704,7 +1704,7 @@ int main(){
 											printf("(2) Categoria. \n");
 											printf("(3) Preço. \n");
 											printf(">> Digite: ");
-											scanf (" %d", &alteraAux);
+											scanf("%d", &alteraAux);
 
 											if (alteraAux ==1){
 												while(again){
@@ -1720,8 +1720,9 @@ int main(){
 														again = 0;
 												
 													} else printf("Número de Caracteres Excedido! Tente Novamente. \n");
+												}
+											
 											}
-
 											again = 1;
 
 											if (alteraAux == 2){
@@ -1736,11 +1737,13 @@ int main(){
 													if (categoriaAux == 1){
 														strcpy(categoria, "Salgada");
 														altera_pizza(code, p->nome, categoria, p->preco, NOME_ARQUIVO_METADADOS, NOME_ARQUIVO_INDICE, NOME_ARQUIVO_DADOS, D);
+														printf("alou\n");
 														again = 0;
 													}
 													else if (categoriaAux == 2){
 														strcpy(categoria, "Doce");
 														altera_pizza(code, p->nome, categoria, p->preco, NOME_ARQUIVO_METADADOS, NOME_ARQUIVO_INDICE, NOME_ARQUIVO_DADOS, D);
+														printf("aloow\n");
 														again = 0;
 													}
 													else{ 
@@ -1748,7 +1751,9 @@ int main(){
 													}
 												}
 											}
+											
 											again = 1;
+											
 											if(alteraAux == 3){
 												precoAux = p->preco;
 												printf("Digite o novo preco:\n");
@@ -1758,10 +1763,7 @@ int main(){
 											}
 										}
 
-
-									}
-
-
+									printf("ai pai\n");
 								
 								}
 								// continuar = 1;
