@@ -1119,34 +1119,54 @@ int exclui(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, cha
 
 void carrega_dados(int d, char *nome_arquivo_entrada, char *nome_arquivo_metadados, char *nome_arquivo_indice, char *nome_arquivo_dados)
 {
+    printf("1\n");
+    FILE* fentrada = fopen(nome_arquivo_entrada, "rb+");
+    printf("2\n");
+	FILE* findice = fopen(nome_arquivo_indice, "wb+");
+    printf("3\n");
+	FILE* fdados = fopen(nome_arquivo_dados, "wb+");
+	printf("4\n");
 
-    FILE* fentrada = fopen(nome_arquivo_entrada, "rb");
-	FILE* findice = fopen(nome_arquivo_indice, "wb");
-	FILE* fdados = fopen(nome_arquivo_dados, "wb");
-	
+
 	TMetadados *tabMetadados = metadados(d, 0, 1, 0, 1 * tamanho_no_folha(d));
+    printf("5\n");
     salva_arq_metadados(nome_arquivo_metadados, tabMetadados);
+    printf("6\n");
     
 	TNoInterno* noInterno = no_interno_vazio(d);
+    printf("7\n");
     salva_no_interno(d, noInterno, findice);
+    printf("8\n");
     
 	TNoFolha * noFolha = no_folha_vazio(d);
+    printf("9\n");
     salva_no_folha(d, noFolha, fdados);
+    printf("10\n");
    	
 	fclose(findice);
+    printf("11\n");
     fclose(fdados);
+    printf("12\n");
 	
-	TPizza* p;
+	TPizza *p = NULL;
+    printf("13\n");
 	p = le_pizza(fentrada);
+    printf("14\n");
 
 	while (p!=NULL){
-		
+		printf("ENTREI AAAA\n");
 		p = pizza(p->cod, p->nome, p->categoria, p->preco);
+        printf("15\n");
 		insere(p->cod, p->nome, p->categoria, p->preco, nome_arquivo_metadados, nome_arquivo_indice, nome_arquivo_dados, d);
+        printf("16\n");
     	free(p);
+        printf("17\n");
 		p = le_pizza(fentrada);
+        printf("18\n");
     }
+    printf("SAÍ AAAAAA\n");
     fclose(fentrada);
+    printf("19\n");
 }
 
 
@@ -1428,7 +1448,9 @@ void print_menu(){
 
 int main(){
 
+    printf("entreeeeeeeeeeeiiii\n");
 	carrega_dados(2, NOME_ARQUIVO_INICIAL, NOME_ARQUIVO_METADADOS, NOME_ARQUIVO_INDICE, NOME_ARQUIVO_DADOS);
+    printf("saíiii");
 
 	printf("        d8b                                   ...\n");
 	printf("        Y8P                                 .....\n");
@@ -1751,11 +1773,22 @@ int main(){
 											}
 											again = 1;
 											if(alteraAux == 3){
-												precoAux = p->preco;
-												printf("Digite o novo preco:\n");
-												scanf("%f", &preco);
-												altera_pizza(code, p->nome, p->categoria, preco, NOME_ARQUIVO_METADADOS, NOME_ARQUIVO_INDICE, NOME_ARQUIVO_DADOS, D);
-												printf("Preco antigo: %f\nPreco novo:%f", precoAux, p->preco);
+												while(again){
+									
+													printf("Digite o preço da pizza: \n");
+													printf(">> Digite: ");
+													scanf("%f", &precoAux);
+
+													if (precoAux >= 0.0){
+														preco = precoAux;
+														altera_pizza(code, p->nome, p->categoria, preco, NOME_ARQUIVO_METADADOS, NOME_ARQUIVO_INDICE, NOME_ARQUIVO_DADOS, D);	
+														again = 0;
+													
+													}else{ 
+														printf("Preço Inválido! Tente Novamente. \n");
+													}
+													printf("Preco alterado!\n");
+												}
 											}
 										}
 								
@@ -1837,6 +1870,3 @@ int main(){
 	
 	return 0;
 }
-
-	
-
