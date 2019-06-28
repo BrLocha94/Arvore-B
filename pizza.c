@@ -34,25 +34,25 @@ void salva_pizza(TPizza *p, FILE *out)
 
 TPizza *le_pizza(FILE *in)
 {
-	printf("LE PIZZA\n");
+	//printf("LE PIZZA\n");
 	TPizza *p = (TPizza *) malloc(sizeof(TPizza));
-	printf("LE PIZZA MOD 2\n");
+	//printf("LE PIZZA MOD 2\n");
 	if (0 >= fread(&p->cod, sizeof(int), 1, in)) {
-		printf("LE PIZZA MOD 3\n");
+		//printf("LE PIZZA MOD 3\n");
 		//printf("\n %i \n", p->cod);
 		free(p);
-		printf("LE PIZZA MOD 4\n");
+		//printf("LE PIZZA MOD 4\n");
 		return NULL;
 	}
-	printf("LE PIZZA MOD 5\n");
+	//printf("LE PIZZA MOD 5\n");
 	fread(p->nome, sizeof(char), sizeof(p->nome), in);
-	printf("LE PIZZA MOD 6\n");
+	//printf("LE PIZZA MOD 6\n");
 	fread(p->categoria, sizeof(char), sizeof(p->categoria), in);
-	printf("LE PIZZA MOD 7\n");
+	//printf("LE PIZZA MOD 7\n");
 	fread(&p->preco, sizeof(float), 1, in);
-	printf("LE PIZZA MOD 8\n");
-	imprime_pizza(p);
-	printf("\n");
+	//printf("LE PIZZA MOD 8\n");
+	//imprime_pizza(p);
+	//printf("\n");
 	return p;
 }
 

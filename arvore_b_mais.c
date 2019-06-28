@@ -1113,62 +1113,32 @@ int exclui(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, cha
 
 void carrega_dados(int d, char *nome_arquivo_entrada, char *nome_arquivo_metadados, char *nome_arquivo_indice, char *nome_arquivo_dados)
 {
-    printf("1\n");
     FILE* fentrada = fopen(nome_arquivo_entrada, "rb");
-
-	if(fentrada == NULL){
-		printf("falha ao abrir arquivo.\n");
-		return;
-	}
-    printf("2\n");
-	FILE* findice = fopen(nome_arquivo_indice, "ab+");
-    printf("3\n");
-	FILE* fdados = fopen(nome_arquivo_dados, "ab+");
-	printf("4\n");
-
-
+	FILE* findice = fopen(nome_arquivo_indice, "wb");
+	FILE* fdados = fopen(nome_arquivo_dados, "wb");
+	
 	TMetadados *tabMetadados = metadados(d, 0, 1, 0, 1 * tamanho_no_folha(d));
-    printf("5\n");
     salva_arq_metadados(nome_arquivo_metadados, tabMetadados);
-    printf("6\n");
     
 	TNoInterno* noInterno = no_interno_vazio(d);
-    printf("7\n");
     salva_no_interno(d, noInterno, findice);
-    printf("8\n");
     
 	TNoFolha * noFolha = no_folha_vazio(d);
-    printf("9\n");
     salva_no_folha(d, noFolha, fdados);
-    printf("10\n");
    	
 	fclose(findice);
-    printf("11\n");
     fclose(fdados);
-    printf("12\n");
 	
-	//TPizza *p = NULL;
-    printf("13\n");
-	TPizza * p = le_pizza(fentrada);
-	if(le_pizza(fentrada)){
-		printf("aiaiaiaiaiaiaiai\n");
-	}
-    printf("14\n");
+	TPizza* p = NULL;
+	p = le_pizza(fentrada);
 
-	while (p!=NULL){
-		printf("ENTREI AAAA\n");
+	while (p!=NULL){	
 		p = pizza(p->cod, p->nome, p->categoria, p->preco);
-        printf("15\n");
 		insere(p->cod, p->nome, p->categoria, p->preco, nome_arquivo_metadados, nome_arquivo_indice, nome_arquivo_dados, d);
-        printf("16\n");
     	free(p);
-        printf("17\n");
 		p = le_pizza(fentrada);
-        printf("18\n");
     }
-    printf("SAÍ AAAAAA\n");
     fclose(fentrada);
-    printf("19\n");
 }
 
 
