@@ -1397,9 +1397,73 @@ void remove_por_categoria(char *categoria, char *nome_arquivo_metadados, char *n
 	fclose(fi);
 	fclose(fd);
 	
+	imprime_arvore(nome_arquivo_metadados, nome_arquivo_indice, nome_arquivo_dados, d);
+	
 	//REMOVE TODAS AS PIZZAS ACHADAS ACIMA
 	for(int i = 0; i < count; i++){
-	
+		
+		printf("\n  EXCLUSAO DA PIZZA DE COD %d \n", array[i]);
+		
 		exclui(array[i], nome_arquivo_metadados, nome_arquivo_indice, nome_arquivo_dados, d);
+		
+		imprime_arvore(nome_arquivo_metadados, nome_arquivo_indice, nome_arquivo_dados, d);
 	}
 }
+
+void imprime_nos(int pont, int folha, FILE* fi, FILE* fd, int d){
+
+	if(folha == 1){
+		fseek(fd, pont, SEEK_SET);
+		TNoFolha * folha = le_no_folha(d, fd);
+		printf("\n NO FOLHA DE PONTEIRO %d\n", pont);
+		imprime_no_folha(d, folha);
+		free(folha);
+	}
+	else{
+		fseek(fi, pont, SEEK_SET);
+		TNoInterno * interno = le_no_interno(d, fi);
+		printf("\n NO INTERNO DE PONTEIRO %d\n", pont);
+		imprime_no_interno(d, interno);
+		
+		//PERCORRE O NO INTERNO IMPRIINDO OS FILHOS
+		for(int i = 0; i < noInterno->m + 1; i++){
+			imprime_nos(noInterno->p[i], noInterno->aponta_folha, fi, fd, d);
+		}
+		
+		free(interno);
+	}
+}
+
+void imprime_arvore(char *nome_arquivo_metadados, char *nome_arquivo_indice, char *nome_arquivo_dados, int d){
+
+	//ABRE O ARQUIVO DE DADOS
+	FILE * fi = fopen(nome_arquivo_indice, "rb");
+	FILE * fd = fopen(nome_arquivo_dados, "rb+");
+	
+	TNoFolha * noFolha;
+	TNoInterno * noInterno;
+	
+	//RECEBE O METADADOS
+	TMetadados *metadados = le_arq_metadados(nome_arquivo_metadados);
+	
+	printf("\n ARVORE ATUAL: \n");
+	printf("\n METADADOS: \n");
+	imprime_metadados(metadados);
+	
+	imprime_nos(metadados->pont_raiz, metadados->raiz_folha, fi, fd, d);
+	
+	free(metadados);
+	
+	fclose(fi);
+	fclose(fd);
+}
+
+
+
+
+
+
+
+
+
+

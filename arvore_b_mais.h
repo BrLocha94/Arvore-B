@@ -55,3 +55,7 @@ void busca_por_categoria(char *categoria, char *nome_arquivo_metadados, char *no
 
 //Remove por categoria
 void remove_por_categoria(char *categoria, char *nome_arquivo_metadados, char *nome_arquivo_indice, char *nome_arquivo_dados, int d);
+
+void imprime_nos(int pont, int folha, FILE* fi, FILE* fd, int d);
+
+void imprime_arvore(char *nome_arquivo_metadados, char *nome_arquivo_indice, char *nome_arquivo_dados, int d);
