@@ -1048,7 +1048,7 @@ int exclui(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, cha
 									vizinho_interno->p[vizinho_interno->m + 1 + i] = noInterno->p[i];
 								}
 								
-								vizinho_interno->m = vizinho_interno->m + noInterno->m + 1;
+								vizinho_interno->m = vizinho_interno->m + noInterno->m;
 							
 								//ACERTA AS CHAVES
 								if(vizinho_interno->aponta_folha == 1){
