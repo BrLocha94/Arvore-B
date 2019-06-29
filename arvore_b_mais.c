@@ -1419,7 +1419,7 @@ void remove_por_categoria(char *categoria, char *nome_arquivo_metadados, char *n
 	fclose(fi);
 	fclose(fd);
 	
-	printf("ARRAY : ")
+	printf("ARRAY : ");
 	
 	for(int i = 0; i < count; i++){
 		printf(" %d ",array[i]);
