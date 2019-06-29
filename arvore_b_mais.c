@@ -990,11 +990,24 @@ int exclui(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, cha
 								//ACIDIONA O MENOR PONTEIRO DO VIZINHO AO NO INTERNO
 								noInterno->p[noInterno->m + 1] = vizinho_interno->p[0];
 								
+								printf("\nEXCLUSAO 56.2\n");
+								
 								TNoFolha * aux_folha;
 								
+								printf("\nEXCLUSAO 56.3\n");
+								
 								fseek(fd, noInterno->p[noInterno->m + 1], SEEK_SET);
+								
+								printf("\nEXCLUSAO 56.4\n");
+								
 								aux_folha = le_no_folha(d, fd);
+								
+								printf("\nEXCLUSAO 56.5\n");
+								
 								noInterno->chaves[noInterno->m] = aux_folha->pizzas[0]->cod;
+								
+								printf("\nEXCLUSAO 56.6\n");
+								
 								//free(aux_folha);
 								
 								printf("\nEXCLUSAO 57\n");
