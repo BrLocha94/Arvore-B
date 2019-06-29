@@ -1640,8 +1640,8 @@ void imprime_nos(int pont, int folha, FILE* fi, FILE* fd, int d){
 		imprime_no_interno(d, interno);
 		
 		//PERCORRE O NO INTERNO IMPRIINDO OS FILHOS
-		for(int i = 0; i < noInterno->m + 1; i++){
-			imprime_nos(noInterno->p[i], noInterno->aponta_folha, fi, fd, d);
+		for(int i = 0; i < interno->m + 1; i++){
+			imprime_nos(interno->p[i], interno->aponta_folha, fi, fd, d);
 		}
 		
 		free(interno);
