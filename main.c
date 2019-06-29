@@ -72,6 +72,9 @@ int main(){
 					printf("(1) Menu Completo. \n");
 					printf("(2) Pizzas Salgadas. \n");
 					printf("(3) Pizzas Doces. \n");
+					printf("(4) Pizzas Especiais. \n");
+					printf("(5) Pizzas Doce Especiais. \n");
+					printf("(6) Pizzas Vegetarianas. \n");
 					printf("(0) Sair.\n");
 					printf(">> Digite: ");
 					scanf("%d", &opc);
@@ -85,7 +88,16 @@ int main(){
 							printf("\n");
 							printf("{ PIZZAS DOCES } \n \n");
 							busca_por_categoria("Doce", NOME_ARQUIVO_METADADOS, NOME_ARQUIVO_INDICE, NOME_ARQUIVO_DADOS, D);
-						
+							printf("\n");
+							printf("{ PIZZAS ESPECIAIS } \n \n");
+							busca_por_categoria("Especial", NOME_ARQUIVO_METADADOS, NOME_ARQUIVO_INDICE, NOME_ARQUIVO_DADOS, D);
+							printf("\n");
+							printf("{ PIZZAS DOCE ESPECIAIS } \n \n");
+							busca_por_categoria("Doce Especial", NOME_ARQUIVO_METADADOS, NOME_ARQUIVO_INDICE, NOME_ARQUIVO_DADOS, D);
+							printf("\n");
+							printf("{ PIZZAS VEGETARIANAS } \n \n");
+							busca_por_categoria("Vegetariana", NOME_ARQUIVO_METADADOS, NOME_ARQUIVO_INDICE, NOME_ARQUIVO_DADOS, D);
+
 							break;
 
 						case 2:
@@ -101,7 +113,28 @@ int main(){
 							busca_por_categoria("Doce", NOME_ARQUIVO_METADADOS, NOME_ARQUIVO_INDICE, NOME_ARQUIVO_DADOS, D);
 
 							break;
+
+						case 4:
+							
+							printf("{ PIZZAS ESPECIAIS } \n \n");
+							busca_por_categoria("Especial", NOME_ARQUIVO_METADADOS, NOME_ARQUIVO_INDICE, NOME_ARQUIVO_DADOS, D);
+
+							break;
 						
+						case 5:
+							
+							printf("{ PIZZAS DOCE ESPECIAIS } \n \n");
+							busca_por_categoria("Doce Especial", NOME_ARQUIVO_METADADOS, NOME_ARQUIVO_INDICE, NOME_ARQUIVO_DADOS, D);
+
+							break;
+						
+						case 6:
+							
+							printf("{ PIZZAS VEGETARIANAS } \n \n");
+							busca_por_categoria("Vegetariana", NOME_ARQUIVO_METADADOS, NOME_ARQUIVO_INDICE, NOME_ARQUIVO_DADOS, D);
+
+							break;
+
 						case 0:
 							continuar = 0;
 							break;
@@ -375,17 +408,17 @@ int main(){
 								break;
 
 								case 4: //Busca Pizza
-								printf("Digite o codigo da pizza: \n");
-								scanf("%d", &code);
-								if (!(busca_pizza(code, NOME_ARQUIVO_METADADOS, NOME_ARQUIVO_INDICE, NOME_ARQUIVO_DADOS, D))){
-									printf("Pizza não encontrada. \n");
-									}
+									printf("Digite o codigo da pizza: \n");
+									scanf("%d", &code);
+									if (!(busca_pizza(code, NOME_ARQUIVO_METADADOS, NOME_ARQUIVO_INDICE, NOME_ARQUIVO_DADOS, D))){
+										printf("Pizza não encontrada. \n");
+										}
 
-								else{
-									TPizza *p = busca_pizza(code, NOME_ARQUIVO_METADADOS, NOME_ARQUIVO_INDICE, NOME_ARQUIVO_DADOS, D);
-									imprime_pizza(p);
-									free (p);
-								}
+									else{
+										TPizza *p = busca_pizza(code, NOME_ARQUIVO_METADADOS, NOME_ARQUIVO_INDICE, NOME_ARQUIVO_DADOS, D);
+										imprime_pizza(p);
+										free (p);
+									}
 								break;
 								
 							case 5:
@@ -397,6 +430,9 @@ int main(){
 										printf("Escolha o Tipo da Pizza: \n");
 										printf("(1) Salgada. \n");
 										printf("(2) Doce. \n");
+										printf("(3) Especial. \n");
+										printf("(4) Doce Especial. \n");
+										printf("(5) Vegetariana. \n");
 										printf(">> Digite: ");									
 										scanf("%d", &categoriaAux);
 									if (categoriaAux == 1){
@@ -406,7 +442,16 @@ int main(){
 									} else if (categoriaAux == 2){
 										remove_por_categoria("Doce", NOME_ARQUIVO_METADADOS, NOME_ARQUIVO_INDICE, NOME_ARQUIVO_DADOS, D);
 										again = 0;
-									} else printf("Opção Inválida! Tente novamente. \n");											
+									}else if (categoriaAux == 3){
+										remove_por_categoria("Especial", NOME_ARQUIVO_METADADOS, NOME_ARQUIVO_INDICE, NOME_ARQUIVO_DADOS, D);
+										again = 0;
+									}else if (categoriaAux == 4){
+										remove_por_categoria("Doce Especial", NOME_ARQUIVO_METADADOS, NOME_ARQUIVO_INDICE, NOME_ARQUIVO_DADOS, D);
+										again = 0;
+									}else if (categoriaAux == 5){
+										remove_por_categoria("Vegetariana", NOME_ARQUIVO_METADADOS, NOME_ARQUIVO_INDICE, NOME_ARQUIVO_DADOS, D);
+										again = 0;
+									}else printf("Opção Inválida! Tente novamente. \n");											
 								}
 								
 								printf("Categoria removida com sucesso!\n");
