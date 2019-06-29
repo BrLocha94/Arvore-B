@@ -530,20 +530,31 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
  
 int exclui(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, char *nome_arquivo_dados, int d)
 {
+	
+	printf("\nEXCLUSAO 1\n");
+	
 	//ABRE O ARQUIVO DE INDICE
 	FILE * fi = fopen(nome_arquivo_indice, "rb+");
 	FILE * fd = fopen(nome_arquivo_dados, "rb+");
 	
+	printf("\nEXCLUSAO 2\n");
+	
 	//USA A FUNÇÃO DE BUSCA PARA ACHAR O NÓ CORRETO
 	int buscaNo = busca(cod, nome_arquivo_metadados, nome_arquivo_indice, nome_arquivo_dados, d);
+	
+	printf("\nEXCLUSAO 3\n");
 	
 	//LE O NO CORRESPONDENTE
 	fseek(fd, buscaNo, SEEK_SET);
 	TNoFolha *noFolha = le_no_folha(d, fd);
 	
+	printf("\nEXCLUSAO 4\n");
+	
 	//PARAMETROS DE CONTROLE
 	int possui_chave = 0;
 	int pos_chave = 0;
+	
+	printf("\nEXCLUSAO 5\n");
 	
 	//PROCURA A CHAVE PASSADA NA FUNÇÃO NO NOFOLHA
 	for(int i = 0; i < noFolha->m; i++){
@@ -555,11 +566,17 @@ int exclui(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, cha
 		}
 	}
 	
+	printf("\nEXCLUSAO 6\n");
+	
 	//CASO A CHAVE EXISTA, EXECUTA A REMOÇÃO
 	if(possui_chave == 1){
 		
+		printf("\nEXCLUSAO 7\n");
+		
 		//CASO A FOLHA TENHA MAIS DE D PIZZAS, A REMOÇÃO SERÁ SIMPLES
 		if(noFolha->m > d){
+			
+			printf("\nEXCLUSAO 8\n");
 			
 			//printf("\n NO FOLHA ANTES: \n");
 			//imprime_no_folha(d, noFolha);
@@ -572,8 +589,12 @@ int exclui(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, cha
 				noFolha->pizzas[i]->preco = noFolha->pizzas[i + 1]->preco;
 			}
 			
+			printf("\nEXCLUSAO 9\n");
+			
 			noFolha->pizzas[noFolha->m] = NULL; 
 			noFolha->pizzas[noFolha->m - 1] = NULL; 
+			
+			printf("\nEXCLUSAO 10\n");
 			
 			//DECRESCE O NUMERO DE CHAVES
 			noFolha->m = noFolha->m - 1;
@@ -582,11 +603,15 @@ int exclui(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, cha
 			fseek(fd, buscaNo, SEEK_SET);
 			salva_no_folha(d, noFolha, fd);
 			
+			printf("\nEXCLUSAO 11\n");
+			
 			//free(noFolha);
 			
 			//FECHA OS ARQUIVOS ABERTOS
 			fclose(fd);
 			fclose(fi);
+			
+			printf("\nEXCLUSAO 12\n");
 			
 			//RETORNA O PONTEIRO PARA A FOLHA NA QUAL FOI EXECUTADA A REMOÇÃO
 			return buscaNo;
@@ -594,11 +619,15 @@ int exclui(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, cha
 		//CASO TENHA MENOS PIZZAS QUE D, SERÁ NECESSÁRIA UMA DAS OPERAÇÕES DE REORGANIZAÇÃO DA ARVORE B+ 
 		else{
 			
+			printf("\nEXCLUSAO 13\n");
+			
 			//LE O METADADOS CORRESPONDENTE DA ÁRVORE
 			TMetadados *metadados = le_arq_metadados(nome_arquivo_metadados);
 			
 			//CASO A RAIZ SEJA UMA FOLHA, SIMPLESENTE EXCLUI O NÓ SEM PREOCUPAÇÕES
 			if(metadados->raiz_folha == 1){
+				
+				printf("\nEXCLUSAO 14\n");
 				
 				//REORDENA A FOLHA PARA SUMIR COM A PIZZA QUE POSSUI O COD PASSADO
 				for(int i = pos_chave; i < noFolha->m - 1; i++){
@@ -608,11 +637,15 @@ int exclui(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, cha
 					noFolha->pizzas[i]->preco = noFolha->pizzas[i + 1]->preco;
 				}
 				
+				printf("\nEXCLUSAO 15\n");
+				
 				noFolha->pizzas[noFolha->m] = NULL; 
 				noFolha->pizzas[noFolha->m - 1] = NULL; 
 				
 				//DECRESCE O NUMERO DE CHAVES
 				noFolha->m = noFolha->m - 1;
+				
+				printf("\nEXCLUSAO 16\n");
 				
 				//SALVA A NOVA FOLHA
 				fseek(fd, buscaNo, SEEK_SET);
@@ -628,9 +661,13 @@ int exclui(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, cha
 				//REDISTRIBUIÇÃO: MUDAM O CONTEUDO DO INDICE E DAS FOLHAS, MAS NÃO SE PROPAGAM
 				//CONCATENAÇÃO: ALÉM DE MUDAR AS FOLHAS, SE PROPAGAM PELA ÁRVORE
 				
+				printf("\nEXCLUSAO 17\n");
+				
 				//LE O NO INTERNO PAI(PRIMEIRO AFETADO)
 				fseek(fi, noFolha->pont_pai, SEEK_SET);
 				TNoInterno *noInterno = le_no_interno(d, fi);
+				
+				printf("\nEXCLUSAO 18\n");
 				
 				int pos = -1;
 				//LOCALIZA A POSIÇÃO DA CHAVE NO NÓ INTERNO
@@ -643,20 +680,30 @@ int exclui(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, cha
 				}
 				TNoFolha * vizinho;
 				
+				printf("\nEXCLUSAO 19\n");
+				
 				//OLHA PRIMEIRO A DIREITA DO PONTEIRO, CASO ELA EXISTA
 				if(pos != -1){
-				
+					
+					printf("\nEXCLUSAO 20\n");
+					
 					fseek(fd, noInterno->p[pos + 1], SEEK_SET);
 					vizinho = le_no_folha(d, fd);
 					
+					printf("\nEXCLUSAO 21\n");
+					
 					//CASO SEJA POSSIVEL PEGAR UMA CHAVE DO VIZINHO SEM DESBALANCEAR A ARVORE
 					if(vizinho->m > d){
+						
+						printf("\nEXCLUSAO 22\n");
 						
 						//COPIA A PIZZA PARA O NÓ FOLHA NA POSIÇÃO CORRETA
 						noFolha->pizzas[noFolha->m - 1]->cod = vizinho->pizzas[0]->cod;
 						strcpy(noFolha->pizzas[noFolha->m - 1]->nome, vizinho->pizzas[0]->nome);
 						strcpy(noFolha->pizzas[noFolha->m - 1]->categoria, vizinho->pizzas[0]->categoria);
 						noFolha->pizzas[noFolha->m - 1]->preco = vizinho->pizzas[0]->preco;
+						
+						printf("\nEXCLUSAO 23\n");
 						
 						//RETIRA A CHAVE TROCADA DO VIZINHO
 						for(int i = 0; i < vizinho->m - 1; i++){
@@ -666,11 +713,15 @@ int exclui(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, cha
 							vizinho->pizzas[i]->preco = vizinho->pizzas[i + 1]->preco;
 						}
 						
+						printf("\nEXCLUSAO 24\n");
+						
 						vizinho->pizzas[vizinho->m] = NULL; 
 						vizinho->pizzas[vizinho->m - 1] = NULL; 
 						
 						//DECRESCE O NUMERO DE CHAVES
 						vizinho->m = vizinho->m - 1;
+						
+						printf("\nEXCLUSAO 25\n");
 						
 						//SALVA AMBAS AS FOLHAS
 						fseek(fd, noInterno->p[pos + 1], SEEK_SET);
@@ -679,12 +730,17 @@ int exclui(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, cha
 						fseek(fd, buscaNo, SEEK_SET);
 						salva_no_folha(d, noFolha, fd);
 						
+						printf("\nEXCLUSAO 26\n");
+						
 						//ATUALIZA CHAVE DO NÓ INTERNO
 						noInterno->chaves[pos] = vizinho->pizzas[0]->cod;
 					}
 					//CASO CONTRÁRIO, PUXA TODO O VIZINHO E ELIMINA O NÓ
 					//NESSE CASO SÓ SE SALVA O NÓ FOLHA
 					else{
+						
+						printf("\nEXCLUSAO 27\n");
+						
 						//REORDENA A FOLHA PARA SUMIR COM A PIZZA QUE POSSUI O COD PASSADO
 						for(int i = pos_chave; i < noFolha->m - 1; i++){
 							noFolha->pizzas[i]->cod = noFolha->pizzas[i + 1]->cod;
@@ -693,11 +749,15 @@ int exclui(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, cha
 							noFolha->pizzas[i]->preco = noFolha->pizzas[i + 1]->preco;
 						}
 						
+						printf("\nEXCLUSAO 28\n");
+						
 						noFolha->pizzas[noFolha->m] = NULL; 
 						noFolha->pizzas[noFolha->m - 1] = NULL; 
 						
 						//DECRESCE O NUMERO DE CHAVES
 						noFolha->m = noFolha->m - 1;
+						
+						printf("\nEXCLUSAO 29\n");
 						
 						//COPIA AS PIZZAS DO VIZINHO PARA O NÓ FOLHA NA POSIÇÃO CORRETA
 						for(int i = 0; i < vizinho->m; i++){
@@ -711,9 +771,13 @@ int exclui(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, cha
 							noFolha->pizzas[noFolha->m + i] = nova_pizza;
 						}
 						
+						printf("\nEXCLUSAO 30\n");
+						
 						//AUMENTA O M DO NÓ FOLHA
 						noFolha->m = noFolha->m + vizinho->m;
 						noFolha->pont_prox = vizinho->pont_prox;
+						
+						printf("\nEXCLUSAO 31\n");
 						
 						//ACERTA OS PONTEIROS DO NÓ INTERNO
 						for(int i = pos + 1; i < noInterno->m; i++){
@@ -721,6 +785,9 @@ int exclui(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, cha
 							
 							noInterno->p[i + 1] = -1;
 						}
+						
+						printf("\nEXCLUSAO 32\n");
+						
 						//ACERTA AS CHAVES DO NÓ INTERNO
 						for(int i = pos; i < noInterno->m - 1; i++){
 							noInterno->chaves[i] = noInterno->chaves[i + 1];
@@ -728,10 +795,14 @@ int exclui(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, cha
 							noInterno->chaves[i + 1] = -1;
 						}
 						
+						printf("\nEXCLUSAO 33\n");
+						
 						noInterno->p[noInterno->m] = noInterno->p[noInterno->m + 1];
 						noInterno->p[noInterno->m + 1] = -1;
 						noInterno->chaves[noInterno->m - 1] = -1;
 						noInterno->m = noInterno->m - 1;
+						
+						printf("\nEXCLUSAO 34\n");
 						
 						//SALVA NO FOLHA
 						fseek(fd, buscaNo, SEEK_SET);
@@ -741,14 +812,21 @@ int exclui(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, cha
 				//CASO CONTRÁRIO, SEGUE A MESMMA LÓGICA ACIMA, PORÉM PARA A ESQUERDA, OU SEJA, INVERTIDO
 				else{
 					
+					printf("\nEXCLUSAO 35\n");
+					
 					pos = noInterno->m;
 					
 					//LE O VIZINHO DA ESQUERDA
 					fseek(fd, noInterno->p[pos - 1], SEEK_SET);
 					vizinho = le_no_folha(d, fd);
 					
+					
+					printf("\nEXCLUSAO 36\n");
+					
 					//CASO SEJA POSSIVEL PEGAR UMA CHAVE DO VIZINHO SEM DESBALANCEAR A ARVORE
 					if(vizinho->m > d){
+						
+						printf("\nEXCLUSAO 37\n");
 						
 						//CRIA NOVA PIZZA BASEADA NO VALOR MAIS ALTO DO VIZINHO DA ESQUERDA
 						TPizza * nova_pizza = pizza(vizinho->pizzas[vizinho->m]->cod,
@@ -757,10 +835,14 @@ int exclui(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, cha
 														vizinho->pizzas[vizinho->m]->preco
 														);
 						
+						printf("\nEXCLUSAO 38\n");
+						
 						//MOVE TODAS AS PIZZAS DO NO FOLHA PARA A DIREITA
 						for(int i = noFolha->m - 1; i >= 0; i--){
 							noFolha->pizzas[i + 1] = noFolha->pizzas[i]; 
 						}
+						
+						printf("\nEXCLUSAO 39\n");
 						
 						//ADICIONA A NOVA PIZZA NO INICIO DA FOLHA
 						noFolha->pizzas[0] = nova_pizza;
@@ -770,6 +852,8 @@ int exclui(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, cha
 						vizinho->pizzas[vizinho->m] = NULL;
 						vizinho->m = vizinho->m - 1;
 						
+						printf("\nEXCLUSAO 40\n");
+						
 						//SALVA AMBAS AS FOLHAS
 						fseek(fd, noInterno->p[pos - 1], SEEK_SET);
 						salva_no_folha(d, vizinho, fd);
@@ -777,12 +861,16 @@ int exclui(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, cha
 						fseek(fd, buscaNo, SEEK_SET);
 						salva_no_folha(d, noFolha, fd);
 						
+						printf("\nEXCLUSAO 41\n");
+						
 						//ATUALIZA CHAVE DO NÓ INTERNO
 						noInterno->chaves[pos] = noFolha->pizzas[0]->cod;
 					}
 					//CASO CONTRÁRIO, DEVE OCORRER A CONCATENAÇÃO
 					//NESSE CASO, SÓ O VIZINHO SERÁ SALVO
 					else{
+						
+						printf("\nEXCLUSAO 42\n");
 						
 						//REORDENA A FOLHA PARA SUMIR COM A PIZZA QUE POSSUI O COD PASSADO
 						for(int i = pos_chave; i < noFolha->m - 1; i++){
@@ -792,8 +880,12 @@ int exclui(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, cha
 							noFolha->pizzas[i]->preco = noFolha->pizzas[i + 1]->preco;
 						}
 						
+						printf("\nEXCLUSAO 43\n");
+						
 						noFolha->pizzas[noFolha->m] = NULL; 
 						noFolha->pizzas[noFolha->m - 1] = NULL; 
+						
+						printf("\nEXCLUSAO 44\n");
 						
 						//DECRESCE O NUMERO DE CHAVES
 						noFolha->m = noFolha->m - 1;
@@ -810,6 +902,8 @@ int exclui(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, cha
 							vizinho->pizzas[vizinho->m + i] = nova_pizza;
 						}
 						
+						printf("\nEXCLUSAO 45\n");
+						
 						//AUMENTA O M DO NÓ FOLHA
 						vizinho->m = vizinho->m + noFolha->m;
 						vizinho->pont_prox = noFolha->pont_prox;
@@ -819,6 +913,8 @@ int exclui(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, cha
 						noInterno->chaves[noInterno->m - 1] = -1;
 						noInterno->m = noInterno->m - 1;
 						
+						printf("\nEXCLUSAO 46\n");
+						
 						//CASO O NO INTERNO NÃO POSSUA MAIS CHAVES, DEVE-SE ACERTAR OS METADADOS
 						if(noInterno->m = 0){
 							noInterno->p[0] = -1;
@@ -826,11 +922,17 @@ int exclui(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, cha
 							metadados->raiz_folha = 1;
 						}
 						
+						printf("\nEXCLUSAO 47\n");
+						
 						//SALVA VIZINHO
 						fseek(fd, noInterno->p[pos - 1], SEEK_SET);
 						salva_no_folha(d, vizinho, fd);
+						
+						printf("\nEXCLUSAO 48\n");
 					}
 				}
+				
+				printf("\nEXCLUSAO 49\n");
 				
 				int pont_noInterno = noFolha->pont_pai;
 					
@@ -843,14 +945,22 @@ int exclui(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, cha
 					//free(noFolha);
 					//free(vizinho);
 					//free(noInterno);
+					
+					printf("\nEXCLUSAO 50\n");
 				}
 				else{
-				
+					
+					printf("\nEXCLUSAO 51\n");
+					
 					int loop = 0; int pos_interno = -1;
 					
 					TNoInterno * vizinho_interno; TNoInterno * pai_interno;
 					
+					printf("\nEXCLUSAO 52\n");
+					
 					while(loop == 0){
+						
+						printf("\nEXCLUSAO 53\n");
 						
 						fseek(fi, noInterno->pont_pai, SEEK_SET);
 						pai_interno = le_no_interno(d, fi);
@@ -862,14 +972,20 @@ int exclui(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, cha
 							}
 						}
 						
+						printf("\nEXCLUSAO 54\n");
+						
 						//EXISTE NO A DIREITA
 						if(pos_interno != -1){
-						
+							
+							printf("\nEXCLUSAO 55\n");
+							
 							fseek(fi, pai_interno->p[pos_interno + 1], SEEK_SET);
 							vizinho_interno = le_no_interno(d, fi);
 							
 							//NÃO NECESSITA DE CONCATENAÇÃO
 							if( (vizinho_interno->m + noInterno->m) > 2*d){
+								
+								printf("\nEXCLUSAO 56\n");
 								
 								//ACIDIONA O MENOR PONTEIRO DO VIZINHO AO NO INTERNO
 								noInterno->p[noInterno->m + 1] = vizinho_interno->p[0];
@@ -881,6 +997,8 @@ int exclui(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, cha
 								noInterno->chaves[noInterno->m] = aux_folha->pizzas[0]->cod;
 								//free(aux_folha);
 								
+								printf("\nEXCLUSAO 57\n");
+								
 								noInterno->m = noInterno->m + 1;
 								
 								//REMOVE A MENOR CHAVE E PONTEIRO DO VIZINHO
@@ -888,11 +1006,16 @@ int exclui(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, cha
 									vizinho_interno->chaves[i] = vizinho_interno->chaves[i + 1];
 									vizinho_interno->chaves[i + 1] = -1;
 								}
+								
+								printf("\nEXCLUSAO 58\n");
+								
 								for(int i = 0; i < vizinho_interno->m; i++){
 									vizinho_interno->p[i] = vizinho_interno->p[i + 1];
 									vizinho_interno->p[i + 1] = -1;
 								}
 								vizinho_interno->m = vizinho_interno->m - 1;
+								
+								printf("\nEXCLUSAO 59\n");
 								
 								//ATUALIZAR CHAVE DO PAI
 								pai_interno->chaves[pos_interno + 1] = vizinho_interno->chaves[0];
@@ -907,10 +1030,14 @@ int exclui(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, cha
 								fseek(fi, pont_noInterno, SEEK_SET);
 								salva_no_interno(d, noInterno, fi);
 								
+								printf("\nEXCLUSAO 60\n");
+								
 								loop = 1;
 							}
 							//CONCATENA
 							else{
+								
+								printf("\nEXCLUSAO 61\n");
 								
 								//TRANSFERE OS PONTEIROS DO VIZINHO DA DIREITA PARA O NOINTERNO
 								for(int i = 0; i < vizinho_interno->m + 1; i++){
@@ -918,8 +1045,12 @@ int exclui(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, cha
 								}
 								noInterno->m = noInterno->m + vizinho_interno->m + 1;
 								
+								printf("\nEXCLUSAO 62\n");
+								
 								//ACERTA AS CHAVES
 								if(noInterno->aponta_folha == 1){
+									
+									printf("\nEXCLUSAO 63\n");
 									
 									TNoFolha * aux_folha;
 									for(int i = 1; i < noInterno->m + 1; i++){
@@ -928,8 +1059,13 @@ int exclui(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, cha
 										noInterno->chaves[i - 1] = aux_folha->pizzas[0]->cod;
 										//free(aux_folha);
 									}
+									
+									printf("\nEXCLUSAO 64\n");
 								}
 								else{
+									
+									printf("\nEXCLUSAO 65\n");
+									
 									TNoInterno* aux_interno;
 									for(int i = 1; i < noInterno->m + 1; i++){
 										fseek(fi, noInterno->p[i], SEEK_SET);
@@ -937,7 +1073,12 @@ int exclui(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, cha
 										noInterno->chaves[i - 1] = aux_interno->chaves[0];
 										//free(aux_interno);
 									}
+									
+									printf("\nEXCLUSAO 66\n");
 								}
+								
+								printf("\nEXCLUSAO 67\n");
+								
 								//ACERTA AS CHAVES E OS PONTEIROS EXTRAS DO PAI
 								for(int i = pos_interno + 1; i < pai_interno->m; i++){
 									pai_interno->p[i] = pai_interno->p[i + 1];
@@ -945,58 +1086,91 @@ int exclui(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, cha
 									pai_interno->p[i + 1] = -1;
 								}
 								
+								printf("\nEXCLUSAO 68\n");
+								
 								for(int i = pos_interno; i < pai_interno->m - 1; i++){
 									pai_interno->chaves[i] = pai_interno->chaves[i + 1];
 									
 									pai_interno->chaves[i + 1] = -1;
 								}
 								
+								printf("\nEXCLUSAO 69\n");
+								
 								pai_interno->p[pai_interno->m] = pai_interno->p[pai_interno->m + 1];
 								pai_interno->p[pai_interno->m + 1] = -1;
 								pai_interno->chaves[pai_interno->m - 1] = -1;
 								pai_interno->m = pai_interno->m - 1;
 								
+								printf("\nEXCLUSAO 70\n");
+								
 								//SALVA O NOINTERNO
 								fseek(fi, pont_noInterno, SEEK_SET);
 								salva_no_interno(d, noInterno, fi);
 								
+								printf("\nEXCLUSAO 71\n");
+								
 								//CASO O NO PAI NÃO TENHA MAIS CHAVES E SEJA RAIZ, ALTERA A RAIZ PARA O NOINTERNO
 								if(pai_interno->m == 0 && (metadados->pont_raiz == noInterno->pont_pai)){
+									
+									printf("\nEXCLUSAO 72\n");
+									
 									metadados->pont_raiz = pont_noInterno;
 									loop = 1;
 								}
 								//CASO O PAI TENHA MAIS QUE D - 1 CHAVES TERMINA
 								else if(pai_interno->m >= d){
+									
+									printf("\nEXCLUSAO 73\n");
+									
 									loop = 1;
 								}
 								else{
+									
+									printf("\nEXCLUSAO 74\n");
+									
 									pont_noInterno = noInterno->pont_pai;
 									noInterno = pai_interno;
 								}
 							}
 							
+							printf("\nEXCLUSAO 75\n");
+							
 						}
 						//DEVE SE TRABALHAR COM A ESQUERDA
 						else{
+							
+							printf("\nEXCLUSAO 76\n");
 							
 							pos_interno = pai_interno->m;
 							
 							fseek(fi, pai_interno->p[pos_interno - 1], SEEK_SET);
 							vizinho_interno = le_no_interno(d, fi);
 							
+							printf("\nEXCLUSAO 77\n");
+							
 							//NÃO NECESSITA DE CONCATENAÇÃO
 							if((vizinho_interno->m + noInterno->m) > 2*d){
+								
+								printf("\nEXCLUSAO 78\n");
 								
 								//ACIDIONA O MAIOR PONTEIRO DO VIZINHO AO NO INTERNO
 								for(int i = noInterno->m; i > 0; i--){
 									noInterno->chaves[i] = noInterno->chaves[i - 1]; 
 								}
+								
+								printf("\nEXCLUSAO 79\n");
+								
 								for(int i = noInterno->m + 1; i > 0; i--){
 									noInterno->p[i] = noInterno->p[i - 1];
 								}
+								
+								printf("\nEXCLUSAO 80\n");
+								
 								noInterno->p[0] = vizinho_interno->p[vizinho_interno->m];
 								
 								TNoFolha * aux_folha;
+								
+								printf("\nEXCLUSAO 81\n");
 								
 								fseek(fd, noInterno->p[0], SEEK_SET);
 								aux_folha = le_no_folha(d, fd);
@@ -1005,11 +1179,15 @@ int exclui(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, cha
 								
 								noInterno->m = noInterno->m + 1;
 								
+								printf("\nEXCLUSAO 82\n");
+								
 								vizinho_interno->p[vizinho_interno->m] = -1;
 								vizinho_interno->p[vizinho_interno->m - 1] = -1;
 								
 								//ATUALIZAR CHAVE DO PAI
 								pai_interno->chaves[pos_interno + 1] = noInterno->chaves[0];
+								
+								printf("\nEXCLUSAO 83\n");
 								
 								//SALVA OS NOS ATUALIZADOS
 								fseek(fi, pai_interno->p[pos_interno + 1], SEEK_SET);
@@ -1021,20 +1199,29 @@ int exclui(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, cha
 								fseek(fi, pont_noInterno, SEEK_SET);
 								salva_no_interno(d, noInterno, fi);
 								
+								printf("\nEXCLUSAO 84\n");
+								
 								loop = 1;
 							
 							}
 							//CONCATENA
 							else{
-							
+								
+								printf("\nEXCLUSAO 85\n");
+								
 								//TRANSFERE OS PONTEIROS DO NOINTERNO PARA O VIZINHO DA ESQUERDA
 								for(int i = 0; i < noInterno->m + 1; i++){
 									vizinho_interno->p[vizinho_interno->m + 1 + i] = noInterno->p[i];
 								}
+								
+								printf("\nEXCLUSAO 86\n");
+								
 								vizinho_interno->m = vizinho_interno->m + noInterno->m + 1;
 							
 								//ACERTA AS CHAVES
 								if(vizinho_interno->aponta_folha == 1){
+									
+									printf("\nEXCLUSAO 87\n");
 									
 									TNoFolha * aux_folha;
 									for(int i = 1; i < vizinho_interno->m + 1; i++){
@@ -1043,8 +1230,12 @@ int exclui(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, cha
 										vizinho_interno->chaves[i - 1] = aux_folha->pizzas[0]->cod;
 										//free(aux_folha);
 									}
+									
+									printf("\nEXCLUSAO 88\n");
 								}
 								else{
+									
+									printf("\nEXCLUSAO 89\n");
 									
 									TNoInterno* aux_interno;
 									for(int i = 1; i < vizinho_interno->m + 1; i++){
@@ -1053,12 +1244,18 @@ int exclui(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, cha
 										vizinho_interno->chaves[i - 1] = aux_interno->chaves[0];
 										//free(aux_interno);
 									}
+									
+									printf("\nEXCLUSAO 90\n");
 								}
+								
+								printf("\nEXCLUSAO 91\n");
 								
 								//ACERTA AS CHAVES E OS PONTEIROS EXTRAS DO PAI
 								pai_interno->p[pai_interno->m + 1] = -1;
 								pai_interno->chaves[pai_interno->m - 1] = -1;
 								pai_interno->m = pai_interno->m - 1;
+								
+								printf("\nEXCLUSAO 92\n");
 								
 								//SALVA O NOINTERNO
 								fseek(fi, pont_noInterno, SEEK_SET);
@@ -1066,14 +1263,23 @@ int exclui(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, cha
 								
 								//CASO O NO PAI NÃO TENHA MAIS CHAVES E SEJA RAIZ, ALTERA A RAIZ PARA O NOINTERNO
 								if(pai_interno->m == 0 && (metadados->pont_raiz == noInterno->pont_pai)){
+									
+									printf("\nEXCLUSAO 93\n");
+									
 									metadados->pont_raiz = pont_noInterno;
 									loop = 1;
 								}
 								//CASO O PAI TENHA MAIS QUE D - 1 CHAVES TERMINA
 								else if(pai_interno->m >= d){
+									
+									printf("\nEXCLUSAO 94\n");
+									
 									loop = 1;
 								}
 								else{
+									
+									printf("\nEXCLUSAO 95\n");
+									
 									pont_noInterno = noInterno->pont_pai;
 									noInterno = pai_interno;
 								}
@@ -1083,6 +1289,8 @@ int exclui(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, cha
 				}
 			}
 			
+			printf("\nEXCLUSAO 96\n");
+			
 			//FECHA METADADOS
 			salva_arq_metadados(nome_arquivo_metadados, metadados);
 			free(metadados);
@@ -1090,6 +1298,8 @@ int exclui(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, cha
 			//FECHA OS ARQUIVOS ABERTOS
 			fclose(fd);
 			fclose(fi);
+			
+			printf("\nEXCLUSAO 97\n");
 			
 			//RETORNA O PONTEIRO PARA A FOLHA NA QUAL FOI EXECUTADA A REMOÇÃO
 			return buscaNo;
@@ -1099,11 +1309,15 @@ int exclui(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, cha
 	//CASO O COD PASSADO NÃO EXISTA NA ARVORE
 	else{
 		
+		printf("\nEXCLUSAO 98\n");
+		
 		free(noFolha);
 		
 		//FECHA OS ARQUIVOS ABERTOS
 		fclose(fd);
 		fclose(fi);
+		
+		printf("\nEXCLUSAO 99\n");
 		
 		//RETORNA MENSAGEM DE ERRO
 		return -1;
