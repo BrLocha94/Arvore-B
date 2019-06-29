@@ -1203,14 +1203,29 @@ int exclui(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, cha
 								
 								noInterno->p[0] = vizinho_interno->p[vizinho_interno->m];
 								
-								TNoFolha * aux_folha;
+								if(noInterno->aponta_folha == 1){
 								
-								printf("\nEXCLUSAO 81\n");
+									TNoFolha * aux_folha;
 								
-								fseek(fd, noInterno->p[0], SEEK_SET);
-								aux_folha = le_no_folha(d, fd);
-								noInterno->chaves[0] = aux_folha->pizzas[0]->cod;
-								//free(aux_folha);
+									printf("\nEXCLUSAO 81\n");
+								
+									fseek(fd, noInterno->p[0], SEEK_SET);
+									aux_folha = le_no_folha(d, fd);
+									noInterno->chaves[0] = aux_folha->pizzas[0]->cod;
+									//free(aux_folha);
+								}
+								else{
+									
+									TNoInterno * aux_interno;
+								
+									printf("\nEXCLUSAO 81.2\n");
+								
+									fseek(fi, noInterno->p[0], SEEK_SET);
+									aux_interno = le_no_interno(d, fi);
+									noInterno->chaves[0] = aux_interno->chaves[0];
+									//free(aux_interno);
+								
+								}
 								
 								noInterno->m = noInterno->m + 1;
 								
