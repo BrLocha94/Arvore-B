@@ -1424,6 +1424,8 @@ void remove_por_categoria(char *categoria, char *nome_arquivo_metadados, char *n
 	//REMOVE TODAS AS PIZZAS ACHADAS ACIMA
 	for(int i = 0; i < count; i++){
 		
+		printf("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
+		
 		printf("\n  EXCLUSAO DA PIZZA DE COD %d \n", array[i]);
 		
 		exclui(array[i], nome_arquivo_metadados, nome_arquivo_indice, nome_arquivo_dados, d);
