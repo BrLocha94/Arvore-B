@@ -992,29 +992,45 @@ int exclui(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, cha
 								
 								printf("\nEXCLUSAO 56.2\n");
 								
-								TNoFolha * aux_folha;
-								
-								printf("\nEXCLUSAO 56.3\n");
-								
-								fseek(fd, noInterno->p[noInterno->m + 1], SEEK_SET);
-								
-								printf("\nEXCLUSAO 56.4\n");
-								
-								aux_folha = le_no_folha(d, fd);
-								
-								printf("\n AUXILIAR FOLHA \n");
-								imprime_no_folha(d, aux_folha);
-								
-								printf("\n NO INTERNO \n");
-								imprime_no_interno(d + 1, noInterno);
-								
-								printf("\nEXCLUSAO 56.5\n");
-								
-								noInterno->chaves[noInterno->m] = aux_folha->pizzas[0]->cod;
-								
-								printf("\nEXCLUSAO 56.6\n");
-								
-								//free(aux_folha);
+								if(noInterno->aponta_folha == 1){
+									
+									printf("\nEXCLUSAO 56.3\n");
+									
+									TNoFolha * aux_folha;
+									
+									fseek(fd, noInterno->p[noInterno->m + 1], SEEK_SET);
+									
+									printf("\nEXCLUSAO 56.4\n");
+									
+									aux_folha = le_no_folha(d, fd);
+									
+									printf("\n AUXILIAR FOLHA \n");
+									imprime_no_folha(d, aux_folha);
+									
+									printf("\n NO INTERNO \n");
+									imprime_no_interno(d, noInterno);
+									
+									printf("\nEXCLUSAO 56.5\n");
+									
+									noInterno->chaves[noInterno->m] = aux_folha->pizzas[0]->cod;
+									
+									printf("\nEXCLUSAO 56.6\n");
+									
+									//free(aux_folha);
+									
+								}
+								else{
+									printf("\nEXCLUSAO 56.7\n");
+									
+									TNoInterno * aux_interno;
+									
+									fseek(fi, noInterno->p[noInterno->m + 1], SEEK_SET);
+									aux_interno = le_no_interno(d, fi);
+									
+									printf("\nEXCLUSAO 56.8\n");
+									
+									noInterno->chaves[noInterno->m] = aux_interno->chaves[0];
+								}
 								
 								printf("\nEXCLUSAO 57\n");
 								
