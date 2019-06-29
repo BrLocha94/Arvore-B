@@ -1419,6 +1419,14 @@ void remove_por_categoria(char *categoria, char *nome_arquivo_metadados, char *n
 	fclose(fi);
 	fclose(fd);
 	
+	printf("ARRAY : ")
+	
+	for(int i = 0; i < count; i++){
+		printf(" %d ",array[i]);
+	}
+	
+	printf("\n\n");
+	
 	imprime_arvore(nome_arquivo_metadados, nome_arquivo_indice, nome_arquivo_dados, d);
 	
 	//REMOVE TODAS AS PIZZAS ACHADAS ACIMA
