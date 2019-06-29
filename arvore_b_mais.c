@@ -1002,6 +1002,12 @@ int exclui(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, cha
 								
 								aux_folha = le_no_folha(d, fd);
 								
+								printf("\n AUXILIAR FOLHA \n");
+								imprime_no_folha(d, aux_folha);
+								
+								printf("\n NO INTERNO \n");
+								imprime_no_interno(d + 1, noInterno);
+								
 								printf("\nEXCLUSAO 56.5\n");
 								
 								noInterno->chaves[noInterno->m] = aux_folha->pizzas[0]->cod;
