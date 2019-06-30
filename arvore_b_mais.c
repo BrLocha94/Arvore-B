@@ -824,7 +824,7 @@ int exclui(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, cha
 						imprime_no_folha(d, vizinho);
 						
 						printf("\n NO INTERNO N %d\n", noFolha->pont_pai);
-						imprime_no_folha(d, noInterno);
+						imprime_no_interno(d, noInterno);
 					}
 				}
 				int pont_noInterno = noFolha->pont_pai;
