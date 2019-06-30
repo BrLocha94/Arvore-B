@@ -925,7 +925,7 @@ int exclui(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, cha
 								for(int i = 0; i < vizinho_interno->m + 1; i++){
 									noInterno->p[noInterno->m + 1 + i] = vizinho_interno->p[i];
 								}
-								noInterno->m = noInterno->m + vizinho_interno->m;
+								noInterno->m = noInterno->m + vizinho_interno->m + 1;
 
 								//ACERTA AS CHAVES
 								if(noInterno->aponta_folha == 1){
@@ -1088,7 +1088,7 @@ int exclui(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, cha
 									vizinho_interno->p[vizinho_interno->m + 1 + i] = noInterno->p[i];
 								}
 								
-								vizinho_interno->m = vizinho_interno->m + noInterno->m;
+								vizinho_interno->m = vizinho_interno->m + noInterno->m + 1;
 							
 								//ACERTA AS CHAVES
 								if(vizinho_interno->aponta_folha == 1){
