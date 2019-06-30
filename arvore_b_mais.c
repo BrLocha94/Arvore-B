@@ -723,6 +723,7 @@ int exclui(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, cha
 						}
 						
 						//noInterno->p[noInterno->m] = noInterno->p[noInterno->m + 1];
+						noInterno->p[noInterno->m + 1] = - 1;
 						noInterno->p[noInterno->m] = -1;
 						noInterno->chaves[noInterno->m - 1] = -1;
 						noInterno->m = noInterno->m - 1;
@@ -974,6 +975,7 @@ int exclui(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, cha
 								}
 
 								//pai_interno->p[pai_interno->m] = pai_interno->p[pai_interno->m + 1];
+								pai_interno->p[pai_interno->m + 1]; = -1;
 								pai_interno->p[pai_interno->m] = -1;
 								pai_interno->chaves[pai_interno->m - 1] = -1;
 								pai_interno->m = pai_interno->m - 1;
