@@ -722,8 +722,8 @@ int exclui(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, cha
 							noInterno->chaves[i + 1] = -1;
 						}
 						
-						noInterno->p[noInterno->m] = noInterno->p[noInterno->m + 1];
-						noInterno->p[noInterno->m + 1] = -1;
+						//noInterno->p[noInterno->m] = noInterno->p[noInterno->m + 1];
+						noInterno->p[noInterno->m] = -1;
 						noInterno->chaves[noInterno->m - 1] = -1;
 						noInterno->m = noInterno->m - 1;
 						
@@ -839,6 +839,8 @@ int exclui(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, cha
 					
 					while(loop == 0){
 						
+						pos_interno = -1;
+						
 						fseek(fi, noInterno->pont_pai, SEEK_SET);
 						pai_interno = le_no_interno(d, fi);
 						
@@ -855,7 +857,7 @@ int exclui(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, cha
 							vizinho_interno = le_no_interno(d, fi);
 							
 							//NÃO NECESSITA DE CONCATENAÇÃO
-							if( (vizinho_interno->m + noInterno->m) > 2*d){
+							if( (vizinho_interno->m + noInterno->m) >= 2*d){
 								
 								//ACIDIONA O MENOR PONTEIRO DO VIZINHO AO NO INTERNO
 								noInterno->p[noInterno->m + 1] = vizinho_interno->p[0];
@@ -866,18 +868,26 @@ int exclui(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, cha
 									fseek(fd, noInterno->p[noInterno->m + 1], SEEK_SET);
 									
 									aux_folha = le_no_folha(d, fd);
+									aux_folha->pont_pai = pont_noInterno;
 									
 									noInterno->chaves[noInterno->m] = aux_folha->pizzas[0]->cod;
-								
+									
+									fseek(fd, noInterno->p[noInterno->m + 1], SEEK_SET);
+									salva_no_folha(d, aux_folha, fd);
 									//free(aux_folha);
 								}
 								else{
 									TNoInterno * aux_interno;
 									
 									fseek(fi, noInterno->p[noInterno->m + 1], SEEK_SET);
+									
 									aux_interno = le_no_interno(d, fi);
+									aux_interno->pont_pai = pont_noInterno;
 									
 									noInterno->chaves[noInterno->m] = aux_interno->chaves[0];
+									
+									fseek(fi, noInterno->p[noInterno->m + 1], SEEK_SET);
+									salva_no_interno(d, aux_interno, fi);
 								}
 								noInterno->m = noInterno->m + 1;
 								
@@ -921,9 +931,15 @@ int exclui(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, cha
 									
 									TNoFolha * aux_folha;
 									for(int i = 1; i < noInterno->m + 1; i++){
+										
 										fseek(fd, noInterno->p[i], SEEK_SET);
 										aux_folha = le_no_folha(d, fd);
+										aux_folha->pont_pai = pont_noInterno;
+										
 										noInterno->chaves[i - 1] = aux_folha->pizzas[0]->cod;
+										
+										fseek(fd, noInterno->p[i], SEEK_SET);
+										salva_no_folha(d, aux_folha, fd);
 										//free(aux_folha);
 									}
 								}
@@ -931,9 +947,15 @@ int exclui(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, cha
 									
 									TNoInterno* aux_interno;
 									for(int i = 1; i < noInterno->m + 1; i++){
+										
 										fseek(fi, noInterno->p[i], SEEK_SET);
 										aux_interno = le_no_interno(d, fi);
+										aux_interno->pont_pai = pont_noInterno;
+										
 										noInterno->chaves[i - 1] = aux_interno->chaves[0];
+										
+										fseek(fi, noInterno->p[i], SEEK_SET);
+										salva_no_interno(d, aux_interno, fi);
 										//free(aux_interno);
 									}
 								}
@@ -951,8 +973,8 @@ int exclui(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, cha
 									pai_interno->chaves[i + 1] = -1;
 								}
 
-								pai_interno->p[pai_interno->m] = pai_interno->p[pai_interno->m + 1];
-								pai_interno->p[pai_interno->m + 1] = -1;
+								//pai_interno->p[pai_interno->m] = pai_interno->p[pai_interno->m + 1];
+								pai_interno->p[pai_interno->m] = -1;
 								pai_interno->chaves[pai_interno->m - 1] = -1;
 								pai_interno->m = pai_interno->m - 1;
 								
@@ -962,13 +984,21 @@ int exclui(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, cha
 								
 								//CASO O NO PAI NÃO TENHA MAIS CHAVES E SEJA RAIZ, ALTERA A RAIZ PARA O NOINTERNO
 								if(pai_interno->m == 0 && (metadados->pont_raiz == noInterno->pont_pai)){
-
+									
 									metadados->pont_raiz = pont_noInterno;
+									noInterno->pont_pai = -1;
+									
+									//SALVA O NOINTERNO
+									fseek(fi, pont_noInterno, SEEK_SET);
+									salva_no_interno(d, noInterno, fi);
+									
 									loop = 1;
 								}
-								//CASO O PAI TENHA MAIS QUE D - 1 CHAVES TERMINA
+								//CASO O PAI TENHA MAIS QUE D - 1 CHAVES SALVA O PAI INTERNO E TERMINA
 								else if(pai_interno->m >= d){
 									
+									fseek(fi, noInterno->pont_pai, SEEK_SET);
+									salva_no_interno(d, pai_interno, fi);
 									loop = 1;
 								}
 								else{
@@ -985,7 +1015,7 @@ int exclui(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, cha
 							vizinho_interno = le_no_interno(d, fi);
 
 							//NÃO NECESSITA DE CONCATENAÇÃO
-							if((vizinho_interno->m + noInterno->m) > 2*d){
+							if((vizinho_interno->m + noInterno->m) >= 2*d){
 								
 								//ACIDIONA O MAIOR PONTEIRO DO VIZINHO AO NO INTERNO
 								for(int i = noInterno->m; i > 0; i--){
@@ -1004,7 +1034,12 @@ int exclui(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, cha
 								
 									fseek(fd, noInterno->p[0], SEEK_SET);
 									aux_folha = le_no_folha(d, fd);
+									aux_folha->pont_pai = pont_noInterno;
+									
 									noInterno->chaves[0] = aux_folha->pizzas[0]->cod;
+									
+									fseek(fd, noInterno->p[0], SEEK_SET);
+									salva_no_folha(d, aux_folha, fd);
 									//free(aux_folha);
 								}
 								else{
@@ -1013,9 +1048,13 @@ int exclui(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, cha
 								
 									fseek(fi, noInterno->p[0], SEEK_SET);
 									aux_interno = le_no_interno(d, fi);
+									aux_interno->pont_pai = pont_noInterno;
+									
 									noInterno->chaves[0] = aux_interno->chaves[0];
+									
+									fseek(fi, noInterno->p[0], SEEK_SET);
+									salva_no_interno(d, aux_interno, fi);
 									//free(aux_interno);
-								
 								}
 								
 								noInterno->m = noInterno->m + 1;
@@ -1026,10 +1065,10 @@ int exclui(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, cha
 								vizinho_interno->m = vizinho_interno->m - 1;
 								
 								//ATUALIZAR CHAVE DO PAI
-								pai_interno->chaves[pos_interno + 1] = noInterno->chaves[0];
+								pai_interno->chaves[pos_interno - 1] = noInterno->chaves[0];
 
 								//SALVA OS NOS ATUALIZADOS
-								fseek(fi, pai_interno->p[pos_interno + 1], SEEK_SET);
+								fseek(fi,  pai_interno->p[pos_interno - 1], SEEK_SET);
 								salva_no_interno(d, vizinho_interno, fi);
 								
 								fseek(fi, noInterno->pont_pai, SEEK_SET);
@@ -1039,7 +1078,6 @@ int exclui(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, cha
 								salva_no_interno(d, noInterno, fi);
 
 								loop = 1;
-							
 							}
 							//CONCATENA
 							else{
@@ -1055,24 +1093,36 @@ int exclui(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, cha
 									
 									TNoFolha * aux_folha;
 									for(int i = 1; i < vizinho_interno->m + 1; i++){
+										
 										fseek(fd, vizinho_interno->p[i], SEEK_SET);
 										aux_folha = le_no_folha(d, fd);
+										aux_folha->pont_pai = pai_interno->p[pos_interno - 1];
+										
 										vizinho_interno->chaves[i - 1] = aux_folha->pizzas[0]->cod;
+										
+										fseek(fd, vizinho_interno->p[i], SEEK_SET);
+										salva_no_folha(d, aux_folha, fd);
 										//free(aux_folha);
 									}
 								}
 								else{
 									TNoInterno* aux_interno;
 									for(int i = 1; i < vizinho_interno->m + 1; i++){
+										
 										fseek(fi, vizinho_interno->p[i], SEEK_SET);
 										aux_interno = le_no_interno(d, fi);
+										aux_interno->pont_pai = pai_interno->p[pos_interno - 1];
+										
 										vizinho_interno->chaves[i - 1] = aux_interno->chaves[0];
+										
+										fseek(fi, vizinho_interno->p[i], SEEK_SET);
+										salva_no_interno(d, aux_interno, fi);
 										//free(aux_interno);
 									}
 								}
 
 								//ACERTA AS CHAVES E OS PONTEIROS EXTRAS DO PAI
-								pai_interno->p[pai_interno->m + 1] = -1;
+								pai_interno->p[pai_interno->m] = -1;
 								pai_interno->chaves[pai_interno->m - 1] = -1;
 								pai_interno->m = pai_interno->m - 1;
 	
@@ -1082,13 +1132,21 @@ int exclui(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, cha
 								
 								//CASO O NO PAI NÃO TENHA MAIS CHAVES E SEJA RAIZ, ALTERA A RAIZ PARA O NOINTERNO
 								if(pai_interno->m == 0 && (metadados->pont_raiz == noInterno->pont_pai)){
-
+									
+									noInterno->pont_pai = -1;
+									
+									//SALVA O NOINTERNO
+									fseek(fi, pont_noInterno, SEEK_SET);
+									salva_no_interno(d, noInterno, fi);
+									
 									metadados->pont_raiz = pont_noInterno;
 									loop = 1;
 								}
 								//CASO O PAI TENHA MAIS QUE D - 1 CHAVES TERMINA
 								else if(pai_interno->m >= d){
-
+									
+									fseek(fi, noInterno->pont_pai, SEEK_SET);
+									salva_no_interno(d, pai_interno, fi);
 									loop = 1;
 								}
 								else{
@@ -1116,16 +1174,11 @@ int exclui(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, cha
 	}
 	//CASO O COD PASSADO NÃO EXISTA NA ARVORE
 	else{
-		
-		printf("\nEXCLUSAO 98\n");
-		
 		free(noFolha);
 		
 		//FECHA OS ARQUIVOS ABERTOS
 		fclose(fd);
 		fclose(fi);
-		
-		printf("\nEXCLUSAO 99\n");
 		
 		//RETORNA MENSAGEM DE ERRO
 		return -1;
