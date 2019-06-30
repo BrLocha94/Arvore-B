@@ -954,7 +954,7 @@ int exclui(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, cha
 										noInterno->chaves[i - 1] = aux_interno->chaves[0];
 										
 										fseek(fi, noInterno->p[i], SEEK_SET);
-										salva_no_interno(aux_interno);
+										salva_no_interno(d, aux_interno, fi);
 										//free(aux_interno);
 									}
 								}
