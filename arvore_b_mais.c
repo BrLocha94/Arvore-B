@@ -543,7 +543,7 @@ int exclui(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, cha
 	
 	//PARAMETROS DE CONTROLE
 	int possui_chave = 0;
-	int pos_chave = 0;
+	int pos_chave = noFolha->m - 1;
 	
 	//PROCURA A CHAVE PASSADA NA FUNÇÃO NO NOFOLHA
 	for(int i = 0; i < noFolha->m; i++){
@@ -790,7 +790,7 @@ int exclui(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, cha
 						//DECRESCE O NUMERO DE CHAVES
 						noFolha->m = noFolha->m - 1;
 						
-						//COPIA AS PIZZAS DO VIZINHO PARA O NÓ FOLHA NA POSIÇÃO CORRETA
+						//COPIA AS PIZZAS NA POSIÇÃO CORRETA
 						for(int i = 0; i < noFolha->m; i++){
 							
 							TPizza * nova_pizza = pizza(noFolha->pizzas[i]->cod,
@@ -819,6 +819,12 @@ int exclui(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, cha
 						//SALVA VIZINHO
 						fseek(fd, noInterno->p[pos - 1], SEEK_SET);
 						salva_no_folha(d, vizinho, fd);
+						
+						printf("\n VIZINHO N %d\n", noInterno->p[pos - 1]);
+						imprime_no_folha(d, vizinho);
+						
+						printf("\n NO INTERNO N %d\n", noFolha->pont_pai);
+						imprime_no_folha(d, noInterno);
 					}
 				}
 				int pont_noInterno = noFolha->pont_pai;
