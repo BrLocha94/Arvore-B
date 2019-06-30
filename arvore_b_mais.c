@@ -975,7 +975,7 @@ int exclui(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, cha
 								}
 
 								//pai_interno->p[pai_interno->m] = pai_interno->p[pai_interno->m + 1];
-								pai_interno->p[pai_interno->m + 1]; = -1;
+								pai_interno->p[pai_interno->m + 1] = -1;
 								pai_interno->p[pai_interno->m] = -1;
 								pai_interno->chaves[pai_interno->m - 1] = -1;
 								pai_interno->m = pai_interno->m - 1;
