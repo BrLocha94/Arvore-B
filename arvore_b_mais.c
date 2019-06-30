@@ -820,7 +820,7 @@ int exclui(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, cha
 						imprime_no_interno(d, noInterno);
 						
 						//CASO O NO INTERNO NÃO POSSUA MAIS CHAVES, DEVE-SE ACERTAR OS METADADOS
-						if(noInterno->m = 0){
+						if(noInterno->m == 0){
 							noInterno->p[0] = -1;
 							metadados->pont_raiz = buscaNo;
 							metadados->raiz_folha = 1;
