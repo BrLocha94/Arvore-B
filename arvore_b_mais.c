@@ -625,6 +625,9 @@ int exclui(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, cha
 				fseek(fi, noFolha->pont_pai, SEEK_SET);
 				TNoInterno *noInterno = le_no_interno(d, fi);
 				
+				printf("\n NO INTERNO INICIAL N %d\n", noFolha->pont_pai);
+				imprime_no_interno(d, noInterno);
+				
 				int pos = -1;
 				//LOCALIZA A POSIÇÃO DA CHAVE NO NÓ INTERNO
 				for(int i = 0; i < noInterno->m; i++){
@@ -805,10 +808,16 @@ int exclui(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, cha
 						vizinho->m = vizinho->m + noFolha->m;
 						vizinho->pont_prox = noFolha->pont_prox;
 						
+						printf("\n NO INTERNO MOD 1 N %d\n", noFolha->pont_pai);
+						imprime_no_interno(d, noInterno);
+						
 						//ACERTA OS PONTEIROS DO NÓ INTERNO
 						noInterno->p[noInterno->m] = -1;
 						noInterno->chaves[noInterno->m - 1] = -1;
 						noInterno->m = noInterno->m - 1;
+						
+						printf("\n NO INTERNO MOD 2 N %d\n", noFolha->pont_pai);
+						imprime_no_interno(d, noInterno);
 						
 						//CASO O NO INTERNO NÃO POSSUA MAIS CHAVES, DEVE-SE ACERTAR OS METADADOS
 						if(noInterno->m = 0){
