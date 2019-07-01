@@ -856,11 +856,13 @@ int exclui(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, cha
 						pai_interno = le_no_interno(d, fi);
 						
 						for(int i = 0; i < pai_interno->m; i++){
-							if(pai_interno->chaves[i] > noInterno->chaves[0]){
+							//if(pai_interno->chaves[i] > noInterno->chaves[0]){
+							if(pai_interno->p[i] == pont_noInterno){
 								pos_interno = i;
 								break;
 							}
 						}
+						
 						//EXISTE NO A DIREITA
 						if(pos_interno != -1){
 							
