@@ -844,9 +844,10 @@ int exclui(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, cha
 						printf("\n NO INTERNO \n");
 						imprime_no_interno(d, noInterno);
 						
-						if(noInterno->m >= d || noInterno->pont_pai == -1){
+						if(noInterno->pont_pai == -1){
 							fseek(fi, pont_noInterno, SEEK_SET);
 							salva_no_interno(d, noInterno, fi);
+							break;
 						}
 						
 						pos_interno = -1;
@@ -863,11 +864,18 @@ int exclui(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, cha
 						//EXISTE NO A DIREITA
 						if(pos_interno != -1){
 							
+							printf("\n AQUI \n");
+							
 							fseek(fi, pai_interno->p[pos_interno + 1], SEEK_SET);
 							vizinho_interno = le_no_interno(d, fi);
 							
+							printf("\nVIZINHO INTERNO\n");
+							salva_no_interno(d, vizinho_interno);
+							
 							//NÃO NECESSITA DE CONCATENAÇÃO
-							if( (vizinho_interno->m + noInterno->m) >= 2*d){
+							if((vizinho_interno->m + noInterno->m) >= 2*d){
+								
+								printf("\n AQUI 2\n");
 								
 								//ACIDIONA O MENOR PONTEIRO DO VIZINHO AO NO INTERNO
 								noInterno->p[noInterno->m + 1] = vizinho_interno->p[0];
