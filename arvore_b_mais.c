@@ -841,6 +841,9 @@ int exclui(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, cha
 					
 					while(loop == 0){
 						
+						printf("\n NO INTERNO \n");
+						imprime_no_interno(d, noInterno);
+						
 						if(noInterno->m >= d || noInterno->pont_pai == -1){
 							fseek(fi, pont_noInterno, SEEK_SET);
 							salva_no_interno(d, noInterno, fi);
