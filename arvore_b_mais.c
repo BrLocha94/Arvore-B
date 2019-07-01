@@ -870,7 +870,7 @@ int exclui(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, cha
 							vizinho_interno = le_no_interno(d, fi);
 							
 							printf("\nVIZINHO INTERNO\n");
-							salva_no_interno(d, vizinho_interno);
+							imprime_no_interno(d, vizinho_interno);
 							
 							//NÃO NECESSITA DE CONCATENAÇÃO
 							if((vizinho_interno->m + noInterno->m) >= 2*d){
