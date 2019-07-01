@@ -423,7 +423,7 @@ int insere(int cod, char *nome, char *categoria, float preco, char *nome_arquivo
 						}
 						
 						if(aux_pos != -2){
-							printf("\n CASO 1\n");
+							//printf("\n CASO 1\n");
 							
 							for(int i = pai_noInterno->m - 1; i > aux_pos; i++){
 								pai_noInterno->chaves[i + 1] = pai_noInterno->chaves[i];
@@ -841,8 +841,8 @@ int exclui(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, cha
 					
 					while(loop == 0){
 						
-						printf("\n NO INTERNO \n");
-						imprime_no_interno(d, noInterno);
+						//printf("\n NO INTERNO \n");
+						//imprime_no_interno(d, noInterno);
 						
 						if(noInterno->pont_pai == -1){
 							fseek(fi, pont_noInterno, SEEK_SET);
@@ -866,18 +866,18 @@ int exclui(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, cha
 						//EXISTE NO A DIREITA
 						if(pos_interno != -1){
 							
-							printf("\n AQUI \n");
+							//printf("\n AQUI \n");
 							
 							fseek(fi, pai_interno->p[pos_interno + 1], SEEK_SET);
 							vizinho_interno = le_no_interno(d, fi);
 							
-							printf("\nVIZINHO INTERNO\n");
-							imprime_no_interno(d, vizinho_interno);
+							//printf("\nVIZINHO INTERNO\n");
+							//imprime_no_interno(d, vizinho_interno);
 							
 							//NÃO NECESSITA DE CONCATENAÇÃO
 							if((vizinho_interno->m + noInterno->m) >= 2*d){
 								
-								printf("\n AQUI 2\n");
+								//printf("\n AQUI 2\n");
 								
 								//ACIDIONA O MENOR PONTEIRO DO VIZINHO AO NO INTERNO
 								noInterno->p[noInterno->m + 1] = vizinho_interno->p[0];
@@ -1497,7 +1497,7 @@ void remove_por_categoria(char *categoria, char *nome_arquivo_metadados, char *n
 	fclose(fi);
 	fclose(fd);
 	
-	printf("ARRAY : ");
+	/*printf("ARRAY : ");
 	
 	for(int i = 0; i < count; i++){
 		printf(" %d ",array[i]);
@@ -1505,18 +1505,18 @@ void remove_por_categoria(char *categoria, char *nome_arquivo_metadados, char *n
 	
 	printf("\n\n");
 	
-	imprime_arvore(nome_arquivo_metadados, nome_arquivo_indice, nome_arquivo_dados, d);
+	imprime_arvore(nome_arquivo_metadados, nome_arquivo_indice, nome_arquivo_dados, d);*/
 	
 	//REMOVE TODAS AS PIZZAS ACHADAS ACIMA
 	for(int i = 0; i < count; i++){
 		
-		printf("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
+		//printf("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
 		
-		printf("\n  EXCLUSAO DA PIZZA DE COD %d \n", array[i]);
+		//printf("\n  EXCLUSAO DA PIZZA DE COD %d \n", array[i]);
 		
 		exclui(array[i], nome_arquivo_metadados, nome_arquivo_indice, nome_arquivo_dados, d);
 		
-		imprime_arvore(nome_arquivo_metadados, nome_arquivo_indice, nome_arquivo_dados, d);
+		//imprime_arvore(nome_arquivo_metadados, nome_arquivo_indice, nome_arquivo_dados, d);
 	}
 }
 
