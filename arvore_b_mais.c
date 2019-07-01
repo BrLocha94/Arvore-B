@@ -906,7 +906,7 @@ int exclui(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, cha
 								vizinho_interno->m = vizinho_interno->m - 1;
 								
 								//ATUALIZAR CHAVE DO PAI
-								//pai_interno->chaves[pos_interno] = vizinho_interno->chaves[0];
+								pai_interno->chaves[pos_interno] = vizinho_interno->chaves[0];
 								
 								//SALVA OS NOS ATUALIZADOS
 								fseek(fi, pai_interno->p[pos_interno + 1], SEEK_SET);
@@ -1068,7 +1068,7 @@ int exclui(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, cha
 								vizinho_interno->m = vizinho_interno->m - 1;
 								
 								//ATUALIZAR CHAVE DO PAI
-								//pai_interno->chaves[pos_interno] = noInterno->chaves[0];
+								pai_interno->chaves[pos_interno] = noInterno->chaves[0];
 
 								//SALVA OS NOS ATUALIZADOS
 								fseek(fi,  pai_interno->p[pos_interno - 1], SEEK_SET);
