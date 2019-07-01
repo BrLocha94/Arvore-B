@@ -841,6 +841,11 @@ int exclui(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, cha
 					
 					while(loop == 0){
 						
+						if(noInterno->m >= d || noInterno->pont_pai == -1){
+							fseek(fi, pont_noInterno, SEEK_SET);
+							salva_no_interno(d, noInterno, fi);
+						}
+						
 						pos_interno = -1;
 						
 						fseek(fi, noInterno->pont_pai, SEEK_SET);
@@ -988,7 +993,7 @@ int exclui(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, cha
 								salva_no_interno(d, noInterno, fi);
 								
 								//CASO O NO PAI NÃO TENHA MAIS CHAVES E SEJA RAIZ, ALTERA A RAIZ PARA O NOINTERNO
-								if(pai_interno->m == 0 && (metadados->pont_raiz == noInterno->pont_pai)){
+								if((pai_interno->m == 0) && (pai_interno->pont_pai == -1)){
 									
 									metadados->pont_raiz = pont_noInterno;
 									noInterno->pont_pai = -1;
@@ -1138,7 +1143,7 @@ int exclui(int cod, char *nome_arquivo_metadados, char *nome_arquivo_indice, cha
 								salva_no_interno(d, noInterno, fi);
 								
 								//CASO O NO PAI NÃO TENHA MAIS CHAVES E SEJA RAIZ, ALTERA A RAIZ PARA O NOINTERNO
-								if(pai_interno->m == 0 && (metadados->pont_raiz == noInterno->pont_pai)){
+								if((pai_interno->m == 0) && (pai_interno->pont_pai == -1)){
 									
 									noInterno->pont_pai = -1;
 									
